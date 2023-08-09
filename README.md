@@ -7,6 +7,10 @@ lists all of the deliverables that are due at the end of the
 week. Below is some guidance for getting started on the
 tasks for this week.
 
+Clone gitlab repo
+run 'docker volume create digger'
+run 'docker compose up'
+
 ## Install Extensions
 
 - Prettier: <https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode>

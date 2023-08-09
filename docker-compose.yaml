@@ -1,8 +1,15 @@
-# volumes:
+volumes:
+  digger:
+    external: true
 services:
   fastapi:
     environment:
       CORS_HOST: http://localhost:3000
+      DATABASE_URL: postgresql://admin:password@database/digger
+      WAIT_HOSTS: database:5432
+      WAIT_BEFORE: 5
+      WAIT_TIMEOUT: 60
+      PORT: 8000
     build:
       context: api
       dockerfile: Dockerfile.dev
@@ -10,6 +17,16 @@ services:
       - 8000:8000
     volumes:
       - ./api:/app
+  database:
+    image: postgres:14.5-bullseye
+    volumes:
+      - digger:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: admin
+      POSTGRES_DB: digger
+    ports:
+      - "15432:5432"
 
   ghi:
     image: node:lts-bullseye
@@ -24,4 +41,4 @@ services:
       NODE_ENV: development
       HOST: "0.0.0.0"
       PUBLIC_URL: http://localhost:3000
-      REACT_APP_API_HOST: ${REACT_APP_API_HOST}
+      REACT_APP_API_HOST: http://localhost:8000
