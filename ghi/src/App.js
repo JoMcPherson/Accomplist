@@ -28,6 +28,10 @@ function App() {
 
   return (
     <div>
+      <nav>
+        Navigation Links
+        <link></link>
+      </nav>
       <ErrorNotification error={error} />
       <Construct info={launchInfo} />
     </div>
