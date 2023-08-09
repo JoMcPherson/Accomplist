@@ -5,7 +5,7 @@ services:
   fastapi:
     environment:
       CORS_HOST: http://localhost:3000
-      DATABASE_URL: postgresql://digger:password@database/digger
+      DATABASE_URL: postgresql://admin:password@database/digger
       WAIT_HOSTS: database:5432
       WAIT_BEFORE: 5
       WAIT_TIMEOUT: 60
@@ -23,7 +23,7 @@ services:
       - digger:/var/lib/postgresql/data
     environment:
       POSTGRES_PASSWORD: password
-      POSTGRES_USER: digger
+      POSTGRES_USER: admin
       POSTGRES_DB: digger
     ports:
       - "15432:5432"
