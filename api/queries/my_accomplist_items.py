@@ -18,9 +18,53 @@ class MyAccomplistItemOut(BaseModel):
     item_id: int
     user_id: int
     completed: bool
+    item_title: str
+    username: str
 
 
 class MyAccomplistItemRepository:
+    def get_title_by_id(self, item_id: int) -> str:
+        try:
+            # connect to the database
+            with pool.connection() as conn:
+                # get a cursor
+                with conn.cursor() as cur:
+                    cur.execute(
+                        """
+                        SELECT title
+                        FROM accomplist_items
+                        WHERE id = %s
+                        """,
+                        [item_id],
+                    )
+                    result = cur.fetchone()
+                    if result:
+                        return result[0]
+        except Exception as e:
+            print(e)
+            return ""
+
+    def get_username_by_id(self, user_id: int) -> str:
+        try:
+            # connect to the database
+            with pool.connection() as conn:
+                # get a cursor
+                with conn.cursor() as cur:
+                    cur.execute(
+                        """
+                        SELECT name
+                        FROM users
+                        WHERE id = %s
+                        """,
+                        [user_id],
+                    )
+                    result = cur.fetchone()
+                    if result:
+                        return result[0]
+        except Exception as e:
+            print(e)
+            return ""
+
     def my_accomplist_in_to_out(
         self, id: int, my_accomplist_item: MyAccomplistItemIn
     ) -> MyAccomplistItemOut:
@@ -33,6 +77,8 @@ class MyAccomplistItemRepository:
             item_id=record[1],
             user_id=record[2],
             completed=record[3],
+            item_title=get_title_by_id(item_id),
+            username=get_username_by_id(user_id),
         )
 
     def get_my_accomplist_item(
