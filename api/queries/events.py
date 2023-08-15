@@ -163,13 +163,13 @@ class eventsRepo:
             return {"message": "Could not get all events"}
 
     def record_to_event_out(self, record):
-            return EventOut(
-                            id=record[0],
-                            name=record[1],
-                            date=record[2],
-                            time=record[3],
-                            cost=record[4],
-                            location=record[5],
-                            description=record[6],
-                            organizer=record[7]
+        return EventOut(
+                        id=record[0],
+                        name=record[1],
+                        date=record[2],
+                        time=record[3],
+                        cost=record[4],
+                        location=record[5],
+                        description=record[6],
+                        organizer=record[7]
             )
