@@ -1,5 +1,5 @@
-from fastapi import APIRouter, Depends
-from typing import List, Union
+from fastapi import APIRouter, Depends, Response
+from typing import List, Union, Optional
 from queries.accomplist_items import (
     AccomplistItemIn,
     AccomplistItemOut,
@@ -32,3 +32,21 @@ def update_accomplist_item(
     repo: AccomplistItemRepository = Depends(),
 ) -> Union[Error,AccomplistItemOut]:
     return repo.update(accomplist_item_id, accomplist_item)
+
+@router.delete("/accomplist_items/{accomplist_item_id}", response_model=bool)
+def delete_accomplist_item(
+    accomplist_item_id: int,
+    repo: AccomplistItemRepository = Depends(),
+) -> bool:
+    return repo.delete(accomplist_item_id)
+
+@router.get("/accomplist_items/{accomplist_item_id}", response_model=Optional[AccomplistItemOut])
+def get_accomplist_item(
+    accomplist_item_id: int,
+    response: Response,
+    repo: AccomplistItemRepository = Depends(),
+) -> AccomplistItemOut:
+    accomplist_item = repo.get_accomplist_item(accomplist_item_id)
+    if accomplist_item is None:
+        response.status_code = 404
+    return accomplist_item

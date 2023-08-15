@@ -34,6 +34,67 @@ class AccomplistItemRepository():
               old_data = accomplist_item.dict()
               return AccomplistItemOut(id=id, **old_data)
 
+    def record_to_accomplist_item_out(self, record):
+              return  AccomplistItemOut(
+                            id=record[0],
+                            title=record[1],
+                            details=record[2],
+                            photo=record[3],
+                            resources=record[4],
+                            things_to_do=record[5],
+                            things_not_to_do=record[6],
+                            date_added=record[7],
+                        )
+
+    def get_accomplist_item(self, accomplist_item_id: int) -> Optional[AccomplistItemOut]:
+        try:
+            # connect the database
+            with pool.connection() as conn:
+                # get a cursor
+                with conn.cursor() as cur:
+                    result = cur.execute(
+                        """
+                        SELECT id,
+                        title,
+                        details,
+                        photo,
+                        resources,
+                        things_to_do,
+                        things_not_to_do,
+                        date_added
+                        FROM accomplist_items
+                        WHERE id = %s
+                        """,
+                        [accomplist_item_id]
+                    )
+                    record = result.fetchone()
+                    if record is None:
+                        return None
+                    return self.record_to_accomplist_item_out(record)
+        except Exception as e:
+            print(e)
+            return {"message: Could not get that accomplist item"}
+
+    def delete(self, accomplist_item_id: int) -> bool:
+        try:
+            # connect the database
+            with pool.connection() as conn:
+                # get a cursor
+                with conn.cursor() as cur:
+                    result = cur.execute(
+                        """
+                        DELETE from accomplist_items
+                        WHERE id = %s
+                        """,
+                        [accomplist_item_id]
+                    )
+                    if result.rowcount == 0:
+                        return False
+                    return True
+        except Exception as e:
+            print(e)
+            return False
+
     def update(self, accomplist_item_id: int, accomplist_item: AccomplistItemIn) -> Union[AccomplistItemOut, Error]:
         try:
             # connect the database
@@ -93,17 +154,7 @@ class AccomplistItemRepository():
                         """
                     )
                     return [
-                        AccomplistItemOut(
-                            id=record[0],
-                            title=record[1],
-                            details=record[2],
-                            photo=record[3],
-                            resources=record[4],
-                            things_to_do=record[5],
-                            things_not_to_do=record[6],
-                            date_added=record[7],
-                        )
-                        for record in cur
+                        self.record_to_accomplist_item_out(record) for record in cur
                     ]
         except Exception as e:
             print(e)
