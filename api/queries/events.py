@@ -47,9 +47,7 @@ class eventsRepo:
                     FROM events
                     WHERE id = %s
                         """,
-                        [
-                            event_id
-                        ]
+                        [event_id],
                     )
                     record = result.fetchone()
                     if record is None:
@@ -68,7 +66,7 @@ class eventsRepo:
                     DELETE FROM events
                     WHERE id = %s
                         """,
-                        [event_id]
+                        [event_id],
                     )
                     return True
         except Exception as e:
@@ -97,8 +95,9 @@ class eventsRepo:
                             event.cost,
                             event.location,
                             event.description,
-                            event.organizer
-                        ])
+                            event.organizer,
+                        ],
+                    )
                     old_data = event.dict()
                     return EventOut(id=event_id, **old_data)
 
@@ -121,8 +120,15 @@ class eventsRepo:
                     (%s, %s, %s, %s, %s, %s, %s)
                     RETURNING id;
                     """,
-                    [event.name, event.date, event.time, event.cost,
-                     event.location, event.description, event.organizer]
+                    [
+                        event.name,
+                        event.date,
+                        event.time,
+                        event.cost,
+                        event.location,
+                        event.description,
+                        event.organizer,
+                    ],
                 )
                 id = result.fetchone()[0]
 
@@ -154,7 +160,7 @@ class eventsRepo:
                             cost=record[4],
                             location=record[5],
                             description=record[6],
-                            organizer=record[7]
+                            organizer=record[7],
                         )
                         result.append(event)
                     return result
@@ -164,12 +170,12 @@ class eventsRepo:
 
     def record_to_event_out(self, record):
         return EventOut(
-                        id=record[0],
-                        name=record[1],
-                        date=record[2],
-                        time=record[3],
-                        cost=record[4],
-                        location=record[5],
-                        description=record[6],
-                        organizer=record[7]
-            )
+            id=record[0],
+            name=record[1],
+            date=record[2],
+            time=record[3],
+            cost=record[4],
+            location=record[5],
+            description=record[6],
+            organizer=record[7],
+        )
