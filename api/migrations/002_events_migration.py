@@ -16,8 +16,6 @@ steps = [
         # drop table
         """
         DROP TABLE events;
-        """
+        """,
     ]
-
-
 ]

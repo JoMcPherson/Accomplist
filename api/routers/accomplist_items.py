@@ -18,16 +18,19 @@ def create_accomplist_item(
     return repo.create(accomplist_item)
 
 
-@router.get("/accomplist_items",
-            response_model=Union[List[AccomplistItemOut], Error])
+@router.get(
+    "/accomplist_items", response_model=Union[List[AccomplistItemOut], Error]
+)
 def get_all(
-        repo: AccomplistItemRepository = Depends()
-        ) -> Union[List[AccomplistItemOut], Error]:
+    repo: AccomplistItemRepository = Depends(),
+) -> Union[List[AccomplistItemOut], Error]:
     return repo.get_all()
 
 
-@router.put("/accomplist_items/{accomplist_item_id}",
-            response_model=Union[Error, AccomplistItemOut])
+@router.put(
+    "/accomplist_items/{accomplist_item_id}",
+    response_model=Union[Error, AccomplistItemOut],
+)
 def update_accomplist_item(
     accomplist_item_id: int,
     accomplist_item: AccomplistItemIn,
@@ -44,8 +47,10 @@ def delete_accomplist_item(
     return repo.delete(accomplist_item_id)
 
 
-@router.get("/accomplist_items/{accomplist_item_id}",
-            response_model=Optional[AccomplistItemOut])
+@router.get(
+    "/accomplist_items/{accomplist_item_id}",
+    response_model=Optional[AccomplistItemOut],
+)
 def get_accomplist_item(
     accomplist_item_id: int,
     response: Response,
