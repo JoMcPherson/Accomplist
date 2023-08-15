@@ -10,53 +10,56 @@ from queries.my_accomplist_items import (
 router = APIRouter()
 
 
-@router.post("/accomplist_items", response_model=AccomplistItemOut)
-def create_accomplist_item(
-    accomplist_item: AccomplistItemIn,
-    repo: AccomplistItemRepository = Depends(),
-) -> AccomplistItemOut:
-    return repo.create(accomplist_item)
+@router.post("/my_accomplist_items", response_model=MyAccomplistItemOut)
+def create_my_accomplist_item(
+    my_accomplist_item: MyAccomplistItemIn,
+    repo: MyAccomplistItemRepository = Depends(),
+) -> MyAccomplistItemOut:
+    return repo.create(my_accomplist_item)
 
 
 @router.get(
-    "/accomplist_items", response_model=Union[List[AccomplistItemOut], Error]
+    "/my_accomplist_items",
+    response_model=Union[List[MyAccomplistItemOut], Error],
 )
 def get_all(
-    repo: AccomplistItemRepository = Depends(),
-) -> Union[List[AccomplistItemOut], Error]:
+    repo: MyAccomplistItemRepository = Depends(),
+) -> Union[List[MyAccomplistItemOut], Error]:
     return repo.get_all()
 
 
 @router.put(
-    "/accomplist_items/{accomplist_item_id}",
-    response_model=Union[Error, AccomplistItemOut],
+    "/my_accomplist_items/{my_accomplist_item_id}",
+    response_model=Union[Error, MyAccomplistItemOut],
 )
-def update_accomplist_item(
-    accomplist_item_id: int,
-    accomplist_item: AccomplistItemIn,
-    repo: AccomplistItemRepository = Depends(),
-) -> Union[Error, AccomplistItemOut]:
-    return repo.update(accomplist_item_id, accomplist_item)
+def update_my_accomplist_item(
+    my_accomplist_item_id: int,
+    my_accomplist_item: MyAccomplistItemIn,
+    repo: MyAccomplistItemRepository = Depends(),
+) -> Union[Error, MyAccomplistItemOut]:
+    return repo.update(my_accomplist_item_id, my_accomplist_item)
 
 
-@router.delete("/accomplist_items/{accomplist_item_id}", response_model=bool)
-def delete_accomplist_item(
-    accomplist_item_id: int,
-    repo: AccomplistItemRepository = Depends(),
+@router.delete(
+    "/my_accomplist_items/{my_accomplist_item_id}", response_model=bool
+)
+def delete_my_accomplist_item(
+    my_accomplist_item_id: int,
+    repo: MyAccomplistItemRepository = Depends(),
 ) -> bool:
-    return repo.delete(accomplist_item_id)
+    return repo.delete(my_accomplist_item_id)
 
 
 @router.get(
-    "/accomplist_items/{accomplist_item_id}",
-    response_model=Optional[AccomplistItemOut],
+    "/my_accomplist_items/{my_accomplist_item_id}",
+    response_model=Optional[MyAccomplistItemOut],
 )
-def get_accomplist_item(
-    accomplist_item_id: int,
+def get_my_accomplist_item(
+    my_accomplist_item_id: int,
     response: Response,
-    repo: AccomplistItemRepository = Depends(),
-) -> Optional[AccomplistItemOut]:
-    accomplist_item = repo.get_accomplist_item(accomplist_item_id)
-    if accomplist_item is None:
+    repo: MyAccomplistItemRepository = Depends(),
+) -> Optional[MyAccomplistItemOut]:
+    my_accomplist_item = repo.get_my_accomplist_item(my_accomplist_item_id)
+    if my_accomplist_item is None:
         response.status_code = 404
-    return accomplist_item
+        return my_accomplist_item

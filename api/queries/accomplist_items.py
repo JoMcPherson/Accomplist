@@ -18,7 +18,7 @@ class AccomplistItemIn(BaseModel):
     date_added: date
 
 
-class MyAccomplistItemOut(BaseModel):
+class AccomplistItemOut(BaseModel):
     id: int
     title: str
     details: str
@@ -29,17 +29,6 @@ class MyAccomplistItemOut(BaseModel):
     date_added: date
 
 
-<<<<<<< HEAD
-class MyAccomplistItemRepository:
-    def my_accomplist_in_to_out(
-        self, id: int, my_accomplist_item: MyAccomplistItemIn
-    ) -> MyAccomplistItemOut:
-        old_data = my_accomplist_item.dict()
-        return MyAccomplistItemOut(id=id, **old_data)
-
-    def record_to_my_accomplist_item_out(self, record) -> MyAccomplistItemOut:
-        return MyAccomplistItemOut(
-=======
 class AccomplistItemRepository:
     def accomplist_in_to_out(
         self, id: int, accomplist_item: AccomplistItemIn
@@ -49,7 +38,6 @@ class AccomplistItemRepository:
 
     def record_to_accomplist_item_out(self, record) -> AccomplistItemOut:
         return AccomplistItemOut(
->>>>>>> main
             id=record[0],
             title=record[1],
             details=record[2],
@@ -60,15 +48,9 @@ class AccomplistItemRepository:
             date_added=record[7],
         )
 
-<<<<<<< HEAD
-    def get_my_accomplist_item(
-        self, my_accomplist_item_id: int
-    ) -> Optional[MyAccomplistItemOut]:
-=======
     def get_accomplist_item(
         self, accomplist_item_id: int
     ) -> Optional[AccomplistItemOut]:
->>>>>>> main
         try:
             # connect the database
             with pool.connection() as conn:
@@ -84,35 +66,20 @@ class AccomplistItemRepository:
                                things_to_do,
                                things_not_to_do,
                                date_added
-<<<<<<< HEAD
-                        FROM my_accomplist_items
-                        WHERE id = %s
-                        """,
-                        [my_accomplist_item_id],
-=======
                         FROM accomplist_items
                         WHERE id = %s
                         """,
                         [accomplist_item_id],
->>>>>>> main
                     )
                     record = result.fetchone()
                     if record is None:
                         return None
-<<<<<<< HEAD
-                    return self.record_to_my_accomplist_item_out(record)
-=======
                     return self.record_to_accomplist_item_out(record)
->>>>>>> main
         except Exception as e:
             print(e)
             return None
 
-<<<<<<< HEAD
-    def delete(self, my_accomplist_item_id: int) -> bool:
-=======
     def delete(self, accomplist_item_id: int) -> bool:
->>>>>>> main
         try:
             # connect the database
             with pool.connection() as conn:
@@ -120,17 +87,10 @@ class AccomplistItemRepository:
                 with conn.cursor() as cur:
                     result = cur.execute(
                         """
-<<<<<<< HEAD
-                        DELETE FROM my_accomplist_items
-                        WHERE id = %s
-                        """,
-                        [my_accomplist_item_id],
-=======
                         DELETE FROM accomplist_items
                         WHERE id = %s
                         """,
                         [accomplist_item_id],
->>>>>>> main
                     )
                     if result.rowcount == 0:
                         return False
@@ -140,15 +100,8 @@ class AccomplistItemRepository:
             return False
 
     def update(
-<<<<<<< HEAD
-        self,
-        my_accomplist_item_id: int,
-        my_accomplist_item: MyAccomplistItemIn,
-    ) -> Union[Error, MyAccomplistItemOut]:
-=======
         self, accomplist_item_id: int, accomplist_item: AccomplistItemIn
     ) -> Union[Error, AccomplistItemOut]:
->>>>>>> main
         try:
             # connect the database
             with pool.connection() as conn:
@@ -156,11 +109,7 @@ class AccomplistItemRepository:
                 with conn.cursor() as cur:
                     cur.execute(
                         """
-<<<<<<< HEAD
-                        UPDATE my_accomplist_items
-=======
                         UPDATE accomplist_items
->>>>>>> main
                         SET title = %s,
                             details = %s,
                             photo = %s,
@@ -171,26 +120,6 @@ class AccomplistItemRepository:
                         WHERE id = %s
                         """,
                         [
-<<<<<<< HEAD
-                            my_accomplist_item.title,
-                            my_accomplist_item.details,
-                            my_accomplist_item.photo,
-                            my_accomplist_item.resources,
-                            my_accomplist_item.things_to_do,
-                            my_accomplist_item.things_not_to_do,
-                            my_accomplist_item.date_added,
-                            my_accomplist_item_id,
-                        ],
-                    )
-                    return self.my_accomplist_in_to_out(
-                        my_accomplist_item_id, my_accomplist_item
-                    )
-        except Exception as e:
-            print(e)
-            return Error(message="could not update my accomplist item")
-
-    def get_all(self) -> Union[Error, List[MyAccomplistItemOut]]:
-=======
                             accomplist_item.title,
                             accomplist_item.details,
                             accomplist_item.photo,
@@ -209,7 +138,6 @@ class AccomplistItemRepository:
             return Error(message="could not update accomplist item")
 
     def get_all(self) -> Union[Error, List[AccomplistItemOut]]:
->>>>>>> main
         try:
             # connect the database
             with pool.connection() as conn:
@@ -231,26 +159,14 @@ class AccomplistItemRepository:
                         """
                     )
                     return [
-<<<<<<< HEAD
-                        self.record_to_my_accomplist_item_out(record)
-=======
                         self.record_to_accomplist_item_out(record)
->>>>>>> main
                         for record in cur
                     ]
         except Exception as e:
             print(e)
-<<<<<<< HEAD
-            return Error(message="could not get all my accomplist items")
-
-    def create(
-        self, my_accomplist_item: MyAccomplistItemIn
-    ) -> MyAccomplistItemOut:
-=======
             return Error(message="could not get all accomplist items")
 
     def create(self, accomplist_item: AccomplistItemIn) -> AccomplistItemOut:
->>>>>>> main
         try:
             # connect the database
             with pool.connection() as conn:
@@ -259,11 +175,7 @@ class AccomplistItemRepository:
                     # run our INSERT statement
                     result = cur.execute(
                         """
-<<<<<<< HEAD
-                        INSERT INTO my_accomplist_items
-=======
                         INSERT INTO accomplist_items
->>>>>>> main
                             (title,
                              details,
                              photo,
@@ -276,15 +188,6 @@ class AccomplistItemRepository:
                         RETURNING id;
                         """,
                         [
-<<<<<<< HEAD
-                            my_accomplist_item.title,
-                            my_accomplist_item.details,
-                            my_accomplist_item.photo,
-                            my_accomplist_item.resources,
-                            my_accomplist_item.things_to_do,
-                            my_accomplist_item.things_not_to_do,
-                            my_accomplist_item.date_added,
-=======
                             accomplist_item.title,
                             accomplist_item.details,
                             accomplist_item.photo,
@@ -292,19 +195,11 @@ class AccomplistItemRepository:
                             accomplist_item.things_to_do,
                             accomplist_item.things_not_to_do,
                             accomplist_item.date_added,
->>>>>>> main
                         ],
                     )
                     id = result.fetchone()[0]
                     # Return new data
-<<<<<<< HEAD
-                    return self.my_accomplist_in_to_out(id, my_accomplist_item)
-        except Exception as e:
-            print(e)
-            return Error(message="could not create my accomplist item")
-=======
                     return self.accomplist_in_to_out(id, accomplist_item)
         except Exception as e:
             print(e)
             return Error(message="could not create accomplist item")
->>>>>>> main
