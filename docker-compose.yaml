@@ -1,11 +1,11 @@
 volumes:
-  digger:
+  accomplist:
     external: true
 services:
   fastapi:
     environment:
       CORS_HOST: http://localhost:3000
-      DATABASE_URL: postgresql://admin:password@database/digger
+      DATABASE_URL: postgresql://admin:password@database/accomplist
       WAIT_HOSTS: database:5432
       WAIT_BEFORE: 5
       WAIT_TIMEOUT: 60
@@ -20,11 +20,11 @@ services:
   database:
     image: postgres:14.5-bullseye
     volumes:
-      - digger:/var/lib/postgresql/data
+      - accomplist:/var/lib/postgresql/data
     environment:
       POSTGRES_PASSWORD: password
       POSTGRES_USER: admin
-      POSTGRES_DB: digger
+      POSTGRES_DB: accomplist
     ports:
       - "15432:5432"
 
