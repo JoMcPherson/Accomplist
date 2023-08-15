@@ -1,16 +1,16 @@
 from fastapi import APIRouter, Depends, Response
 from typing import List, Union, Optional
-from queries.my_accomplist_items import (
-    MyAccomplistItemIn,
-    MyAccomplistItemOut,
-    MyAccomplistItemRepository,
+from queries.accomplist_items import (
+    AccomplistItemIn,
+    AccomplistItemOut,
+    AccomplistItemRepository,
     Error,
 )
 
 router = APIRouter()
 
 
-@router.post("/my_accomplist_items", response_model=AccomplistItemOut)
+@router.post("/accomplist_items", response_model=AccomplistItemOut)
 def create_accomplist_item(
     accomplist_item: AccomplistItemIn,
     repo: AccomplistItemRepository = Depends(),
