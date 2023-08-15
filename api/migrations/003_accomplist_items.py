@@ -16,7 +16,6 @@ steps = [
         """
         DROP TABLE accomplist_items;
         """
-
         ## Drop the table
     ]
 ]
