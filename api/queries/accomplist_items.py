@@ -154,7 +154,7 @@ class AccomplistItemRepository:
                             things_to_do,
                             things_not_to_do,
                             date_added
-                        FROM my_accomplist_items
+                        FROM accomplist_items
                         ORDER BY id
                         """
                     )

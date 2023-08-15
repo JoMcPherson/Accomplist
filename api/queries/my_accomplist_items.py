@@ -48,7 +48,7 @@ class MyAccomplistItemRepository:
                         SELECT id,
                                item_id,
                                user_id,
-                               completed,
+                               completed
                         FROM my_accomplist_items
                         WHERE id = %s
                         """,
@@ -97,7 +97,7 @@ class MyAccomplistItemRepository:
                         UPDATE my_accomplist_items
                         SET item_id = %s,
                             user_id = %s,
-                            completed = %s,
+                            completed = %s
                         WHERE id = %s
                         """,
                         [
@@ -126,7 +126,7 @@ class MyAccomplistItemRepository:
                             id,
                             item_id,
                             user_id,
-                            completed,
+                            completed
                         FROM my_accomplist_items
                         ORDER BY id
                         """
@@ -153,7 +153,7 @@ class MyAccomplistItemRepository:
                         INSERT INTO my_accomplist_items
                             (item_id,
                              user_id,
-                             completed,
+                             completed)
                         VALUES
                             (%s, %s, %s)
                         RETURNING id;

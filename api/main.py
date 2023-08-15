@@ -1,11 +1,12 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routers import events, accomplist_items
+from routers import events, accomplist_items, my_accomplist_items
 import os
 
 app = FastAPI()
 app.include_router(events.router)
 app.include_router(accomplist_items.router)
+app.include_router(my_accomplist_items.router)
 
 app.add_middleware(
     CORSMiddleware,
