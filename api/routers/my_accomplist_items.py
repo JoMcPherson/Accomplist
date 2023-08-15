@@ -10,7 +10,7 @@ from queries.my_accomplist_items import (
 router = APIRouter()
 
 
-@router.post("/my_accomplist_items", response_model=AccomplistItemOut)
+@router.post("/accomplist_items", response_model=AccomplistItemOut)
 def create_accomplist_item(
     accomplist_item: AccomplistItemIn,
     repo: AccomplistItemRepository = Depends(),
