@@ -4,6 +4,7 @@ steps = [
         """
         CREATE TABLE accomplist_items (
             id SERIAL PRIMARY KEY NOT NULL,
+            user_id INT NOT NULL REFERENCES users(id),
             title VARCHAR(1000) NOT NULL,
             details TEXT NOT NULL,
             photo TEXT,

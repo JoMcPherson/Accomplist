@@ -69,16 +69,25 @@ class MyAccomplistItemRepository:
         self, id: int, my_accomplist_item: MyAccomplistItemIn
     ) -> MyAccomplistItemOut:
         old_data = my_accomplist_item.dict()
-        return MyAccomplistItemOut(id=id, **old_data)
+        return MyAccomplistItemOut(
+            id=id,
+            item_id=old_data["item_id"],
+            user_id=old_data["user_id"],
+            completed=old_data["completed"],
+            item_title=self.get_title_by_id(old_data["item_id"]),
+            username=self.get_username_by_id(old_data["user_id"]),
+        )
 
     def record_to_my_accomplist_item_out(self, record) -> MyAccomplistItemOut:
+        print("out record", record)
+        print(self.get_username_by_id(record[2]))
         return MyAccomplistItemOut(
             id=record[0],
             item_id=record[1],
             user_id=record[2],
             completed=record[3],
-            item_title=get_title_by_id(item_id),
-            username=get_username_by_id(user_id),
+            item_title=self.get_title_by_id(record[1]),
+            username=self.get_username_by_id(record[2]),
         )
 
     def get_my_accomplist_item(
@@ -194,7 +203,7 @@ class MyAccomplistItemRepository:
                 # get a cursor
                 with conn.cursor() as cur:
                     # run our INSERT statement
-                    result = cur.execute(
+                    cur.execute(
                         """
                         INSERT INTO my_accomplist_items
                             (item_id,
@@ -210,7 +219,8 @@ class MyAccomplistItemRepository:
                             my_accomplist_item.completed,
                         ],
                     )
-                    id = result.fetchone()[0]
+
+                    id = cur.fetchone()[0]
                     # Return new data
                     return self.my_accomplist_in_to_out(id, my_accomplist_item)
         except Exception as e:
