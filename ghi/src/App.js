@@ -4,7 +4,9 @@ import ErrorNotification from "./ErrorNotification";
 import "./App.css";
 import { BrowserRouter, Link, Routes, Route, NavLink, useNavigate, Outlet } from "react-router-dom";
 import NavBar from "./NavBar.js";
-
+import EventCreate from "./Pages/EventCreatePage.js";
+import EventsList from "./Pages/EventsListPage.js";
+import EventDetailDisplay from "./Pages/EventDetailsPage.js";
 
 function App() {
 
@@ -35,8 +37,25 @@ function App() {
     <div>
       <NavBar />
       <Outlet />
+      <BrowserRouter>
+      <div className="container">
+          <Routes>
+            <Route path="events/new" element={<EventCreate />} />
+            <Route path="events/" element={<EventsList />} />
+            <Route path="events/{event_id}" element={<EventDetailDisplay />} />
+            <Route path="*" element={
+                                        <main style={{ padding: "1rem" }}>
+                                          <p>There's nothing here!</p>
+                                        </main> }/>
+          </Routes>
+        </div>
+
+
+
+
       <ErrorNotification error={error} />
       <Construct info={launchInfo} />
+      </BrowserRouter>
     </div>
   );
 }

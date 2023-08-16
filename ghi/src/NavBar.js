@@ -9,7 +9,7 @@ export default function NavBar() {
 
   return(
 
-    <BrowserRouter>
+
       <Navbar bg="dark" sticky="top" expand="sm" collapseOnSelect data-bs-theme="dark">
         <Navbar.Brand href="#">
           <img src={logo} width="30px" height="30px" />{' '} .
@@ -22,21 +22,14 @@ export default function NavBar() {
         <Nav className="justify-content-center">
           <Nav.Link href="#">Items</Nav.Link>
           <Nav.Link href="#">Add</Nav.Link>
-          <Nav.Link href="#">Events</Nav.Link>
+          <Nav.Link href="events">Events</Nav.Link>
           <Nav.Link href="#">Account</Nav.Link>
         </Nav>
         </Navbar.Collapse>
 
 
-        <div className="container">
-          <Routes>
-            <Route path="events/new" element={<EventCreate />} />
-            <Route path="events/" element={<EventsList />} />
-            <Route path="events/{event_id}" element={<EventDetailDisplay />} />
-          </Routes>
-        </div>
       </Navbar>
-    </BrowserRouter>
+
 
   )
 };
