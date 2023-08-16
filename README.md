@@ -8,8 +8,10 @@ week. Below is some guidance for getting started on the
 tasks for this week.
 
 Clone gitlab repo
-run 'docker volume create digger'
+run 'docker volume create accomplist'
+run 'docker volume create pg-admin'
 run 'docker compose up'
+
 
 ## Install Extensions
 

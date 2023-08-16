@@ -2,8 +2,13 @@ import { useEffect, useState } from "react";
 import Construct from "./Construct.js";
 import ErrorNotification from "./ErrorNotification";
 import "./App.css";
+import { BrowserRouter, Link, Routes, Route, NavLink, useNavigate, Outlet } from "react-router-dom";
+import NavvyBar from "./NavyyBar.js";
+
 
 function App() {
+
+
   const [launchInfo, setLaunchInfo] = useState([]);
   const [error, setError] = useState(null);
 
@@ -28,10 +33,16 @@ function App() {
 
   return (
     <div>
-      <nav>
+
+      <nav
+        style={{
+          borderBottom: "dash 1px",
+          paddingBottom: "1rem",
+        }}>
         Navigation Links
-        <link></link>
+        <NavvyBar />
       </nav>
+      <Outlet />
       <ErrorNotification error={error} />
       <Construct info={launchInfo} />
     </div>

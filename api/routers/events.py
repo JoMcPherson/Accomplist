@@ -28,7 +28,7 @@ def update_event(
     return repo.update(event_id, event)
 
 
-@router.delete("/vacations/{event_id}", response_model=bool)
+@router.delete("/events/{event_id}", response_model=bool)
 def delete_event(event_id: int, repo: eventsRepo = Depends()) -> bool:
     return repo.delete(event_id)
 
