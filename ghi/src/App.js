@@ -3,7 +3,7 @@ import Construct from "./Construct.js";
 import ErrorNotification from "./ErrorNotification";
 import "./App.css";
 import { BrowserRouter, Link, Routes, Route, NavLink, useNavigate, Outlet } from "react-router-dom";
-import NavvyBar from "./NavyyBar.js";
+import NavBar from "./NavBar.js";
 
 
 function App() {
@@ -33,15 +33,7 @@ function App() {
 
   return (
     <div>
-
-      <nav
-        style={{
-          borderBottom: "dash 1px",
-          paddingBottom: "1rem",
-        }}>
-        Navigation Links
-        <NavvyBar />
-      </nav>
+      <NavBar />
       <Outlet />
       <ErrorNotification error={error} />
       <Construct info={launchInfo} />
