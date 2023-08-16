@@ -4,15 +4,9 @@ steps = [
         """
         CREATE TABLE my_accomplist_items (
             id SERIAL PRIMARY KEY NOT NULL,
-            item_id INT NOT NULL,
-            user_id INT REFERENCES users(id) NOT NULL,
+            item_id INT NOT NULL REFERENCES accomplist_items(id),
+            user_id INT NOT NULL REFERENCES users(id),
             completed BOOL NOT NULL,
-            CONSTRAINT fk_user
-                FOREIGN KEY(user_id)
-                    REFERENCES users(id),
-            CONSTRAINT fk_item
-                FOREIGN KEY(item_id)
-                    REFERENCES accomplist_items(id)
         );
         """,
         """
