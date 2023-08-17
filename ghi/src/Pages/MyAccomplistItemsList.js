@@ -8,10 +8,10 @@ console.log("my items",my_accomplist_items)
                 <thead>
                     <tr>
                         <th>
-                            Item Name
+                            User Name
                         </th>
                         <th>
-                            User Name
+                            Item Name
                         </th>
                         <th>
                             Completed
@@ -22,8 +22,8 @@ console.log("my items",my_accomplist_items)
                     {my_accomplist_items.map(my_item => {
                         return (
                             <tr key={my_item.id} >
-                                <td>{my_item.item_title}</td>
                                 <td>{my_item.username}</td>
+                                <td>{my_item.item_title}</td>
                                 <td>{my_item.completed ? "Done" : "Will Do!"}</td>
                             </tr>
                         )

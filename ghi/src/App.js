@@ -7,12 +7,23 @@ import NavBar from "./NavBar.js";
 import EventCreate from "./Pages/EventCreatePage.js";
 import EventsList from "./Pages/EventsListPage.js";
 import EventDetailDisplay from "./Pages/EventDetailsPage.js";
+import MyAccomplistItemCreate from "./Pages/MyAccomplistCreate.js";
+import MyAccomplistItemsList from "./Pages/MyAccomplistItemsList.js";
 
 function App() {
 
+const [launchInfo, setLaunchInfo] = useState([]);
+const [error, setError] = useState(null);
+ const [my_accomplist_items,setMyItems] = useState([])
+  async function getMyItems() {
+    const myItemUrl = 'http://localhost:8000/my_accomplist_items'
+    const response = await fetch(myItemUrl)
+    if (response.ok) {
+      const data = await response.json();
+      setMyItems(data)
+    }
 
-  const [launchInfo, setLaunchInfo] = useState([]);
-  const [error, setError] = useState(null);
+  }
 
   useEffect(() => {
     async function getData() {
@@ -31,6 +42,7 @@ function App() {
       }
     }
     getData();
+    getMyItems();
   }, []);
 
   return (
@@ -43,6 +55,8 @@ function App() {
             <Route path="events/new" element={<EventCreate />} />
             <Route path="events/" element={<EventsList />} />
             <Route path="events/{event_id}" element={<EventDetailDisplay />} />
+            <Route path="my_accomplist_items/new" element={<MyAccomplistItemCreate />} />
+            <Route path="my_accomplist_items/" element={<MyAccomplistItemsList my_accomplist_items={my_accomplist_items} />} />
             <Route path="*" element={
                                         <main style={{ padding: "1rem" }}>
                                           <p>There's nothing here!</p>
