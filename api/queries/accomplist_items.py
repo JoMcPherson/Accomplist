@@ -32,6 +32,27 @@ class AccomplistItemOut(BaseModel):
 
 
 class AccomplistItemRepository:
+    def get_username_by_id(self, user_id: int) -> str:
+        try:
+            # connect to the database
+            with pool.connection() as conn:
+                # get a cursor
+                with conn.cursor() as cur:
+                    cur.execute(
+                        """
+                        SELECT username
+                        FROM user_accounts
+                        WHERE id = %s
+                        """,
+                        [user_id],
+                    )
+                    result = cur.fetchone()
+                    if result:
+                        return result[0]
+        except Exception as e:
+            print(e)
+            return ""
+
     def accomplist_in_to_out(
         self, id: int, accomplist_item: AccomplistItemIn
     ) -> AccomplistItemOut:
@@ -41,7 +62,7 @@ class AccomplistItemRepository:
     def record_to_accomplist_item_out(self, record) -> AccomplistItemOut:
         return AccomplistItemOut(
             id=record[0],
-            user_id = record[1],
+            user_id=record[1],
             title=record[2],
             details=record[3],
             photo=record[4],

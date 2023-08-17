@@ -7,10 +7,11 @@ from queries.authenticator import AccomplistAuthenticator
 authenticator = AccomplistAuthenticator(os.environ["SIGNING_KEY"])
 app = FastAPI()
 app.include_router(authenticator.router)
-app.include_router(events.router)
+app.include_router(accounts.router)
 app.include_router(accomplist_items.router)
 app.include_router(my_accomplist_items.router)
-app.include_router(accounts.router)
+app.include_router(events.router)
+
 
 app.add_middleware(
     CORSMiddleware,
@@ -19,11 +20,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-
-@app.get("/")
-def health_check():
-    return {"Hello": "World"}
 
 
 @app.get("/")

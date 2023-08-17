@@ -52,8 +52,8 @@ class MyAccomplistItemRepository:
                 with conn.cursor() as cur:
                     cur.execute(
                         """
-                        SELECT name
-                        FROM users
+                        SELECT username
+                        FROM user_accounts
                         WHERE id = %s
                         """,
                         [user_id],
