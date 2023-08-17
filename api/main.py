@@ -1,4 +1,4 @@
-from routers import events, accomplist_items, accounts
+from routers import events, accomplist_items, accounts, my_accomplist_items
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import os
