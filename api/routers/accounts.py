@@ -5,7 +5,6 @@ from fastapi import (
     HTTPException,
     status,
     Response,
-    APIRouter,
     Request,
 )
 from jwtdown_fastapi.authentication import Token
