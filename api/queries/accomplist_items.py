@@ -9,6 +9,7 @@ class Error(BaseModel):
 
 
 class AccomplistItemIn(BaseModel):
+    user_id: int
     title: str
     details: str
     photo: Optional[str]
@@ -20,6 +21,7 @@ class AccomplistItemIn(BaseModel):
 
 class AccomplistItemOut(BaseModel):
     id: int
+    user_id: int
     title: str
     details: str
     photo: Optional[str]
@@ -30,6 +32,27 @@ class AccomplistItemOut(BaseModel):
 
 
 class AccomplistItemRepository:
+    def get_username_by_id(self, user_id: int) -> str:
+        try:
+            # connect to the database
+            with pool.connection() as conn:
+                # get a cursor
+                with conn.cursor() as cur:
+                    cur.execute(
+                        """
+                        SELECT username
+                        FROM user_accounts
+                        WHERE id = %s
+                        """,
+                        [user_id],
+                    )
+                    result = cur.fetchone()
+                    if result:
+                        return result[0]
+        except Exception as e:
+            print(e)
+            return ""
+
     def accomplist_in_to_out(
         self, id: int, accomplist_item: AccomplistItemIn
     ) -> AccomplistItemOut:
@@ -39,13 +62,14 @@ class AccomplistItemRepository:
     def record_to_accomplist_item_out(self, record) -> AccomplistItemOut:
         return AccomplistItemOut(
             id=record[0],
-            title=record[1],
-            details=record[2],
-            photo=record[3],
-            resources=record[4],
-            things_to_do=record[5],
-            things_not_to_do=record[6],
-            date_added=record[7],
+            user_id=record[1],
+            title=record[2],
+            details=record[3],
+            photo=record[4],
+            resources=record[5],
+            things_to_do=record[6],
+            things_not_to_do=record[7],
+            date_added=record[8],
         )
 
     def get_accomplist_item(
@@ -59,6 +83,7 @@ class AccomplistItemRepository:
                     result = cur.execute(
                         """
                         SELECT id,
+                               user_id,
                                title,
                                details,
                                photo,
@@ -110,7 +135,8 @@ class AccomplistItemRepository:
                     cur.execute(
                         """
                         UPDATE accomplist_items
-                        SET title = %s,
+                        SET user_id = %s,
+                            title = %s,
                             details = %s,
                             photo = %s,
                             resources = %s,
@@ -120,6 +146,7 @@ class AccomplistItemRepository:
                         WHERE id = %s
                         """,
                         [
+                            accomplist_item.user_id,
                             accomplist_item.title,
                             accomplist_item.details,
                             accomplist_item.photo,
@@ -147,6 +174,7 @@ class AccomplistItemRepository:
                         """
                         SELECT
                             id,
+                            user_id,
                             title,
                             details,
                             photo,
@@ -176,7 +204,8 @@ class AccomplistItemRepository:
                     result = cur.execute(
                         """
                         INSERT INTO accomplist_items
-                            (title,
+                            (user_id,
+                            title,
                              details,
                              photo,
                              resources,
@@ -184,10 +213,11 @@ class AccomplistItemRepository:
                              things_not_to_do,
                              date_added)
                         VALUES
-                            (%s, %s, %s, %s, %s, %s, %s)
+                            (%s,%s, %s, %s, %s, %s, %s, %s)
                         RETURNING id;
                         """,
                         [
+                            accomplist_item.user_id,
                             accomplist_item.title,
                             accomplist_item.details,
                             accomplist_item.photo,
