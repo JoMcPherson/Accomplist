@@ -4,11 +4,13 @@ import ErrorNotification from "./ErrorNotification";
 import "./App.css";
 import { BrowserRouter, Link, Routes, Route, NavLink, useNavigate, Outlet } from "react-router-dom";
 import NavBar from "./NavBar.js";
-import EventCreate from "./Pages/EventCreatePage.js";
+import EventCreateForm from "./Pages/EventCreatePage.js";
 import EventsList from "./Pages/EventsListPage.js";
 import EventDetailDisplay from "./Pages/EventDetailsPage.js";
 import MyAccomplistItemCreate from "./Pages/MyAccomplistCreate.js";
 import MyAccomplistItemsList from "./Pages/MyAccomplistItemsList.js";
+import getAllEvents from "./Pages/EventsListPage.js";
+
 
 function App() {
 
@@ -24,6 +26,16 @@ const [error, setError] = useState(null);
     }
 
   }
+
+const [eventList, setEventList] = useState([])
+    async function getAllEvents() {
+        const eventsUrl = 'http://localhost:8000/events'
+        const theFetchedList = await fetch(eventsUrl)
+        if (theFetchedList.ok) {
+            const theJsonifiedList = await theFetchedList.json();
+            setEventList(theJsonifiedList)
+        }
+    }
 
   useEffect(() => {
     async function getData() {
@@ -43,6 +55,8 @@ const [error, setError] = useState(null);
     }
     getData();
     getMyItems();
+    getAllEvents();
+    console.log("app prinnttt")
   }, []);
 
   return (
@@ -52,8 +66,9 @@ const [error, setError] = useState(null);
       <BrowserRouter>
       <div className="container">
           <Routes>
-            <Route path="events/new" element={<EventCreate />} />
-            <Route path="events/" element={<EventsList />} />
+            <Route path="events/new" element={<EventCreateForm />} />
+            <Route path="events/" element={<EventsList eventList={eventList} />} />
+            <Route path="events/events" element={<EventsList eventList={eventList} />} />
             <Route path="events/{event_id}" element={<EventDetailDisplay />} />
             <Route path="my_accomplist_items/new" element={<MyAccomplistItemCreate />} />
             <Route path="my_accomplist_items/" element={<MyAccomplistItemsList my_accomplist_items={my_accomplist_items} />} />
