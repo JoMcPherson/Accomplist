@@ -28,6 +28,7 @@ services:
       POSTGRES_PASSWORD: password
       POSTGRES_USER: admin
       POSTGRES_DB: accomplist
+      SIGNING_KEY: ddcfb42d563bed0ec4f9e2290ddf2d80848472affd4b2dbc063aba5ceadd3745
     ports:
       - "15432:5432"
 
@@ -42,6 +43,7 @@ services:
     environment:
       HOST_OS: ${OS}
       NODE_ENV: development
+      SIGNING_KEY: ddcfb42d563bed0ec4f9e2290ddf2d80848472affd4b2dbc063aba5ceadd3745
       HOST: "0.0.0.0"
       PUBLIC_URL: http://localhost:3000
       REACT_APP_API_HOST: http://localhost:8000
@@ -55,3 +57,4 @@ services:
       PGADMIN_DEFAULT_EMAIL: admin@admin.com
       PGADMIN_DEFAULT_PASSWORD: password
       PGADMIN_DISABLE_POSTFIX: 1
+      SIGNING_KEY: ddcfb42d563bed0ec4f9e2290ddf2d80848472affd4b2dbc063aba5ceadd3745

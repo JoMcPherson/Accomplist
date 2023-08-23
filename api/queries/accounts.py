@@ -2,6 +2,7 @@ from pydantic import BaseModel
 from jwtdown_fastapi.authentication import Token
 from psycopg_pool import ConnectionPool
 import os
+from typing import List
 
 
 class Account(BaseModel):
@@ -48,7 +49,7 @@ class AccountRepo:
                 cur.execute(
                     """
                     SELECT id, username, first_name, last_name, email,
-                    date_created, bio, photo,
+                    date_created, bio, photo
                     FROM user_accounts
                     WHERE id = %s;
                     """,
@@ -151,3 +152,28 @@ class AccountRepo:
                     """,
                     (pk),
                 )
+
+    def get_all_accounts(self) -> List[AccountOut]:
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(
+                    """
+                    SELECT id, username, first_name, last_name, email,
+                    date_created, bio, photo
+                    FROM user_accounts;
+                    """
+                )
+                accounts = []
+                for ac in cur.fetchall():
+                    account = AccountOut(
+                        id=ac[0],
+                        username=ac[1],
+                        first_name=ac[2],
+                        last_name=ac[3],
+                        email=ac[4],
+                        date_created=ac[5].isoformat(),
+                        bio=ac[6],
+                        photo=ac[7],
+                    )
+                    accounts.append(account)
+                return accounts

@@ -4,7 +4,11 @@
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "[python]": {
+<<<<<<< HEAD
     "editor.defaultFormatter": "ms-python.black-formatter"
+=======
+    "editor.defaultFormatter": "ms-python.python"
+>>>>>>> main
   },
   "cSpell.words": [
     "Accomplist"

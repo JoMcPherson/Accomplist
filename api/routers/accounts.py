@@ -15,6 +15,7 @@ from queries.accounts import (
     AccountRepo,
     DuplicateAccountError,
 )
+from typing import Optional, List
 
 
 class AccountForm(BaseModel):
@@ -64,3 +65,35 @@ async def get_token(
             "type": "Bearer",
             "account": account,
         }
+
+
+@router.get("/api/accounts/{user_id}", response_model=Optional[AccountOut])
+def get_user_by_id(
+    user_id: int, response: Response, repo: AccountRepo = Depends()
+) -> AccountOut:
+    account = repo.get_user_by_id(user_id)
+    if account is None:
+        response.status_code = 404
+    return account
+
+
+@router.get("/api/accounts/", response_model=List[AccountOut])
+def get_all_accounts(repo: AccountRepo = Depends()):
+    accounts = repo.get_all_accounts()
+    return accounts
+
+
+# @router.put("/api/accounts/{user_id}")
+
+
+# @router.get("/api/accounts/{user_id}")
+# async def get_user(
+#     user_id: int,
+#     accounts: AccountRepo = Depends(),
+#     ra=(authenticator.get_current_account_data),
+# ) -> AccountOut:
+#     try:
+#         account = accounts.get_user_by_id(user_id)
+#     except AuthenticationException:
+#         return HTTPException(status.HTTP_401_UNAUTHORIZED)
+#     return account
