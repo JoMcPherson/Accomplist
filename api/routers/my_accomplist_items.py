@@ -10,7 +10,9 @@ from queries.my_accomplist_items import (
 router = APIRouter()
 
 
-@router.post("/my_accomplist_items", response_model=MyAccomplistItemOut)
+@router.post(
+    "/api/api/my_accomplist_items", response_model=MyAccomplistItemOut
+)
 def create_my_accomplist_item(
     my_accomplist_item: MyAccomplistItemIn,
     repo: MyAccomplistItemRepository = Depends(),
@@ -19,7 +21,7 @@ def create_my_accomplist_item(
 
 
 @router.get(
-    "/my_accomplist_items",
+    "/api/my_accomplist_items",
     response_model=Union[List[MyAccomplistItemOut], Error],
 )
 def get_all(
@@ -29,7 +31,7 @@ def get_all(
 
 
 @router.put(
-    "/my_accomplist_items/{my_accomplist_item_id}",
+    "/api/my_accomplist_items/{my_accomplist_item_id}",
     response_model=Union[Error, MyAccomplistItemOut],
 )
 def update_my_accomplist_item(
@@ -41,7 +43,7 @@ def update_my_accomplist_item(
 
 
 @router.delete(
-    "/my_accomplist_items/{my_accomplist_item_id}", response_model=bool
+    "/api/my_accomplist_items/{my_accomplist_item_id}", response_model=bool
 )
 def delete_my_accomplist_item(
     my_accomplist_item_id: int,
@@ -51,7 +53,7 @@ def delete_my_accomplist_item(
 
 
 @router.get(
-    "/my_accomplist_items/{my_accomplist_item_id}",
+    "/api/my_accomplist_items/{my_accomplist_item_id}",
     response_model=Optional[MyAccomplistItemOut],
 )
 def get_my_accomplist_item(
