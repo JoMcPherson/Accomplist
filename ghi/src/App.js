@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Construct from "./Construct.js";
 import ErrorNotification from "./ErrorNotification";
-import "./App.css";
+import "./index.css";
 import { BrowserRouter, Link, Routes, Route, NavLink, useNavigate, Outlet } from "react-router-dom";
 import NavBar from "./NavBar.js";
 import EventCreateForm from "./Pages/EventCreatePage.js";
@@ -10,6 +10,10 @@ import EventDetailDisplay from "./Pages/EventDetailsPage.js";
 import MyAccomplistItemCreate from "./Pages/MyAccomplistCreate.js";
 import MyAccomplistItemsList from "./Pages/MyAccomplistItemsList.js";
 import getAllEvents from "./Pages/EventsListPage.js";
+import { AuthProvider } from "@galvanize-inc/jwtdown-for-react";
+import LoginForm from "./Pages/login.js";
+import SignupForm from "./Pages/Register.js";
+// import Profile from "./Pages/profile.js";
 
 
 function App() {
@@ -64,8 +68,12 @@ const [eventList, setEventList] = useState([])
       <NavBar />
       <Outlet />
       <BrowserRouter>
+      <AuthProvider baseUrl={process.env.REACT_APP_API_HOST}>
       <div className="container">
           <Routes>
+            <Route path="login/" element={<LoginForm />} />
+            {/* <Route path="profile/" element={<Profile />} /> */}
+            <Route path="signup/" element={<SignupForm />} />
             <Route path="events/new" element={<EventCreateForm />} />
             <Route path="events/" element={<EventsList eventList={eventList} />} />
             <Route path="events/events" element={<EventsList eventList={eventList} />} />
@@ -79,11 +87,9 @@ const [eventList, setEventList] = useState([])
           </Routes>
         </div>
 
-
-
-
       <ErrorNotification error={error} />
       <Construct info={launchInfo} />
+      </AuthProvider>
       </BrowserRouter>
     </div>
   );

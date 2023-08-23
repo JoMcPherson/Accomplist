@@ -1,35 +1,59 @@
-import EventsList from "./Pages/EventsListPage.js";
-import EventCreate from "./Pages/EventCreatePage.js";
-import EventDetailDisplay from "./Pages/EventDetailsPage.js";
-import { BrowserRouter, Link, Routes, Route, NavLink, useNavigate, Outlet } from "react-router-dom"
-import { Nav, Navbar } from 'react-bootstrap'
-import logo from "./logo.svg";
+import React, { useState } from "react";
+import { Navbar, Nav, Container } from "react-bootstrap";
+import "./index.css"
 
-export default function NavBar() {
+export default function Header() {
+  const [isScroll, setIsScroll] = useState(false);
+  const hanndleScroll = () => {
+    if (window.scrollY >= 100) {
+      setIsScroll(true);
+    } else {
+      setIsScroll(false);
+    }
+  };
+  window.addEventListener("scroll", hanndleScroll);
 
-  return(
+  function handleClick(event) {
+    // event.preventDefault();
+    // console.log("clicked.");
+  }
 
-
-      <Navbar bg="dark" sticky="top" expand="sm" collapseOnSelect data-bs-theme="dark">
-        <Navbar.Brand href="#">
-          <img src={logo} width="30px" height="30px" />{' '} .
-        </Navbar.Brand>
-
-        <Navbar.Toggle />
-        <Navbar.Collapse>
-
-
-        <Nav className="justify-content-center">
-          <Nav.Link href="#">Items</Nav.Link>
-          <Nav.Link href="#">Add</Nav.Link>
-          <Nav.Link href="events">Events</Nav.Link>
-          <Nav.Link href="#">Account</Nav.Link>
-        </Nav>
-        </Navbar.Collapse>
-
-
+  return (
+    <header>
+      <Navbar
+        className={isScroll ? "navbar colorChange" : "navbar"}
+        collapseOnSelect
+        expand="md"
+        variant={isScroll ? "dark" : "light"}
+        fixed="top"
+      >
+        <Container >
+          <Navbar.Brand href="/">
+            Accomplist
+          </Navbar.Brand>
+          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+          <Navbar.Collapse id="responsive-navbar-nav" className="justify-content-end">
+            <Nav className="mr-auto"></Nav>
+            <Nav>
+              <Nav.Link href="#" onClick={handleClick}>
+                Items
+              </Nav.Link>
+              <Nav.Link href="#" onClick={handleClick}>
+                Events
+              </Nav.Link>
+              <Nav.Link href="#" onClick={handleClick}>
+                Accounts
+              </Nav.Link>
+              <Nav.Link href="#" onClick={handleClick}>
+                ???
+              </Nav.Link>
+              <Nav.Link href="#skill" onClick={handleClick}>
+                Skills
+              </Nav.Link>
+            </Nav>
+          </Navbar.Collapse>
+        </Container>
       </Navbar>
-
-
-  )
+    </header>
+  );
 };
