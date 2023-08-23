@@ -9,15 +9,12 @@ import EventsList from "./Pages/EventsListPage.js";
 import EventDetailDisplay from "./Pages/EventDetailsPage.js";
 import MyAccomplistItemCreate from "./Pages/MyAccomplistCreate.js";
 import MyAccomplistItemsList from "./Pages/MyAccomplistItemsList.js";
-<<<<<<< HEAD
-=======
 import getAllEvents from "./Pages/EventsListPage.js";
 import { AuthProvider } from "@galvanize-inc/jwtdown-for-react";
 import LoginForm from "./Pages/login.js";
 import SignupForm from "./Pages/Register.js";
 // import Profile from "./Pages/profile.js";
 
->>>>>>> main
 
 function App() {
 
@@ -33,8 +30,6 @@ const [error, setError] = useState(null);
     }
 
   }
-<<<<<<< HEAD
-=======
 
 const [eventList, setEventList] = useState([])
     async function getAllEvents() {
@@ -45,7 +40,6 @@ const [eventList, setEventList] = useState([])
             setEventList(theJsonifiedList)
         }
     }
->>>>>>> main
 
   useEffect(() => {
     async function getData() {
@@ -65,11 +59,8 @@ const [eventList, setEventList] = useState([])
     }
     getData();
     getMyItems();
-<<<<<<< HEAD
-=======
     getAllEvents();
     console.log("app prinnttt")
->>>>>>> main
   }, []);
 
   return (
