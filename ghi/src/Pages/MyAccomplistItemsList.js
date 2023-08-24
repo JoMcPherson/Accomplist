@@ -17,7 +17,7 @@ const getMyItems = async () => {
             const filteredItems = response.filter(item => item.user_id.toString() === params.account_id);
             setMyItems(filteredItems);
         } else {
-            console.log("no token available");
+            console.log("fetch failed");
         } };
 
 // Call Items Function Upon Token
