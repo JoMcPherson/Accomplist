@@ -83,17 +83,19 @@ def get_all_accounts(repo: AccountRepo = Depends()):
     return accounts
 
 
-# @router.put("/api/accounts/{user_id}")
+@router.delete("/api/accounts/{user_id}", response_model=bool)
+def delete_user(user_id: int, repo: AccountRepo = Depends()) -> bool:
+    return repo.delete_user(user_id)
 
 
-# @router.get("/api/accounts/{user_id}")
-# async def get_user(
-#     user_id: int,
-#     accounts: AccountRepo = Depends(),
-#     ra=(authenticator.get_current_account_data),
-# ) -> AccountOut:
-#     try:
-#         account = accounts.get_user_by_id(user_id)
-#     except AuthenticationException:
-#         return HTTPException(status.HTTP_401_UNAUTHORIZED)
-#     return account
+@router.put("/accounts/{account_id}", response_model=AccountOut)
+def update_account(
+    account_id: int,
+    updated_data: AccountIn,
+    repo: AccountRepo = Depends(),
+) -> AccountOut:
+    try:
+        updated_account = repo.update_user(account_id, updated_data)
+        return updated_account
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))

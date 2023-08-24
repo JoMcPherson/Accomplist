@@ -1,63 +1,14 @@
-@import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
-
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Poppins', 'Segoe UI', 'Roboto', 'Oxygen',
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  padding-top: 90px;
-}
-
-/* code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-} */
-
-header h1 {
-  color: #ffffff;
-  font-weight: bold;
-  font-size: 1.6rem;
-}
-
-header a {
-  color: #ffffff !important;
-  font-size: 1rem;
-  font-weight: bold;
-}
-
-.navbar {
-  padding-top: 40px;
-  padding-bottom: 40px;
-  background-color: #333;
-  margin: auto -16px;
-  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.3);
-}
-
-.navbar a:hover,
-:focus {
-  color: burlywood !important;
-}
-
-.colorChange {
-  background-color: #112d4e;
-}
-
-.colorChange h1 {
-  color: burlywood;
-}
-
-.colorChange a {
-  color: burlywood !important;
-  text-decoration: none;
-}
-
-.colorChange a:hover {
-  color: yellow !important;
+  margin: 0;
 }
 
 .App {
   text-align: center;
+  background-color: #282c34;
 }
 
 .App-header {
@@ -69,4 +20,41 @@ header a {
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
+}
+
+.Auth-form-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+  background-color: whitesmoke;
+  margin: 0;
+}
+
+.Auth-form {
+  width: 400px;
+  box-shadow: rgb(0 0 0 / 16%) 1px 1px 10px;
+  padding-top: 30px;
+  padding-bottom: 20px;
+  border-radius: 8px;
+  background-color: white;
+}
+
+.Auth-form-content {
+  padding-left: 10%;
+  padding-right: 10%;
+}
+
+.Auth-form-title {
+  text-align: center;
+  margin-bottom: 1em;
+  font-size: 24px;
+  color: rgb(34, 34, 34);
+  font-weight: 800;
+}
+
+label {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgb(34, 34, 34);
 }

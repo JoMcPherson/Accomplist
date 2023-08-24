@@ -1,46 +1,57 @@
 import useToken from "@galvanize-inc/jwtdown-for-react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const LoginForm = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const { login } = useToken();
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     login(username, password);
     console.log(`username: ${username} password: ${password}`);
     e.target.reset();
+    navigate("/");
   };
 
   return (
-    <div className="card text-bg-light mb-3">
-      <h5 className="card-header">Login</h5>
-      <div className="card-body">
-        <form onSubmit={(e) => handleSubmit(e)}>
-          <div className="mb-3">
+    <div className="Auth-form-container">
+    <form className="Auth-form" onSubmit={(e) => handleSubmit(e)}>
+      <div className="Auth-form-content">
+          <h5 className="Auth-form-title">Login</h5>
+          <p className="text-center mt-2">
+            Need to <a href="/register">register</a>?
+          </p>
+          <div className="form-group mt-3">
             <label className="form-label">Username:</label>
             <input
               name="username"
               type="text"
-              className="form-control"
+              placeholder="username"
+              className="form-control mt-1"
               onChange={(e) => setUsername(e.target.value)}
             />
           </div>
-          <div className="mb-3">
+          <div className="form-group mt-3">
             <label className="form-label">Password:</label>
             <input
               name="password"
               type="password"
-              className="form-control"
+              placeholder="password"
+              className="form-control mt-1"
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
-          <div>
-            <input className="btn btn-primary" type="submit" value="Login" />
+          <div className="d-grid gap-2 mt-3">
+            <input className="btn btn-info" type="submit" value="Login" />
           </div>
-        </form>
+          <p className="text-center mt-2">
+            Forgot <a href="/">password?</a>
+          </p>
       </div>
+      </form>
     </div>
   );
 };

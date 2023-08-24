@@ -50,6 +50,7 @@ class AccountRepo:
                     """
                     SELECT id, username, first_name, last_name, email,
                     date_created, bio, photo
+                    date_created, bio, photo
                     FROM user_accounts
                     WHERE id = %s;
                     """,
@@ -141,18 +142,6 @@ class AccountRepo:
                     photo=account.photo,
                 )
 
-    def delete_user(self, pk: int) -> AccountOut:
-        with pool.connection() as conn:
-            with conn.cursor() as cur:
-                cur.execute(
-                    """
-                    DELETE FROM user_accounts
-                    WHERE id = %s
-                    RETURNING *;
-                    """,
-                    (pk),
-                )
-
     def get_all_accounts(self) -> List[AccountOut]:
         with pool.connection() as conn:
             with conn.cursor() as cur:
@@ -177,3 +166,58 @@ class AccountRepo:
                     )
                     accounts.append(account)
                 return accounts
+
+    def delete_user(self, pk: int) -> bool:
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(
+                    """
+                    DELETE FROM user_accounts
+                    WHERE id = %s
+                    RETURNING *;
+                    """,
+                    (pk,),
+                )
+
+    def update_user(self, pk: int, updated_data: AccountIn) -> AccountOut:
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(
+                    """
+                    UPDATE user_accounts
+                    SET username = %s,
+                        first_name = %s,
+                        last_name = %s,
+                        email = %s,
+                        date_created = %s,
+                        bio = %s,
+                        photo = %s
+                    WHERE id = %s
+                    RETURNING id, username, first_name, last_name, email,
+                              date_created, bio, photo;
+                    """,
+                    (
+                        updated_data.username,
+                        updated_data.first_name,
+                        updated_data.last_name,
+                        updated_data.email,
+                        updated_data.date_created,
+                        updated_data.bio,
+                        updated_data.photo,
+                        pk,
+                    ),
+                )
+                updated_account = cur.fetchone()
+                if updated_account:
+                    return AccountOut(
+                        id=updated_account[0],
+                        username=updated_account[1],
+                        first_name=updated_account[2],
+                        last_name=updated_account[3],
+                        email=updated_account[4],
+                        date_created=updated_account[5].isoformat(),
+                        bio=updated_account[6],
+                        photo=updated_account[7],
+                    )
+                else:
+                    raise Exception("Update failed: Account not found")
