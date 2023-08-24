@@ -79,8 +79,6 @@ class MyAccomplistItemRepository:
         )
 
     def record_to_my_accomplist_item_out(self, record) -> MyAccomplistItemOut:
-        print("out record", record)
-        print(self.get_username_by_id(record[2]))
         return MyAccomplistItemOut(
             id=record[0],
             item_id=record[1],

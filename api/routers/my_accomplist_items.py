@@ -1,5 +1,7 @@
 from fastapi import APIRouter, Depends, Response
 from typing import List, Union, Optional
+from queries.authenticator import authenticator
+
 from queries.my_accomplist_items import (
     MyAccomplistItemIn,
     MyAccomplistItemOut,
@@ -10,13 +12,7 @@ from queries.my_accomplist_items import (
 router = APIRouter()
 
 
-<<<<<<< HEAD
-@router.post(
-    "/api/api/my_accomplist_items", response_model=MyAccomplistItemOut
-)
-=======
-@router.post("/my_accomplist_items", response_model=MyAccomplistItemOut)
->>>>>>> main
+@router.post("/api/my_accomplist_items", response_model=MyAccomplistItemOut)
 def create_my_accomplist_item(
     my_accomplist_item: MyAccomplistItemIn,
     repo: MyAccomplistItemRepository = Depends(),
@@ -24,15 +20,19 @@ def create_my_accomplist_item(
     return repo.create(my_accomplist_item)
 
 
+
 @router.get(
-    "/api/my_accomplist_items",
+    "/api/my_accomplist_items/{account_id}",
     response_model=Union[List[MyAccomplistItemOut], Error],
 )
-def get_all(
+async def get_items_for_account(
+    account_id: int,
     repo: MyAccomplistItemRepository = Depends(),
+    account_data: dict | None = Depends(authenticator.try_get_current_account_data)
 ) -> Union[List[MyAccomplistItemOut], Error]:
-    return repo.get_all()
-
+    items = repo.get_all()
+    filtered_items = [item for item in items if item.user_id == account_id]
+    return filtered_items
 
 @router.put(
     "/api/my_accomplist_items/{my_accomplist_item_id}",
