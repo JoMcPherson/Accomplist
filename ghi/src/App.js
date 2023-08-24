@@ -10,7 +10,7 @@ import EventDetailDisplay from "./Pages/EventDetailsPage.js";
 import MyAccomplistItemCreate from "./Pages/MyAccomplistCreate.js";
 import MyAccomplistItemsList from "./Pages/MyAccomplistItemsList.js";
 import getAllEvents from "./Pages/EventsListPage.js";
-import { AuthProvider, useAuthContext } from "@galvanize-inc/jwtdown-for-react";
+import { AuthProvider} from "@galvanize-inc/jwtdown-for-react";
 import LoginForm from "./Pages/login.js";
 import SignupForm from "./Pages/Register.js";
 // import Profile from "./Pages/profile.js";

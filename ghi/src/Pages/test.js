@@ -1,10 +1,15 @@
 import useToken from "@galvanize-inc/jwtdown-for-react";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { useCallback } from 'react'
 
 export default function MyAccomplistItemsList() {
 const params = useParams();
 const {token, fetchWithToken} = useToken();
+// Call Items Function Upon Page Render
+useEffect(() => {
+        getMyItems();
+    }, [token]);
 
 
 // Set My Accomplist Items
@@ -18,12 +23,9 @@ const getMyItems = async () => {
             setMyItems(filteredItems);
         } else {
             console.log("no token available");
-        } };
+        }
+        };
 
-// Call Items Function Upon Token
- useEffect(() => {
-        getMyItems();
-    }, [token]);
 
     return( token &&
         <div>
