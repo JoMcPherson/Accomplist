@@ -23,7 +23,7 @@ const getMyItems = async () => {
 // Call Items Function Upon Token
  useEffect(() => {
         getMyItems();
-    }, [token]);
+    }, [token, getMyItems]);
 
     return( token &&
         <div>
