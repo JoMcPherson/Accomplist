@@ -23,7 +23,8 @@ const getMyItems = async () => {
 // Call Items Function Upon Token
  useEffect(() => {
         getMyItems();
-    }, [token, getMyItems]);
+    /* eslint-disable */
+    }, [token]);
 
     return( token &&
         <div>
