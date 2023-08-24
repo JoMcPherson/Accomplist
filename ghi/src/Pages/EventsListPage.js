@@ -1,20 +1,46 @@
-// import { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom'
-// import EventDetailDisplay from './EventDetailsPage';
+import { useAuthContext } from "@galvanize-inc/jwtdown-for-react"
 
-export default function EventsList({eventList}) {
+export default function EventsList() {
 
+    const { token } = useAuthContext();
+    const [eventListData, setEventList] = useState([]);
     const navigate = useNavigate();
-
     const handleNewEventCreationPlace = (event) => {
         navigate('/events/new');
     };
 
+    useEffect(() => {
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+            }
 
-    // useEffect(() => {
-    //     getAllEvents()
-    //     console.log("priiint")
-    // })
+
+        async function getAllEvents() {
+            if (token){
+        const eventsUrl = `${process.env.REACT_APP_API_HOST}/events`
+        const fetchConfig = {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization:  `Bearer ${token}`,
+                    },
+                }
+        const theFetchedList = await fetch(eventsUrl, fetchConfig)
+        if (theFetchedList.ok) {
+            const theJsonifiedList = await theFetchedList.json();
+            setEventList(theJsonifiedList)
+            console.log("events TOTAL set")
+        }
+        }};
+    async function demo() {
+            await sleep(50);
+            getAllEvents()
+    }
+
+
+    demo()}, [token]);
 
     return(
         <div>
@@ -36,7 +62,7 @@ export default function EventsList({eventList}) {
                     </tr>
                 </thead>
                 <tbody>
-                    {eventList.map(event => {
+                    {eventListData.map(event => {
                         return (
                             <tr key={event.id} >
                                 <td>{event.name}</td>

@@ -1,7 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom'
+import React, { useState } from 'react';
+import { useAuthContext } from "@galvanize-inc/jwtdown-for-react";
 
 export default function EventCreateForm() {
+
+            const { token } = useAuthContext();
+
+            console.log(token)
 
             const [name, setName] = useState('');
             const [date, setDate] = useState('')
@@ -10,7 +14,6 @@ export default function EventCreateForm() {
             const [location, setLocation] = useState('');
             const [description, setDescription] = useState('');
             const [organizer, setOrganizer] = useState('');
-            const navigate = useNavigate();
 
 
             const handleNameChange = (event) => {
@@ -61,16 +64,15 @@ export default function EventCreateForm() {
                 description: description,
                 organizer: organizer,
                 }
-
-                const eventsUrl = 'http://localhost:8000/events';
+                const eventsUrl = `${process.env.REACT_APP_API_HOST}/events`;
 		        const fetchConfig = {
                     method: 'POST',
                     body: JSON.stringify(data),
                     headers: {
                         'Content-Type': 'application/json',
+                        Authorization:  `Bearer ${token}`,
                     },
                 };
-
                 const response = await fetch(eventsUrl, fetchConfig);
                 if (response.ok) {
                     setName('');
@@ -80,9 +82,10 @@ export default function EventCreateForm() {
                     setLocation('');
                     setDescription('');
                     setOrganizer('');
-                };
-            };
 
+                    window.location.href = `${process.env.PUBLIC_URL}/events`
+                    };
+                };
 
 
     return(

@@ -20,7 +20,6 @@ def create_my_accomplist_item(
     return repo.create(my_accomplist_item)
 
 
-
 @router.get(
     "/api/my_accomplist_items/{account_id}",
     response_model=Union[List[MyAccomplistItemOut], Error],
@@ -28,11 +27,13 @@ def create_my_accomplist_item(
 async def get_items_for_account(
     account_id: int,
     repo: MyAccomplistItemRepository = Depends(),
-    account_data: dict | None = Depends(authenticator.try_get_current_account_data)
+    account_data: dict
+    | None = Depends(authenticator.try_get_current_account_data),
 ) -> Union[List[MyAccomplistItemOut], Error]:
     items = repo.get_all()
     filtered_items = [item for item in items if item.user_id == account_id]
     return filtered_items
+
 
 @router.put(
     "/api/my_accomplist_items/{my_accomplist_item_id}",

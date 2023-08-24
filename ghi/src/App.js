@@ -11,23 +11,19 @@ import MyAccomplistItemCreate from "./Pages/MyAccomplistCreate.js";
 import MyAccomplistItemsList from "./Pages/MyAccomplistItemsList.js";
 import LoginForm from "./Pages/Login.js";
 import Register from "./Pages/Register.js";
+import { useAuthContext } from "@galvanize-inc/jwtdown-for-react"
 // import Profile from "./Pages/profile.js";
-// import getAllEvents from "./Pages/EventsListPage.js";
 
 function App() {
+
+const { token } = useAuthContext()
 
 const [launchInfo, setLaunchInfo] = useState([]);
 const [error, setError] = useState(null);
 
-const [eventList, setEventList] = useState([])
-    async function getAllEvents() {
-        const eventsUrl = 'http://localhost:8000/events'
-        const theFetchedList = await fetch(eventsUrl)
-        if (theFetchedList.ok) {
-            const theJsonifiedList = await theFetchedList.json();
-            setEventList(theJsonifiedList)
-        }
-    }
+
+
+
 
   useEffect(() => {
     async function getData() {
@@ -44,32 +40,42 @@ const [eventList, setEventList] = useState([])
       }
     }
     getData();
-    getAllEvents();
+
+
+    // eventsAsync();
+   ;
   }, []);
 
   return (
+
     <div>
       <NavBar />
       <Outlet />
       <BrowserRouter>
       <div className="container">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="login/" element={<LoginForm />} />
-          {/* <Route path="profile/" element={<Profile />} /> */}
-          <Route path="register/" element={<Register />} />
-          <Route path="events/new" element={<EventCreateForm />} />
-          <Route path="events/" element={<EventsList eventList={eventList} />} />
-          <Route path="events/events" element={<EventsList eventList={eventList} />} />
-          <Route path="events/{event_id}" element={<EventDetailDisplay />} />
-          <Route path="my_accomplist_items/new" element={<MyAccomplistItemCreate />} />
-          <Route path="my_accomplist_items/" element={<MyAccomplistItemsList />} />
-        </Routes>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="login/" element={<LoginForm />} />
+            {/* <Route path="profile/" element={<Profile />} /> */}
+            <Route path="register/" element={<Register />} />
+            <Route path="events/new" element={<EventCreateForm />} />
+            <Route path="events/" element={<EventsList />} />
+            <Route path="events/events" element={<EventsList />} />
+            <Route path="events/:event_id" element={<EventDetailDisplay />} />
+            <Route path="my_accomplist_items/new" element={<MyAccomplistItemCreate />} />
+            <Route path="my_accomplist_items/:account_id" element={<MyAccomplistItemsList />} />
+            <Route path="*" element={
+                                    <main style={{ padding: "1rem" }}>
+                                      <p>There's nothing here!</p>
+                                    </main> }/>
+          </Routes>
+
       </div>
       <ErrorNotification error={error} />
       <Construct info={launchInfo} />
       </BrowserRouter>
     </div>
+
   );
 }
 
