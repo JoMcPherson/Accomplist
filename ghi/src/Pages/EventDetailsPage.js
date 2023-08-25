@@ -1,17 +1,16 @@
 import { useParams } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useAuthContext } from "@galvanize-inc/jwtdown-for-react"
 
 export default function EventDetailDisplay(event_id) {
 
     const { token } = useAuthContext();
     event_id = useParams();
-    const [eventDetailData, setEventDetail] = useState();
+    const [eventDetailData, setEventDetail] = useState([]);
 
-    useEffect(() => {
-        async function getDatEventDetailData() {
+    const getDatEventDetailData1 = useCallback(async function getDatEventDetailData() {
+        if (token){
             let dataUrl = `${process.env.REACT_APP_API_HOST}/events/${event_id.event_id}`;
-            console.log(dataUrl)
             let fetchConfig = {
                     method: 'GET',
                     headers: {
@@ -21,18 +20,20 @@ export default function EventDetailDisplay(event_id) {
             let fetchedFromUrl = await fetch(dataUrl, fetchConfig)
 
             if (fetchedFromUrl.ok) {
-                console.log ("fetch ok. event id:", event_id)
                 let jsonifiedFetchedStuff = await fetchedFromUrl.json()
-                if (jsonifiedFetchedStuff) {
+
                 setEventDetail(jsonifiedFetchedStuff)
-                console.log ("eventdetail is set")
-                console.log("eventDetailData:", eventDetailData)}
             } else {
                 console.log ("fetch didn't work")
-            }}
-            getDatEventDetailData()
+            }
+}}, [token, event_id])
 
-            }, [event_id, token, eventDetailData]);
+
+
+    useEffect(() => {
+             getDatEventDetailData1()
+
+            }, [token, getDatEventDetailData1]);
 
 
     return(

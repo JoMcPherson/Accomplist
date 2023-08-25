@@ -31,7 +31,6 @@ export default function EventsList() {
         if (theFetchedList.ok) {
             const theJsonifiedList = await theFetchedList.json();
             setEventList(theJsonifiedList)
-            console.log("events TOTAL set")
         }
         }};
     async function demo() {
