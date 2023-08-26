@@ -69,7 +69,10 @@ async def get_token(
 
 @router.get("/api/accounts/{user_id}", response_model=Optional[AccountOut])
 def get_user_by_id(
-    user_id: int, response: Response, repo: AccountRepo = Depends()
+    user_id: int,
+    response: Response,
+    repo: AccountRepo = Depends(),
+    account: dict = Depends(authenticator.get_current_account_data)
 ) -> AccountOut:
     account = repo.get_user_by_id(user_id)
     if account is None:
@@ -78,7 +81,10 @@ def get_user_by_id(
 
 
 @router.get("/api/accounts/", response_model=List[AccountOut])
-def get_all_accounts(repo: AccountRepo = Depends()):
+def get_all_accounts(
+    repo: AccountRepo = Depends(),
+    account: dict = Depends(authenticator.get_current_account_data)
+):
     accounts = repo.get_all_accounts()
     return accounts
 
