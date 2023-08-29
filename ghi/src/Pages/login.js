@@ -13,7 +13,7 @@ const LoginForm = () => {
     login(username, password);
     console.log(`username: ${username} password: ${password}`);
     e.target.reset();
-    navigate("/");
+    navigate("/accomplist_items");
   };
 
   return (
@@ -21,9 +21,9 @@ const LoginForm = () => {
     <form className="Auth-form" onSubmit={(e) => handleSubmit(e)}>
       <div className="Auth-form-content">
           <h5 className="Auth-form-title">Login</h5>
-          <p className="text-center mt-2">
+          <h6 className="text-center mt-2">
             Need to <a href="/register">register</a>?
-          </p>
+          </h6>
           <div className="form-group mt-3">
             <label className="form-label">Username:</label>
             <input

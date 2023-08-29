@@ -14,6 +14,7 @@ from queries.accounts import (
     AccountOut,
     AccountRepo,
     DuplicateAccountError,
+    UpdateAccount,
 )
 from typing import Optional, List
 
@@ -72,7 +73,7 @@ def get_user_by_id(
     account_id: int,
     response: Response,
     repo: AccountRepo = Depends(),
-    account: dict = Depends(authenticator.get_current_account_data)
+    account: dict = Depends(authenticator.get_current_account_data),
 ) -> AccountOut:
     account = repo.get_user_by_id(account_id)
     if account is None:
@@ -83,7 +84,7 @@ def get_user_by_id(
 @router.get("/api/accounts/", response_model=List[AccountOut])
 def get_all_accounts(
     repo: AccountRepo = Depends(),
-    account: dict = Depends(authenticator.get_current_account_data)
+    account: dict = Depends(authenticator.get_current_account_data),
 ):
     accounts = repo.get_all_accounts()
     return accounts
@@ -94,14 +95,25 @@ def delete_user(account_id: int, repo: AccountRepo = Depends()) -> bool:
     return repo.delete_user(account_id)
 
 
-@router.put("/accounts/{account_id}", response_model=AccountOut)
+@router.put("/api/accounts/{user_id}", response_model=AccountOut)
 def update_account(
-    account_id: int,
+    user_id: int,
     updated_data: AccountIn,
     repo: AccountRepo = Depends(),
+    account: dict = Depends(authenticator.get_current_account_data),
 ) -> AccountOut:
     try:
-        updated_account = repo.update_user(account_id, updated_data)
+        updated_account = repo.update_user(user_id, updated_data)
         return updated_account
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.patch("/api/accounts/{user_id}", response_model=AccountOut)
+def patch_account_bio(
+    account_id: int,
+    update_data: UpdateAccount,
+    account: dict = Depends(authenticator.get_current_account_data),
+):
+    account_repo = AccountRepo()
+    return account_repo.patch_bio(account_id, update_data)

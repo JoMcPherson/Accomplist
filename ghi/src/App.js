@@ -14,6 +14,9 @@ import Register from "./Pages/Register.js";
 import AccountProfilePage from "./Pages/AccountProfilePage.js";
 import useToken from "@galvanize-inc/jwtdown-for-react";
 // import Profile from "./Pages/profile.js";
+import AcomplistItemCards from "./Pages/AccomplistItems.js";
+import Home from "./Pages/Home.js";
+import UpdateProfile from "./Pages/UpdateProfile.js";
 
 function App() {
   const [launchInfo, setLaunchInfo] = useState([]);
@@ -67,8 +70,10 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="login/" element={<LoginForm />} />
+            <Route path="accomplist_items/" element={<AcomplistItemCards />} />
             {/* <Route path="profile/" element={<Profile />} /> */}
             <Route path="register/" element={<Register />} />
+            <Route path="updateprofile/:user_id" element={<UpdateProfile />} />
             <Route path="events/new" element={<EventCreateForm />} />
             <Route path="events/" element={<EventsList />} />
             <Route path="events/events" element={<EventsList />} />
@@ -89,7 +94,7 @@ function App() {
               path="*"
               element={
                 <main style={{ padding: "1rem" }}>
-                  <p>There's nothing here!</p>
+                  <p>You're in the wrong spot cowboy.</p>
                 </main>
               }
             />
@@ -100,10 +105,6 @@ function App() {
       </BrowserRouter>
     </div>
   );
-}
-
-function Home() {
-  return <div>hello.</div>;
 }
 
 export default App;

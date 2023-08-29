@@ -18,7 +18,7 @@ const CustomNavbar = () => {
   const { logout, token } = useToken();
   const handleLogout = () => {
     logout();
-    window.location.href = "/";
+    window.location.href = "/accomplist_items";
   };
 
   useEffect(() => {
@@ -43,8 +43,8 @@ const CustomNavbar = () => {
         <Navbar.Toggle aria-controls="exampleNavComponents" />
         <Navbar.Collapse className="justify-content-end">
           <Nav className="ml-auto">
-            <NavItem className="px-2">
-              <Nav.Link href="/my_accomplist_items">Bucket List</Nav.Link>
+            <NavItem className='px-2'>
+              <Nav.Link href="/accomplist_items">Bucket List</Nav.Link>
             </NavItem>
             <NavItem className="px-2">
               <Nav.Link href="/events">Events</Nav.Link>

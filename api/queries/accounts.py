@@ -2,7 +2,8 @@ from pydantic import BaseModel
 from jwtdown_fastapi.authentication import Token
 from psycopg_pool import ConnectionPool
 import os
-from typing import List
+from typing import List, Optional
+from fastapi import HTTPException
 
 
 class Account(BaseModel):
@@ -13,6 +14,16 @@ class Account(BaseModel):
     date_created: str
     bio: str
     photo: str
+
+
+class UpdateAccount(BaseModel):
+    # username: Optional[str] = None
+    # first_name: Optional[str] = None
+    # last_name: Optional[str] = None
+    # email: Optional[str] = None
+    # date_created: Optional[str] = None
+    # photo: Optional[str] = None
+    bio: Optional[str] = None
 
 
 class AccountOut(Account):
@@ -179,7 +190,7 @@ class AccountRepo:
                     (pk,),
                 )
 
-    def update_user(self, pk: int, updated_data: AccountIn) -> AccountOut:
+    def update_user(self, pk: int, updated_data: UpdateAccount) -> AccountOut:
         with pool.connection() as conn:
             with conn.cursor() as cur:
                 cur.execute(
@@ -221,3 +232,47 @@ class AccountRepo:
                     )
                 else:
                     raise Exception("Update failed: Account not found")
+
+    def patch_bio(self, pk: int, update_data: UpdateAccount) -> AccountOut:
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                update_fields = []
+                values = []
+
+                if update_data.bio is not None:
+                    update_fields.append("bio")
+                    values.append(update_data.bio)
+
+                if not update_fields:
+                    raise HTTPException(
+                        status_code=400, detail="No fields to update"
+                    )
+
+                values.append(pk)
+
+                update_query = f"""
+                    UPDATE user_accounts
+                    SET {', '.join(f"{field} = %s" for field in update_fields)}
+                    WHERE id = %s
+                    RETURNING id, username, first_name, last_name, email,
+                              date_created, bio, photo;
+                """
+
+                cur.execute(update_query, values)
+                updated_account = cur.fetchone()
+
+                if not updated_account:
+                    raise HTTPException(
+                        status_code=404, detail="Account not found"
+                    )
+
+                return AccountOut(
+                    id=updated_account[0],
+                    username=updated_account[1],
+                    first_name=updated_account[2],
+                    last_name=updated_account[3],
+                    email=updated_account[4],
+                    date_created=updated_account[5].isoformat(),
+                    bio=updated_account[6],
+                    photo=updated_account[7],
+                )

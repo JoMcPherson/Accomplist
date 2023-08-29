@@ -33,36 +33,37 @@ class EventOut(BaseModel):
 
 class fakeEventsRepo:
     def get_one(*args) -> Optional[EventOut]:
-        datetime_object = datetime.strptime('10/01/01', '%m/%d/%y')
+        datetime_object = datetime.strptime("10/01/01", "%m/%d/%y")
         event = EventOut(
             id=700,
-            name='testEvent',
+            name="testEvent",
             date=datetime_object,
-            time='10:00 PM',
-            cost='$800',
-            location='on the map',
-            description='testing',
-            organizer='galvanize',
+            time="10:00 PM",
+            cost="$800",
+            location="on the map",
+            description="testing",
+            organizer="galvanize",
         )
         return event
 
     def fake_get_current_account_data():
         return AccountOut(
             id=1,
-            username='blue',
-            first_name='chris',
-            last_name='blue',
-            email='bt_byrne@yahoo.com',
-            date_created='01-01-01',
-            bio='importance',
-            photo='url',
-            )
+            username="blue",
+            first_name="chris",
+            last_name="blue",
+            email="bt_byrne@yahoo.com",
+            date_created="01-01-01",
+            bio="importance",
+            photo="url",
+        )
 
 
 def test_get_one_event():
     # Arrange
-    app.dependency_overrides[authenticator.get_current_account_data] = (
-        fakeEventsRepo.fake_get_current_account_data)
+    app.dependency_overrides[
+        authenticator.get_current_account_data
+    ] = fakeEventsRepo.fake_get_current_account_data
     app.dependency_overrides[eventsRepo] = fakeEventsRepo
 
     # Act
