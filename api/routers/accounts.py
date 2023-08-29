@@ -67,14 +67,14 @@ async def get_token(
         }
 
 
-@router.get("/api/accounts/{user_id}", response_model=Optional[AccountOut])
+@router.get("/api/accounts/{account_id}", response_model=Optional[AccountOut])
 def get_user_by_id(
-    user_id: int,
+    account_id: int,
     response: Response,
     repo: AccountRepo = Depends(),
     account: dict = Depends(authenticator.get_current_account_data)
 ) -> AccountOut:
-    account = repo.get_user_by_id(user_id)
+    account = repo.get_user_by_id(account_id)
     if account is None:
         response.status_code = 404
     return account
@@ -89,9 +89,9 @@ def get_all_accounts(
     return accounts
 
 
-@router.delete("/api/accounts/{user_id}", response_model=bool)
-def delete_user(user_id: int, repo: AccountRepo = Depends()) -> bool:
-    return repo.delete_user(user_id)
+@router.delete("/api/accounts/{account_id}", response_model=bool)
+def delete_user(account_id: int, repo: AccountRepo = Depends()) -> bool:
+    return repo.delete_user(account_id)
 
 
 @router.put("/accounts/{account_id}", response_model=AccountOut)

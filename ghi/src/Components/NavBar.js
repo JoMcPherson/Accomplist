@@ -1,11 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import { Navbar, Nav, NavItem, Form, FormControl, NavbarBrand, Container } from 'react-bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import React, { useState, useEffect } from "react";
+import {
+  Navbar,
+  Nav,
+  NavItem,
+  Form,
+  FormControl,
+  NavbarBrand,
+  Container,
+} from "react-bootstrap";
+import "bootstrap/dist/css/bootstrap.min.css";
 import "./NavBar.css";
 import useToken from "@galvanize-inc/jwtdown-for-react";
 
+
 const CustomNavbar = () => {
-  const [navbarClass, setNavbarClass] = useState('');
+  const [navbarClass, setNavbarClass] = useState("");
   const { logout, token } = useToken();
   const handleLogout = () => {
     logout();
@@ -15,15 +24,15 @@ const CustomNavbar = () => {
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY >= 50) {
-        setNavbarClass('compressed');
+        setNavbarClass("compressed");
       } else {
-        setNavbarClass('');
+        setNavbarClass("");
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
@@ -34,21 +43,26 @@ const CustomNavbar = () => {
         <Navbar.Toggle aria-controls="exampleNavComponents" />
         <Navbar.Collapse className="justify-content-end">
           <Nav className="ml-auto">
-            <NavItem className='px-2'>
+            <NavItem className="px-2">
               <Nav.Link href="/my_accomplist_items">Bucket List</Nav.Link>
             </NavItem>
-            <NavItem className='px-2'>
+            <NavItem className="px-2">
               <Nav.Link href="/events">Events</Nav.Link>
             </NavItem>
-            <NavItem className='px-1'>
-              <Nav.Link href="/my_accomplist_items/new">Account</Nav.Link>
+            <NavItem className="px-1">
+              <Nav.Link href="/my_accomplist_items/new">Items</Nav.Link>
             </NavItem>
+            {/* {token && userID ? (
+              <NavItem className="px-1">
+                <Nav.Link href={`/accounts/${accounts.id}`}>Profile</Nav.Link>
+              </NavItem>
+            ) : null} */}
             {token ? (
-              <NavItem className='px-2'>
+              <NavItem className="px-2">
                 <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
               </NavItem>
             ) : (
-              <NavItem className='px-3'>
+              <NavItem className="px-3">
                 <Nav.Link href="/Login">Login</Nav.Link>
               </NavItem>
             )}

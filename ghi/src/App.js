@@ -11,19 +11,33 @@ import MyAccomplistItemCreate from "./Pages/MyAccomplistCreate.js";
 import MyAccomplistItemsList from "./Pages/MyAccomplistItemsList.js";
 import LoginForm from "./Pages/Login.js";
 import Register from "./Pages/Register.js";
-import { useAuthContext } from "@galvanize-inc/jwtdown-for-react"
+import AccountProfilePage from "./Pages/AccountProfilePage.js";
+import useToken from "@galvanize-inc/jwtdown-for-react";
 // import Profile from "./Pages/profile.js";
 
 function App() {
+  const [launchInfo, setLaunchInfo] = useState([]);
+  const [error, setError] = useState(null);
+  const [user, setUser] = useState([]);
+  const { token } = useToken();
 
-const { token } = useAuthContext()
+  async function getUserData() {
+    if (token) {
+      let userInformation = JSON.parse(atob(token.split(".")[1])).account;
+      console.log(userInformation);
+      setUser(userInformation);
+    } else {
+      console.log("No token");
+    }
+  }
 
-const [launchInfo, setLaunchInfo] = useState([]);
-const [error, setError] = useState(null);
-
-
-
-
+  useEffect(() => {
+    if (token) {
+      console.log("Token fired");
+      getUserData();
+      console.log("Get user data fired");
+    }
+  }, [token]);
 
   useEffect(() => {
     async function getData() {
@@ -41,18 +55,15 @@ const [error, setError] = useState(null);
     }
     getData();
 
-
     // eventsAsync();
-   ;
   }, []);
 
   return (
-
     <div>
       <NavBar />
       <Outlet />
       <BrowserRouter>
-      <div className="container">
+        <div className="container">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="login/" element={<LoginForm />} />
@@ -62,29 +73,37 @@ const [error, setError] = useState(null);
             <Route path="events/" element={<EventsList />} />
             <Route path="events/events" element={<EventsList />} />
             <Route path="events/:event_id" element={<EventDetailDisplay />} />
-            <Route path="my_accomplist_items/new" element={<MyAccomplistItemCreate />} />
-            <Route path="my_accomplist_items/:account_id" element={<MyAccomplistItemsList />} />
-            <Route path="*" element={
-                                    <main style={{ padding: "1rem" }}>
-                                      <p>There's nothing here!</p>
-                                    </main> }/>
+            <Route
+              path="my_accomplist_items/new"
+              element={<MyAccomplistItemCreate />}
+            />
+            <Route
+              path="my_accomplist_items/:account_id"
+              element={<MyAccomplistItemsList />}
+            />
+            <Route
+              path="accounts/profile"
+              element={<AccountProfilePage user={user} />}
+            />
+            <Route
+              path="*"
+              element={
+                <main style={{ padding: "1rem" }}>
+                  <p>There's nothing here!</p>
+                </main>
+              }
+            />
           </Routes>
-
-      </div>
-      <ErrorNotification error={error} />
-      <Construct info={launchInfo} />
+        </div>
+        <ErrorNotification error={error} />
+        <Construct info={launchInfo} />
       </BrowserRouter>
     </div>
-
   );
 }
 
 function Home() {
-  return (
-    <div>
-      hello.
-    </div>
-  )
+  return <div>hello.</div>;
 }
 
 export default App;
