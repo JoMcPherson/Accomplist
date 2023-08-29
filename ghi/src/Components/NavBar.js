@@ -50,7 +50,13 @@ const CustomNavbar = () => {
               <Nav.Link href="/events">Events</Nav.Link>
             </NavItem>
             <NavItem className="px-1">
-              <Nav.Link href="/my_accomplist_items/new">Items</Nav.Link>
+              <Nav.Link href="/accomplist_items/new">Create A Public Accomplist Item</Nav.Link>
+            </NavItem>
+            <NavItem className="px-1">
+              <Nav.Link href="/my_accomplist_items/new">Add To My Accomplist Items</Nav.Link>
+            </NavItem>
+              <NavItem className="px-1">
+              <Nav.Link href="/my_accomplist_items/">View My Accomplist Items</Nav.Link>
             </NavItem>
             {/* {token && userID ? (
               <NavItem className="px-1">

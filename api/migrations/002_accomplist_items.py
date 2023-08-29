@@ -5,7 +5,7 @@ steps = [
         CREATE TABLE accomplist_items (
             id SERIAL PRIMARY KEY NOT NULL,
             user_id INT NOT NULL REFERENCES user_accounts(id),
-            title VARCHAR(1000) NOT NULL,
+            title VARCHAR(1000) UNIQUE NOT NULL,
             details TEXT NOT NULL,
             photo TEXT,
             resources TEXT,

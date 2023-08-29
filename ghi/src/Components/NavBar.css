@@ -1,11 +1,9 @@
 @import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
-
 body {
   font-family: 'Poppins', sans-serif;
   padding-top: 100px;
   background-color: whitesmoke;
 }
-
 .navbar {
   padding-top: 30px;
   padding-bottom: 30px;
@@ -17,11 +15,9 @@ body {
 .navbar a {
   color: #fff !important;
 }
-
 .navbar button {
   color: inherit !important;
 }
-
 .navbar.compressed {
   padding-top: 15px;
   padding-bottom: 15px;
@@ -30,7 +26,6 @@ body {
   box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
   border-bottom: 0px;
 }
-
 .navbar .navbar-nav .nav-item {
   position: relative;
 }
@@ -48,15 +43,12 @@ body {
 .navbar .navbar-nav .nav-item:hover::after {
   width: 60%;
 }
-
 .navbar .navbar-nav .nav-item::after {
   transition: all 0.5s;
 }
-
 .navbar-padding {
   padding: 1% 20%;
 }
-
 /* @media only screen and (min-width: 992px) {
   .navbar {
     padding: 0;
@@ -71,7 +63,6 @@ body {
     margin: 0 1em;
   }
 } */
-
 .navbar-toggler-icon {
   background-image: none!important;
   background-color: hotpink;
@@ -82,7 +73,6 @@ body {
   transition: all 0.35s ease-out;
   transform-origin: center;
 }
-
 .navbar-toggler-icon::before {
   display: block;
   background-color: hotpink;
@@ -103,21 +93,17 @@ body {
   transition: all 0.35s ease-out;
   transform-origin: center;
 }
-
 .navbar-dark .navbar-toggler-icon,
 .navbar-dark .navbar-toggler-icon::before,
 .navbar-dark .navbar-toggler-icon::after {
   background-color: var(--bs-gray-100);
 }
-
 .navbar-toggler:not(.collapsed) .navbar-toggler-icon {
   transform: rotate(45deg);
 }
-
 .navbar-toggler:not(.collapsed) .navbar-toggler-icon::before {
   opacity: 0;
 }
-
 .navbar-toggler:not(.collapsed) .navbar-toggler-icon::after {
   transform: rotate(-90deg) translateX(7px);
 }

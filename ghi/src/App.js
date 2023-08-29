@@ -7,13 +7,13 @@ import NavBar from "./Components/NavBar.js";
 import EventCreateForm from "./Pages/EventCreatePage.js";
 import EventsList from "./Pages/EventsListPage.js";
 import EventDetailDisplay from "./Pages/EventDetailsPage.js";
+import AccomplistItemCreate from "./Pages/AccomplistItemCreate.js";
 import MyAccomplistItemCreate from "./Pages/MyAccomplistCreate.js";
 import MyAccomplistItemsList from "./Pages/MyAccomplistItemsList.js";
 import LoginForm from "./Pages/Login.js";
 import Register from "./Pages/Register.js";
 import AccountProfilePage from "./Pages/AccountProfilePage.js";
 import useToken from "@galvanize-inc/jwtdown-for-react";
-// import Profile from "./Pages/profile.js";
 import AcomplistItemCards from "./Pages/AccomplistItems.js";
 import Home from "./Pages/Home.js";
 import UpdateProfile from "./Pages/UpdateProfile.js";
@@ -22,7 +22,7 @@ function App() {
   const [launchInfo, setLaunchInfo] = useState([]);
   const [error, setError] = useState(null);
   const [user, setUser] = useState([]);
-  const { token } = useToken();
+  const { token, fetchWithToken } = useToken();
 
   async function getUserData() {
     if (token) {
@@ -61,6 +61,25 @@ function App() {
     // eventsAsync();
   }, []);
 
+    // Set My Accomplist Items
+  const [my_accomplist_items, setMyItems] = useState([]);
+  const getMyItems = async () => {
+          if (token) {
+              const myItemUrl = `${process.env.REACT_APP_API_HOST}/api/my_accomplist_items/${user.id}`;
+              const response = await fetchWithToken(myItemUrl);
+              // Filter items based on user_id
+              const filteredItems = response.filter(item => item.user_id === user.id);
+              setMyItems(filteredItems);
+
+          } else {
+              console.log("fetch failed");
+          } };
+
+// Call Items Function Upon Token
+ useEffect(() => { if (token && user.id) {
+        getMyItems()};
+    }, [token,user.id]);
+
   return (
     <div>
       <NavBar />
@@ -71,7 +90,6 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="login/" element={<LoginForm />} />
             <Route path="accomplist_items/" element={<AcomplistItemCards />} />
-            {/* <Route path="profile/" element={<Profile />} /> */}
             <Route path="register/" element={<Register />} />
             <Route path="updateprofile/:user_id" element={<UpdateProfile />} />
             <Route path="events/new" element={<EventCreateForm />} />
@@ -79,12 +97,16 @@ function App() {
             <Route path="events/events" element={<EventsList />} />
             <Route path="events/:event_id" element={<EventDetailDisplay />} />
             <Route
-              path="my_accomplist_items/new"
-              element={<MyAccomplistItemCreate />}
+              path="accomplist_items/new"
+              element={<AccomplistItemCreate user={user}/>}
             />
             <Route
-              path="my_accomplist_items/:account_id"
-              element={<MyAccomplistItemsList />}
+              path="my_accomplist_items/new"
+              element={<MyAccomplistItemCreate user={user}/>}
+            />
+            <Route
+              path="my_accomplist_items"
+              element={<MyAccomplistItemsList user={user} my_accomplist_items={my_accomplist_items} />}
             />
             <Route
               path="accounts/profile"
