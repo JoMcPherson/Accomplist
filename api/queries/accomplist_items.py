@@ -233,26 +233,3 @@ class AccomplistItemRepository:
         except Exception as e:
             print(e)
             return Error(message="could not create accomplist item")
-
-    def get_my_accomplist_items_completed(self, accomplist_item_id: int, completed:bool):
-        try:
-            # Connect to the database
-            with pool.connection() as conn:
-                # Get a cursor
-                with conn.cursor() as cur:
-                    # Execute the query to fetch matching items from my_accomplist_items table
-                    cur.execute(
-                        """
-                        SELECT COUNT(*)
-                        FROM my_accomplist_items
-                        WHERE item_id = %s AND completed = %s
-                        """,
-                        [accomplist_item_id,completed],
-                    )
-                    # Fetch the count
-                    count = cur.fetchone()[0]
-
-                    return count
-
-        except Exception as e:
-            print

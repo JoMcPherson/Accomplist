@@ -64,6 +64,7 @@ def get_accomplist_item(
         response.status_code = 404
     return accomplist_item
 
+
 # Get count of how many people have completed
 @router.get(
     "/api/accomplist_items/{accomplist_item_id}/{completed}",
@@ -71,11 +72,13 @@ def get_accomplist_item(
 )
 def get_my_accomplist_items_completed(
     accomplist_item_id: int,
-    completed:bool,
+    completed: bool,
     response: Response,
     repo: AccomplistItemRepository = Depends(),
 ) -> int:
-    accomplist_item_count = repo.get_my_accomplist_items_completed(accomplist_item_id, completed)
+    accomplist_item_count = repo.get_my_accomplist_items_completed(
+        accomplist_item_id, completed
+    )
     if accomplist_item_count is None:
         response.status_code = 404
     return accomplist_item_count

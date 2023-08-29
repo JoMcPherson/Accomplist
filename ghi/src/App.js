@@ -1,22 +1,23 @@
+import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
 import { useEffect, useState } from "react";
-import Construct from "./Construct.js";
-import ErrorNotification from "./ErrorNotification";
-import "./index.css";
-import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
-import NavBar from "./Components/NavBar.js";
-import EventCreateForm from "./Pages/EventCreatePage.js";
-import EventsList from "./Pages/EventsListPage.js";
-import EventDetailDisplay from "./Pages/EventDetailsPage.js";
-import AccomplistItemCreate from "./Pages/AccomplistItemCreate.js";
-import MyAccomplistItemCreate from "./Pages/MyAccomplistCreate.js";
-import MyAccomplistItemsList from "./Pages/MyAccomplistItemsList.js";
-import LoginForm from "./Pages/Login.js";
-import Register from "./Pages/Register.js";
-import AccountProfilePage from "./Pages/AccountProfilePage.js";
 import useToken from "@galvanize-inc/jwtdown-for-react";
 import AcomplistItemCards from "./Pages/AccomplistItems.js";
+import AccountProfilePage from "./Pages/AccountProfilePage.js";
+import AccomplistItemCreate from "./Pages/AccomplistItemCreate.js";
+import Construct from "./Construct.js";
+import ErrorNotification from "./ErrorNotification";
+import EventCreateForm from "./Pages/EventCreatePage.js";
+import EventDetailDisplay from "./Pages/EventDetailsPage.js";
+import EventsList from "./Pages/EventsListPage.js";
 import Home from "./Pages/Home.js";
+import LoginForm from "./Pages/Logon.js";
+import MyAccomplistItemCreate from "./Pages/MyAccomplistCreate.js";
+import MyAccomplistItemsList from "./Pages/MyAccomplistItemsList.js";
+import NavBar from "./Components/NavBar.js";
+import Register from "./Pages/Register.js";
 import UpdateProfile from "./Pages/UpdateProfile.js";
+import "./index.css";
+
 
 function App() {
   const [launchInfo, setLaunchInfo] = useState([]);
@@ -61,6 +62,30 @@ function App() {
     // eventsAsync();
   }, []);
 
+  // Set Accomplist Items
+  const [items, setItems] = useState([]);
+
+  // Call Items Function Upon Token
+ useEffect(() => { if (token && user.id) {
+    async function fetchData() {
+        if (token) {
+            try {
+                const myItemUrl = `${process.env.REACT_APP_API_HOST}/api/accomplist_items/`;
+                const itemsData = await fetchWithToken(myItemUrl);
+                setItems(itemsData);
+
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        } else {
+            console.log("fetch items failed");
+        }
+    }
+
+    fetchData(); }
+}, [token, user.id]);
+
+
     // Set My Accomplist Items
   const [my_accomplist_items, setMyItems] = useState([]);
   const getMyItems = async () => {
@@ -72,7 +97,7 @@ function App() {
               setMyItems(filteredItems);
 
           } else {
-              console.log("fetch failed");
+              console.log("fetch my items failed");
           } };
 
 // Call Items Function Upon Token
@@ -102,14 +127,14 @@ function App() {
             />
             <Route
               path="my_accomplist_items/new"
-              element={<MyAccomplistItemCreate user={user}/>}
+              element={<MyAccomplistItemCreate user={user} items={items}/>}
             />
             <Route
               path="my_accomplist_items"
               element={<MyAccomplistItemsList user={user} my_accomplist_items={my_accomplist_items} />}
             />
             <Route
-              path="accounts/profile"
+              path="profile"
               element={<AccountProfilePage user={user} />}
             />
             <Route

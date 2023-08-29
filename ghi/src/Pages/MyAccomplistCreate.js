@@ -1,50 +1,13 @@
 import { useState,useEffect } from "react";
 import useToken from "@galvanize-inc/jwtdown-for-react";
 
-export default function MyAccomplistItemCreate({user}) {
+export default function MyAccomplistItemCreate({user, items}) {
     const {token, fetchWithToken} = useToken();
-    const [items, setItems] = useState([]);
     const [item, setItem] = useState('');
     const [completed, setCompleted] = useState(false);
 
 //  Set User ID
 const user_id = user.id
-
-
-// Call Items Function Upon Token
- useEffect(() => {
-    async function fetchData() {
-        if (token) {
-            try {
-                const myItemUrl = `${process.env.REACT_APP_API_HOST}/api/accomplist_items/`;
-                const itemsData = await fetchWithToken(myItemUrl);
-                setItems(itemsData);
-
-            } catch (error) {
-                console.error("Error fetching data:", error);
-            }
-        } else {
-            console.log("fetch failed");
-        }
-    }
-
-    fetchData();
-}, [token]);
-
- useEffect(() => {
-    async function getUser() {
-      try {
-        const tokenUrl = `${process.env.REACT_APP_API_HOST}/token/`;
-        const response = await fetch(tokenUrl);
-        console.log(response.status)
-
-      } catch (error) {
-        console.error('Error fetching token:', error);
-      }
-    }
-
-    getUser();
-  }, []);
 
     async function handleSubmit(event) {
         event.preventDefault();
