@@ -1,9 +1,9 @@
 import useToken from "@galvanize-inc/jwtdown-for-react";
-import { useState, useEffect } from "react";
+// import { useState, useEffect } from "react";
 
 
 export default function AccountProfilePage({user}) {
-  const { token, fetchWithToken } = useToken();
+  const { token } = useToken();
 
   return (
     token && (

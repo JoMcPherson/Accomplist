@@ -1,8 +1,8 @@
-import { useState,useEffect } from "react";
+import { useState } from "react";
 import useToken from "@galvanize-inc/jwtdown-for-react";
 
 export default function MyAccomplistItemCreate({user, items}) {
-    const {token, fetchWithToken} = useToken();
+    const {token} = useToken();
     const [item, setItem] = useState('');
     const [completed, setCompleted] = useState(false);
 
@@ -15,8 +15,6 @@ const user_id = user.id
             user_id: user_id,
             item_id: item,
             completed: completed,
-
-
         };
 
         const myItemUrl = `${process.env.REACT_APP_API_HOST}/api/my_accomplist_items`

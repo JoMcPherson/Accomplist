@@ -42,7 +42,7 @@ function App() {
       console.log("Token fired");
       getUserData();
       console.log("Get user data fired");
-    }
+    } // eslint-disable-next-line
   }, [token]);
 
   useEffect(() => {
@@ -84,7 +84,7 @@ function App() {
         }
     }
 
-    fetchData(); }
+    fetchData(); } // eslint-disable-next-line
 }, [token, user.id]);
 
 
@@ -104,7 +104,7 @@ function App() {
 
 // Call Items Function Upon Token
  useEffect(() => { if (token && user.id) {
-        getMyItems()};
+        getMyItems()}; // eslint-disable-next-line
     }, [token,user.id]);
 
   return (

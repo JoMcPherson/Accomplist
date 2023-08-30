@@ -11,7 +11,7 @@ services:
 
 variables:
   POSTGRES_PASSWORD: test
-  DATABASE_URL: postgresql://postgres:test@postgres:5432/postgres
+  DATABASE_URL: "postgresql://admin:password@database/accomplist"
 
 # Run flake8 to check for code quality
 lint-test-job:
@@ -23,7 +23,6 @@ lint-test-job:
   variables:
     DATABASE_URL: "postgresql://admin:password@database/accomplist"
     SIGNING_KEY: "ddcfb42d563bed0ec4f9e2290ddf2d80848472affd4b2dbc063aba5ceadd3745"
-    PUBLIC_URL: ""blank""
 
 # # Run the unit tests
 api-unit-tests-job:
@@ -70,7 +69,7 @@ rules:
     # You need to substitute in your real values for
     # GROUP_NAME, PROJECT_NAME, & WEBSERVICE_NAME below.
     PUBLIC_URL: https://two-direction.gitlab.io/Accomplist/
-    REACT_APP_API_HOST: https://may-1-pt-sprocketapi.mod3projects.com
+    REACT_APP_API_HOST: https://may-1-pt-accomplistapi.mod3projects.com
   script:
     - cd ghi
     - npm install
