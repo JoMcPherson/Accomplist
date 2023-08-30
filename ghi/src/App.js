@@ -17,6 +17,7 @@ import NavBar from "./Components/NavBar.js";
 import Register from "./Pages/Register.js";
 import UpdateProfile from "./Pages/UpdateProfile.js";
 import "./index.css";
+import EventEditor from "./Pages/EventEditPage.js"
 
 
 function App() {
@@ -121,7 +122,7 @@ function App() {
             <Route path="updateprofile/:user_id" element={<UpdateProfile />} />
             <Route path="events/new" element={<EventCreateForm />} />
             <Route path="events/" element={<EventsList />} />
-            <Route path="events/events" element={<EventsList />} />
+            <Route path="events/edit/:event_id" element={<EventEditor />} />
             <Route path="events/:event_id" element={<EventDetailDisplay />} />
             <Route
               path="accomplist_items/new"

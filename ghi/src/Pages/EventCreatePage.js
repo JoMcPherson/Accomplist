@@ -3,93 +3,92 @@ import { useAuthContext } from "@galvanize-inc/jwtdown-for-react";
 
 export default function EventCreateForm() {
 
-            const { token } = useAuthContext();
+    const { token } = useAuthContext();
 
-            console.log(token)
+    console.log(token)
 
-            const [name, setName] = useState('');
-            const [date, setDate] = useState('')
-            const [time, setTime] = useState('');
-            const [cost, setCost] = useState('');
-            const [location, setLocation] = useState('');
-            const [description, setDescription] = useState('');
-            const [organizer, setOrganizer] = useState('');
-
-
-            const handleNameChange = (event) => {
-                const value = event.target.value;
-                setName(value)
-            }
-
-            const handleDateChange = (event) => {
-                const value = event.target.value;
-                setDate(value)
-            }
-
-            const handleTimeChange = (event) => {
-                const value = event.target.value;
-                setTime(value)
-            }
-
-            const handleCostChange = (event) => {
-                const value = event.target.value;
-                setCost(value)
-            }
-
-            const handleLocationChange = (event) => {
-                const value = event.target.value;
-                setLocation(value)
-            }
-
-            const handleDescriptionChange = (event) => {
-                const value = event.target.value;
-                setDescription(value)
-            }
-
-            const handleOrganizerChange = (event) => {
-                const value = event.target.value;
-                setOrganizer(value)
-            }
-
-            const handleSubmit = async (event) => {
-                event.preventDefault()
+    const [name, setName] = useState('');
+    const [date, setDate] = useState('')
+    const [time, setTime] = useState('');
+    const [cost, setCost] = useState('');
+    const [location, setLocation] = useState('');
+    const [description, setDescription] = useState('');
+    const [organizer, setOrganizer] = useState('');
 
 
-                const data = {
-                name: name,
-                date: date,
-                time: time,
-                cost: cost,
-                location: location,
-                description: description,
-                organizer: organizer,
-                }
-                const eventsUrl = `${process.env.REACT_APP_API_HOST}/events`;
-		        const fetchConfig = {
-                    method: 'POST',
-                    body: JSON.stringify(data),
-                    headers: {
-                        'Content-Type': 'application/json',
-                        Authorization:  `Bearer ${token}`,
-                    },
-                };
-                const response = await fetch(eventsUrl, fetchConfig);
-                if (response.ok) {
-                    setName('');
-                    setDate('');
-                    setTime('');
-                    setCost('');
-                    setLocation('');
-                    setDescription('');
-                    setOrganizer('');
+    const handleNameChange = (event) => {
+        const value = event.target.value;
+        setName(value)
+    }
 
-                    window.location.href = `${process.env.PUBLIC_URL}/events`
-                    };
-                };
+    const handleDateChange = (event) => {
+        const value = event.target.value;
+        setDate(value)
+    }
+
+    const handleTimeChange = (event) => {
+        const value = event.target.value;
+        setTime(value)
+    }
+
+    const handleCostChange = (event) => {
+        const value = event.target.value;
+        setCost(value)
+    }
+
+    const handleLocationChange = (event) => {
+        const value = event.target.value;
+        setLocation(value)
+    }
+
+    const handleDescriptionChange = (event) => {
+        const value = event.target.value;
+        setDescription(value)
+    }
+
+    const handleOrganizerChange = (event) => {
+        const value = event.target.value;
+        setOrganizer(value)
+    }
+
+    const handleSubmit = async (event) => {
+        event.preventDefault()
+
+
+        const data = {
+        name: name,
+        date: date,
+        time: time,
+        cost: cost,
+        location: location,
+        description: description,
+        organizer: organizer,
+        }
+        const eventsUrl = `${process.env.REACT_APP_API_HOST}/events`;
+        const fetchConfig = {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization:  `Bearer ${token}`,
+            },
+        };
+        const response = await fetch(eventsUrl, fetchConfig);
+        if (response.ok) {
+            setName('');
+            setDate('');
+            setTime('');
+            setCost('');
+            setLocation('');
+            setDescription('');
+            setOrganizer('');
+
+            window.location.href = `${process.env.PUBLIC_URL}/events`
+            };
+        };
 
 
     return(
-
         <div className="row">
 			<div className="offset-3 col-6">
 				<div className="shadow p-4 mt-4">
@@ -128,5 +127,4 @@ export default function EventCreateForm() {
 				</div>
 			</div>
 		</div>
-	)
-};
+        )};

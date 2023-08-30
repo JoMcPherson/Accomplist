@@ -1,7 +1,6 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, SecretStr, HttpUrl
 from typing import Optional, List, Union
 from queries.pool import pool
-from datetime import date
 
 
 class Error(BaseModel):
@@ -10,7 +9,7 @@ class Error(BaseModel):
 
 class EventIn(BaseModel):
     name: str
-    date: date
+    date: str
     time: str
     cost: str
     location: str
@@ -18,14 +17,35 @@ class EventIn(BaseModel):
     organizer: Optional[str]
 
 
+class UpdatedEventIn(BaseModel):
+    name: Optional[str]
+    date: Optional[str]
+    time: Optional[str]
+    cost: Optional[str]
+    location: Optional[str]
+    description: Optional[str]
+    organizer: Optional[str]
+
+
 class EventOut(BaseModel):
     id: int
     name: str
-    date: date
+    date: str
     time: str
     cost: str
     location: str
     description: str
+    organizer: Optional[str]
+
+
+class UpdatedEventOut(BaseModel):
+    id: int
+    name: Optional[str]
+    date: Optional[str]
+    time: Optional[str]
+    cost: Optional[str]
+    location: Optional[str]
+    description: Optional[str]
     organizer: Optional[str]
 
 
@@ -73,36 +93,35 @@ class eventsRepo:
             print(e)
             return False
 
-    def update(self, event_id: int, event: EventIn) -> Union[EventOut, Error]:
+    def update(
+        self, event_id: int, event: UpdatedEventIn, accprint: dict
+    ) -> Union[UpdatedEventOut, Error]:
+        update_event = event.dict(exclude_unset=True)
+        query_list = []
+        for key, value in update_event.items():
+            if isinstance(value, SecretStr):
+                value = value.get_secret_value()
+            if isinstance(value, HttpUrl):
+                value = str(value)
+            query_list.append(f"{key} = %s")
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
                     db.execute(
-                        """
-                    UPDATE events
-                    SET name = %s
-                    , date = %s
-                    , time = %s
-                    , cost = %s
-                    , location = %s
-                    , description = %s
-                    , organizer = %s
+                        f"""
+                        UPDATE events
+                        SET {', '.join(query_list)}
+                        WHERE id=%s
+                        RETURNING *;
                         """,
-                        [
-                            event.name,
-                            event.date,
-                            event.time,
-                            event.cost,
-                            event.location,
-                            event.description,
-                            event.organizer,
-                        ],
+                        [*update_event.values(), event_id],
                     )
                     old_data = event.dict()
-                    return EventOut(id=event_id, **old_data)
 
+                    return UpdatedEventOut(id=event_id, **old_data)
         except Exception as e:
             print(e)
+
             return {"message": "could not update event"}
 
     def create(self, event: EventIn) -> EventOut:

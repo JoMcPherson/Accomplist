@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom'
 import { useAuthContext } from "@galvanize-inc/jwtdown-for-react"
+import eventstyles from "./eventstyles.module.css";
 
 export default function EventsList() {
 
@@ -12,10 +13,9 @@ export default function EventsList() {
     };
 
     useEffect(() => {
-        function sleep(ms) {
-            return new Promise(resolve => setTimeout(resolve, ms));
-            }
 
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));}
 
         async function getAllEvents() {
             if (token){
@@ -43,10 +43,10 @@ export default function EventsList() {
 
     return(
         <div>
-
+            <script src="sorttable.js"></script>
         <div>
             <h1>Event list!</h1>
-            <table>
+            <table className="sortable">
                 <thead>
                     <tr>
                         <th>
@@ -67,7 +67,8 @@ export default function EventsList() {
                                 <td>{event.name}</td>
                                 <td>{event.location}</td>
                                 <td>{event.cost}</td>
-                                <td><button onClick={()=>navigate(`/events/${event.id}`)}>edit event</button></td>
+                                <td><button className={eventstyles.button49} onClick={()=>navigate(`/events/${event.id}`)}>Details</button></td>
+                                <td><button className={eventstyles.button49} onClick={()=>navigate(`/events/edit/${event.id}`)}>Edit Details</button></td>
                             </tr>
                         )
                     })}
@@ -76,11 +77,11 @@ export default function EventsList() {
         </div>
 
         <div>
-            <button>Event details!</button>
+
         </div>
 
         <div>
-            <button className="btn btn-primary" onClick={handleNewEventCreationPlace}>Create new event type beat</button>
+            <button className={eventstyles.button49} onClick={handleNewEventCreationPlace}>Create Event</button>
         </div>
 
         </div>

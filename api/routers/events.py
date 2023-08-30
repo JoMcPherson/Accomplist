@@ -1,6 +1,13 @@
 from fastapi import APIRouter, Depends, Response, HTTPException
 from typing import Union, List, Optional
-from queries.events import EventIn, eventsRepo, EventOut, Error
+from queries.events import (
+    EventIn,
+    eventsRepo,
+    EventOut,
+    Error,
+    UpdatedEventIn,
+    UpdatedEventOut,
+)
 from queries.authenticator import authenticator
 
 
@@ -30,14 +37,15 @@ def get_all(
     return repo.get_all()
 
 
-@router.put("/events/{event_id}", response_model=Union[Error, EventOut])
+@router.put("/events/{event_id}", response_model=Union[Error, UpdatedEventOut])
 def update_event(
     event_id: int,
-    event: EventIn,
+    event: UpdatedEventIn,
     repo: eventsRepo = Depends(),
     account: dict = Depends(authenticator.get_current_account_data),
 ) -> Union[Error, EventOut]:
-    return repo.update(event_id, event)
+    accprint = account
+    return repo.update(event_id, event, accprint)
 
 
 @router.delete("/events/{event_id}", response_model=bool)
