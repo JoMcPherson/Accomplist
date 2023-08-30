@@ -24,6 +24,8 @@ function App() {
   const [error, setError] = useState(null);
   const [user, setUser] = useState([]);
   const { token, fetchWithToken } = useToken();
+  const domain = /https:\/\/[^/]+/;
+  const basename = process.env.PUBLIC_URL.replace(domain, '');
 
   async function getUserData() {
     if (token) {
@@ -109,7 +111,7 @@ function App() {
     <div>
       <NavBar />
       <Outlet />
-      <BrowserRouter>
+      <BrowserRouter basename={basename} >
         <div className="container">
           <Routes>
             <Route path="/" element={<Home />} />
