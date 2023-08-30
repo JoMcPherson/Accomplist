@@ -1,13 +1,12 @@
-services:
-  - docker:dind
-
 stages:
   - test
   - build
   - deploy
 
 services:
+  - docker:dind
   - postgres:14.2-bullseye
+
 
 variables:
   POSTGRES_PASSWORD: test
@@ -57,8 +56,6 @@ build-api-image:
 
 # # Build the React/JavaScript front-end
 build-front-end-job:
-rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   stage: build
   image: node:lts-bullseye
   needs:
@@ -78,6 +75,7 @@ rules:
   artifacts:
     paths:
       - ghi/build/
+
 
 # # Deploy the React/JavaScript front-end to GitLab pages
 pages:
