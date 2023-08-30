@@ -65,8 +65,8 @@ build-front-end-job:
     # CI/CD variables, that value will override the value here.
     # You need to substitute in your real values for
     # GROUP_NAME, PROJECT_NAME, & WEBSERVICE_NAME below.
-    PUBLIC_URL: https://two-direction.gitlab.io/Accomplist/
-    REACT_APP_API_HOST: https://may-1-pt-accomplistapi.mod3projects.com
+    PUBLIC_URL: https://two-direction.gitlab.io/accomplist
+    REACT_APP_API_HOST: https://may-2-pt-accomplistapi.mod3projects.com
   script:
     - cd ghi
     - npm install
