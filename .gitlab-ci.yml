@@ -23,19 +23,19 @@ lint-test-job:
     DATABASE_URL: "postgresql://admin:password@database/accomplist"
     SIGNING_KEY: "ddcfb42d563bed0ec4f9e2290ddf2d80848472affd4b2dbc063aba5ceadd3745"
 
-# # Run the unit tests
-# api-unit-tests-job:
-#   image: python:3-bullseye
-#   stage: test
-#   needs:
-#     - lint-test-job
-#   script:
-#     - cd api
-#     - pip install -r requirements.txt
-#     - python -m pytest
-#   variables:
-#     DATABASE_URL: "postgresql://admin:password@database/accomplist"
-#     SIGNING_KEY: "ddcfb42d563bed0ec4f9e2290ddf2d80848472affd4b2dbc063aba5ceadd3745"
+# Run the unit tests
+api-unit-tests-job:
+  image: python:3-bullseye
+  stage: test
+  needs:
+    - lint-test-job
+  script:
+    - cd api
+    - pip install -r requirements.txt
+    - python -m pytest
+  variables:
+    DATABASE_URL: "postgresql://admin:password@database/accomplist"
+    SIGNING_KEY: "ddcfb42d563bed0ec4f9e2290ddf2d80848472affd4b2dbc063aba5ceadd3745"
 
 # # Build API Image:
 build-api-image:

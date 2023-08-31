@@ -1,6 +1,5 @@
 from pydantic import BaseModel
 from fastapi.testclient import TestClient
-from datetime import date, datetime
 from typing import Optional
 from queries.authenticator import authenticator
 from queries.events import eventsRepo
@@ -23,7 +22,7 @@ class AccountOut(BaseModel):
 class EventOut(BaseModel):
     id: int
     name: str
-    date: date
+    date: str
     time: str
     cost: str
     location: str
@@ -33,11 +32,10 @@ class EventOut(BaseModel):
 
 class fakeEventsRepo:
     def get_one(*args) -> Optional[EventOut]:
-        datetime_object = datetime.strptime("10/01/01", "%m/%d/%y")
         event = EventOut(
             id=700,
             name="testEvent",
-            date=datetime_object,
+            date="datetime_object",
             time="10:00 PM",
             cost="$800",
             location="on the map",
