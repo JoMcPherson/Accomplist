@@ -22,7 +22,7 @@ const LoginForm = () => {
       <div className="Auth-form-content">
           <h5 className="Auth-form-title">Login</h5>
           <h6 className="text-center mt-2">
-            Need to <a href="/register">register</a>?
+            Need to <a href="/signup">Signup</a>?
           </h6>
           <div className="form-group mt-3">
             <label className="form-label">Username:</label>
