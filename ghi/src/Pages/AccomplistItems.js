@@ -61,7 +61,7 @@ import React from 'react';
     }
 
     async componentDidMount() {
-        const url = `${process.env.REACT_APP_API_HOST}/api/accomplist_items/`;
+        const url = `${process.env.REACT_APP_API_HOST}/api/accomplist_items`;
 
         try {
             const response = await fetch(url);

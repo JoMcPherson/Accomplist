@@ -81,7 +81,7 @@ def get_user_by_id(
     return account
 
 
-@router.get("/api/accounts/", response_model=List[AccountOut])
+@router.get("/api/accounts", response_model=List[AccountOut])
 def get_all_accounts(
     repo: AccountRepo = Depends(),
     account: dict = Depends(authenticator.get_current_account_data),

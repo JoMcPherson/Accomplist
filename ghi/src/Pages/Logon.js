@@ -11,7 +11,6 @@ const LoginForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     login(username, password);
-    console.log(`username: ${username} password: ${password}`);
     e.target.reset();
     navigate("/accomplist_items");
   };

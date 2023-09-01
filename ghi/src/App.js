@@ -17,8 +17,7 @@ import NavBar from "./Components/NavBar.js";
 import Register from "./Pages/Register.js";
 import UpdateProfile from "./Pages/UpdateProfile.js";
 import "./index.css";
-import EventEditor from "./Pages/EventEditPage.js"
-
+import EventEditor from "./Pages/EventEditPage.js";
 
 function App() {
   const [launchInfo, setLaunchInfo] = useState([]);
@@ -26,7 +25,7 @@ function App() {
   const [user, setUser] = useState([]);
   const { token, fetchWithToken } = useToken();
   const domain = /https:\/\/[^/]+/;
-  const basename = process.env.PUBLIC_URL.replace(domain, '');
+  const basename = process.env.PUBLIC_URL.replace(domain, "");
 
   async function getUserData() {
     if (token) {
@@ -69,72 +68,79 @@ function App() {
   const [items, setItems] = useState([]);
 
   // Call Items Function Upon Token
- useEffect(() => { if (token && user.id) {
-    async function fetchData() {
+  useEffect(() => {
+    if (token && user.id) {
+      async function fetchData() {
         if (token) {
-            try {
-                const myItemUrl = `${process.env.REACT_APP_API_HOST}/api/accomplist_items/`;
-                const itemsData = await fetchWithToken(myItemUrl);
-                setItems(itemsData);
-
-            } catch (error) {
-                console.error("Error fetching data:", error);
-            }
+          try {
+            const myItemUrl = `${process.env.REACT_APP_API_HOST}/api/accomplist_items`;
+            const itemsData = await fetchWithToken(myItemUrl);
+            setItems(itemsData);
+          } catch (error) {
+            console.error("Error fetching data:", error);
+          }
         } else {
-            console.log("fetch items failed");
+          console.log("fetch items failed");
         }
-    }
+      }
 
-    fetchData(); } // eslint-disable-next-line
-}, [token, user.id]);
+      fetchData();
+    } // eslint-disable-next-line
+  }, [token, user.id]);
 
-
-    // Set My Accomplist Items
+  // Set My Accomplist Items
   const [my_accomplist_items, setMyItems] = useState([]);
   const getMyItems = async () => {
-          if (token) {
-              const myItemUrl = `${process.env.REACT_APP_API_HOST}/api/my_accomplist_items/${user.id}`;
-              const response = await fetchWithToken(myItemUrl);
-              // Filter items based on user_id
-              const filteredItems = response.filter(item => item.user_id === user.id);
-              setMyItems(filteredItems);
+    if (token) {
+      const myItemUrl = `${process.env.REACT_APP_API_HOST}/api/my_accomplist_items/${user.id}`;
+      const response = await fetchWithToken(myItemUrl);
+      // Filter items based on user_id
+      const filteredItems = response.filter((item) => item.user_id === user.id);
+      setMyItems(filteredItems);
+    } else {
+      console.log("fetch my items failed");
+    }
+  };
 
-          } else {
-              console.log("fetch my items failed");
-          } };
-
-// Call Items Function Upon Token
- useEffect(() => { if (token && user.id) {
-        getMyItems()}; // eslint-disable-next-line
-    }, [token,user.id]);
+  // Call Items Function Upon Token
+  useEffect(() => {
+    if (token && user.id) {
+      getMyItems();
+    } // eslint-disable-next-line
+  }, [token, user.id]);
 
   return (
     <div>
       <NavBar />
       <Outlet />
-      <BrowserRouter basename={basename} >
+      <BrowserRouter basename={basename}>
         <div className="container">
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="login/" element={<LoginForm />} />
-            <Route path="accomplist_items/" element={<AcomplistItemCards />} />
-            <Route path="signup/" element={<Register />} />
+            <Route path="login" element={<LoginForm />} />
+            <Route path="accomplist_items" element={<AcomplistItemCards />} />
+            <Route path="signup" element={<Register />} />
             <Route path="updateprofile/:user_id" element={<UpdateProfile />} />
             <Route path="events/new" element={<EventCreateForm />} />
-            <Route path="events/" element={<EventsList />} />
+            <Route path="events" element={<EventsList />} />
             <Route path="events/edit/:event_id" element={<EventEditor />} />
             <Route path="events/:event_id" element={<EventDetailDisplay />} />
             <Route
               path="accomplist_items/new"
-              element={<AccomplistItemCreate user={user}/>}
+              element={<AccomplistItemCreate user={user} />}
             />
             <Route
               path="my_accomplist_items/new"
-              element={<MyAccomplistItemCreate user={user} items={items}/>}
+              element={<MyAccomplistItemCreate user={user} items={items} />}
             />
             <Route
               path="my_accomplist_items"
-              element={<MyAccomplistItemsList user={user} my_accomplist_items={my_accomplist_items} />}
+              element={
+                <MyAccomplistItemsList
+                  user={user}
+                  my_accomplist_items={my_accomplist_items}
+                />
+              }
             />
             <Route
               path="profile"

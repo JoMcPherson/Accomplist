@@ -35,7 +35,7 @@ export default function AccomplistItemCreate({user}) {
         date_added: date
     };
 
-    const ItemUrl = `${process.env.REACT_APP_API_HOST}/api/accomplist_items/`;
+    const ItemUrl = `${process.env.REACT_APP_API_HOST}/api/accomplist_items`;
     const fetchConfig = {
         method: "post",
         body: JSON.stringify(data),
