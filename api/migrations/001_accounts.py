@@ -16,7 +16,7 @@ steps = [
         """,
         # Down statement
         """
-        DROP TABLE accounts;
+        DROP TABLE user_accounts;
         """,
     ],
 ]
