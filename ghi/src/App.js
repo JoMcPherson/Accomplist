@@ -4,7 +4,6 @@ import useToken from "@galvanize-inc/jwtdown-for-react";
 import AcomplistItemCards from "./Pages/AccomplistItems.js";
 import AccountProfilePage from "./Pages/AccountProfilePage.js";
 import AccomplistItemCreate from "./Pages/AccomplistItemCreate.js";
-import Construct from "./Construct.js";
 import ErrorNotification from "./ErrorNotification";
 import EventCreateForm from "./Pages/EventCreatePage.js";
 import EventDetailDisplay from "./Pages/EventDetailsPage.js";
@@ -20,8 +19,7 @@ import "./index.css";
 import EventEditor from "./Pages/EventEditPage.js";
 
 function App() {
-  const [launchInfo, setLaunchInfo] = useState([]);
-  const [error, setError] = useState(null);
+  const [error] = useState(null);
   const [user, setUser] = useState([]);
   const { token, fetchWithToken } = useToken();
   const domain = /https:\/\/[^/]+/;
@@ -44,25 +42,6 @@ function App() {
       console.log("Get user data fired");
     } // eslint-disable-next-line
   }, [token]);
-
-  useEffect(() => {
-    async function getData() {
-      let url = `${process.env.REACT_APP_API_HOST}/api/launch-details`;
-      let response = await fetch(url);
-      let data = await response.json();
-
-      if (response.ok) {
-        console.log("got launch data!");
-        setLaunchInfo(data.launch_details);
-      } else {
-        console.log("drat! something happened");
-        setError(data.message);
-      }
-    }
-    getData();
-
-    // eventsAsync();
-  }, []);
 
   // Set Accomplist Items
   const [items, setItems] = useState([]);
@@ -157,7 +136,6 @@ function App() {
           </Routes>
         </div>
         <ErrorNotification error={error} />
-        <Construct info={launchInfo} />
       </BrowserRouter>
     </div>
   );
