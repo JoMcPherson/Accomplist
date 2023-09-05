@@ -119,7 +119,7 @@ def get_acc_by_username(
     return the_acc
 
 
-@router.patch("/api/accounts/{user_id}", response_model=AccountOut)
+@router.patch("/api/accounts/{account_id}", response_model=AccountOut)
 def patch_account_bio(
     account_id: int,
     update_data: UpdateAccount,

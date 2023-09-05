@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import useToken from "@galvanize-inc/jwtdown-for-react";
 import { useNavigate } from "react-router-dom";
 
@@ -13,6 +13,29 @@ const SignUp = () => {
   const [bio, setBio] = useState("");
   const { register } = useToken();
   const navigate = useNavigate();
+
+// custom background
+  const mainBg = useMemo(() => ({
+    backgroundImage: 'url("https://i.imgur.com/4ECpu8i.jpg")',
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    minHeight: '100vh',
+    }),
+  []);
+
+  useEffect(() => {
+    Object.keys(mainBg).forEach((styleProp) => {
+      document.body.style[styleProp] = mainBg[styleProp];
+  });
+
+  return () => {
+    Object.keys(mainBg).forEach((styleProp) => {
+      document.body.style[styleProp] = '';
+      });
+    };
+  }, [mainBg]);
+  //end background
 
   const handleRegistration = (e) => {
     e.preventDefault();
@@ -29,7 +52,7 @@ const SignUp = () => {
     console.log(accountData);
     register(accountData, `${process.env.REACT_APP_API_HOST}/api/accounts`);
     e.target.reset();
-    navigate("/");
+    navigate("/accomplist_items");
   };
 
   function getTodayDate() {
@@ -48,100 +71,100 @@ const SignUp = () => {
   }
 
   return (
-    <div className="Auth-form-container">
-      <form className="Auth-form" onSubmit={(e) => handleRegistration(e)}>
-        <div className="Auth-form-content">
-          <h5 className="Auth-form-title">Signup</h5>
-          <div className="form-group mt-3">
-            <label className="form-label">Username:</label>
-            <input
-              name="username"
-              type="text"
-              className="form-control mt-1"
-              placeholder="username"
-              onChange={(e) => {
-                setUsername(e.target.value);
-              }}
-            />
+      <div className="Auth-form-container">
+        <form className="Auth-form" onSubmit={(e) => handleRegistration(e)}>
+          <div className="Auth-form-content">
+            <h1 className="Auth-form-title">Create an account:</h1>
+              <div className="form-group mt-3">
+                <label className="label">Username:</label>
+                <input
+                  name="username"
+                  type="text"
+                  className="form-control mt-1"
+                  placeholder="username"
+                  onChange={(e) => {
+                    setUsername(e.target.value);
+                  }}
+                />
+              </div>
+              <div className="form-group mt-3">
+                <label className="label">Password:</label>
+                <input
+                  name="password"
+                  type="password"
+                  className="form-control mt-1"
+                  placeholder="password"
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                  }}
+                />
+              </div>
+            <div className="form-group mt-3">
+              <label className="label">First Name:</label>
+              <input
+                name="first"
+                type="text"
+                className="form-control mt-1"
+                placeholder="First Name"
+                onChange={(e) => {
+                  setFirst(e.target.value);
+                }}
+              />
+            </div>
+            <div className="form-group mt-3">
+              <label className="label">Last Name:</label>
+              <input
+                name="last"
+                type="text"
+                className="form-control mt-1"
+                placeholder="Last Name"
+                onChange={(e) => {
+                  setLast(e.target.value);
+                }}
+              />
+            </div>
+            <div className="form-group mt-3">
+              <label className="label">Email:</label>
+              <input
+                name="email"
+                type="text"
+                className="form-control mt-1"
+                placeholder="Email"
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                }}
+              />
+            </div>
+            <div className="form-group mt-3">
+              <label className="label">Photo:</label>
+              <input
+                name="photo"
+                type="text"
+                className="form-control mt-1"
+                placeholder="Photo URL"
+                onChange={(e) => {
+                  setPhoto(e.target.value);
+                }}
+              />
+            </div>
+            <div className="form-group mt-3">
+              <label className="label">Bio:</label>
+              <input
+                name="bio"
+                type="text"
+                className="form-control mt-1"
+                placeholder="Tell us about yourself!"
+                onChange={(e) => {
+                  setBio(e.target.value);
+                }}
+              />
+            </div>
+            <div className="d-grid gap-2 mt-4">
+              <input className="btn btn-outline-dark" type="submit" value="Signup" />
+            </div>
           </div>
-          <div className="form-group mt-3">
-            <label className="form-label">Password:</label>
-            <input
-              name="password"
-              type="password"
-              className="form-control mt-1"
-              placeholder="password"
-              onChange={(e) => {
-                setPassword(e.target.value);
-              }}
-            />
-          </div>
-          <div className="form-group mt-3">
-            <label className="form-label">First Name:</label>
-            <input
-              name="first"
-              type="text"
-              className="form-control mt-1"
-              placeholder="First Name"
-              onChange={(e) => {
-                setFirst(e.target.value);
-              }}
-            />
-          </div>
-          <div className="form-group mt-3">
-            <label className="form-label">Last Name:</label>
-            <input
-              name="last"
-              type="text"
-              className="form-control mt-1"
-              placeholder="Last Name"
-              onChange={(e) => {
-                setLast(e.target.value);
-              }}
-            />
-          </div>
-          <div className="form-group mt-3">
-            <label className="form-label">Email:</label>
-            <input
-              name="email"
-              type="text"
-              className="form-control mt-1"
-              placeholder="Email"
-              onChange={(e) => {
-                setEmail(e.target.value);
-              }}
-            />
-          </div>
-          <div className="form-group mt-3">
-            <label className="form-label">Photo:</label>
-            <input
-              name="photo"
-              type="text"
-              className="form-control mt-1"
-              placeholder="Photo URL"
-              onChange={(e) => {
-                setPhoto(e.target.value);
-              }}
-            />
-          </div>
-          <div className="form-group mt-3">
-            <label className="form-label">Bio:</label>
-            <input
-              name="bio"
-              type="text"
-              className="form-control mt-1"
-              placeholder="Tell us about yourself!"
-              onChange={(e) => {
-                setBio(e.target.value);
-              }}
-            />
-          </div>
-          <div className="d-grid gap-2 mt-3">
-            <input className="btn btn-info" type="submit" value="SignUp" />
-          </div>
-        </div>
-      </form>
-    </div>
+        </form>
+      </div>
   );
 };
 

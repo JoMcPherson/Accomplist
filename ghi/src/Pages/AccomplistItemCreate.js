@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useMemo } from "react";
 import useToken from "@galvanize-inc/jwtdown-for-react";
 
 function getDate() {
@@ -9,6 +9,11 @@ function getDate() {
   return `${year}-${month}-${date}`;
 }
 
+function generateGoogleSearchUrl(query) {
+  const encodedQuery = encodeURIComponent(query);
+  return `https://www.google.com/search?q=${encodedQuery}`;
+}
+
 export default function AccomplistItemCreate({user}) {
     const {token} = useToken();
     const [title, setTitle] = useState('');
@@ -17,22 +22,62 @@ export default function AccomplistItemCreate({user}) {
     const [photo, setPhoto] = useState('');
     const [resources, setResources] = useState('');
     const [things_to_do, setThingsToDo] = useState('');
-    const [things_not_to_do, setThingsNotToDo] = useState('');
+    // const [things_not_to_do, setThingsNotToDo] = useState('');
+
+// custom background
+  const mainBg = useMemo(() => ({
+    backgroundImage: 'url("https://images.pexels.com/photos/5302953/pexels-photo-5302953.jpeg")',
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    minHeight: '100vh',
+    }),
+  []);
+
+  useEffect(() => {
+    Object.keys(mainBg).forEach((styleProp) => {
+      document.body.style[styleProp] = mainBg[styleProp];
+  });
+
+  return () => {
+    Object.keys(mainBg).forEach((styleProp) => {
+      document.body.style[styleProp] = '';
+      });
+    };
+  }, [mainBg]);
 
 // PUT THAT CODE HERE and replace user_id below obvi
     async function handleSubmit(event) {
     event.preventDefault();
 
+    console.log('handleSubmit called');
 
-    const data = {
+  let updatedResources = resources;
+
+  if (!resources) {
+    updatedResources = generateGoogleSearchUrl(title);
+  }
+
+    console.log('Form data before submission:');
+    console.table({
         user_id: user.id,
         title: title,
         details: details,
         photo: photo,
         resources: resources,
         things_to_do: things_to_do,
-        things_not_to_do: things_not_to_do,
+        date_added: date,
+    });
+
+    const data = {
+        user_id: user.id,
+        title: title,
+        details: details,
+        photo: photo,
+        resources: updatedResources,
+        things_to_do: things_to_do,
         date_added: date
+        // things_not_to_do: things_not_to_do,
     };
 
     const ItemUrl = `${process.env.REACT_APP_API_HOST}/api/accomplist_items`;
@@ -63,45 +108,46 @@ export default function AccomplistItemCreate({user}) {
 
     if (token) {
     return(
-        token &&< form onSubmit={handleSubmit}>
-        <div>Add An Accomplist Item</div>
-        <div className="form-group mb-3">
-                <label htmlFor="title" className="form-label">Title</label>
-                <input value={title} onChange={e => {setTitle(e.target.value)}} required type="text" className="form-control" id="title" placeholder="e.g. Skydiving"/>
-
-        </div>
-        <div className="form-group mb-3">
-                <label htmlFor="details" className="form-label">details</label>
-                <input value={details} onChange={e => {setDetails(e.target.value)}} required type="text" className="form-control" id="details" placeholder="e.g. Free fall from airplane with parachute"/>
-
-        </div>
-        <div className="form-group mb-3">
-                <label htmlFor="photo" className="form-label">Photo</label>
-                <input value={photo} onChange={e => {setPhoto(e.target.value)}} type="text" className="form-control" id="photo" placeholder="Photo Url"/>
-
-        </div>
-          <div className="form-group mb-3">
-                <label htmlFor="resources" className="form-label">Resources</label>
-                <input value={resources} onChange={e => {setResources(e.target.value)}} type="text" className="form-control" id="resources" placeholder="e.g. https://www.uspa.org/resources"/>
-
-        </div>
-        <div className="form-group mb-3">
-                <label htmlFor="things_to_do" className="form-label">Things To Do</label>
-                <input value={things_to_do} onChange={e => {setThingsToDo(e.target.value)}} type="text" className="form-control" id="things_to_do" placeholder="e.g. Pay for the picture package"/>
-
-        </div>
-         <div className="form-group mb-3">
-                <label htmlFor="things_not_to_do" className="form-label">Things NOT To Do</label>
-                <input value={things_not_to_do} onChange={e => {setThingsNotToDo(e.target.value)}} type="text" className="form-control" id="things_not_to_do" placeholder="e.g. Eat a big lunch"/>
-
-        </div>
-            <button type="submit" className="btn btn-primary">Submit</button>
+        token && <div className="Auth-form-container">
+        < form className="Auth-form" onSubmit={handleSubmit}>
+            <div className="Auth-form-content">
+                <h1 className="Auth-form-title">Add an Accomplist item:</h1>
+                <p className="text-center mt-2 text-muted">Please check existing items before creating a new one.</p>
+                <div className="form-group mt-3">
+                        <label htmlFor="title" className="label">Title:</label>
+                        <input value={title} onChange={e => {setTitle(e.target.value)}} required type="text" className="form-control mt-1" id="title" placeholder="e.g. Skydiving"/>
+                </div>
+                <div className="form-group mt-3">
+                        <label htmlFor="details" className="label">Details:</label>
+                        <input value={details} onChange={e => {setDetails(e.target.value)}} required type="text" className="form-control mt-1" id="details" placeholder="e.g. Fall from airplane with a parachute"/>
+                </div>
+                <div className="form-group mt-3">
+                        <label htmlFor="photo" className="label">Photo:</label>
+                        <input value={photo} onChange={e => {setPhoto(e.target.value)}} type="text" className="form-control mt-1" id="photo" placeholder="Photo Url"/>
+                </div>
+                <div className="form-group mt-3">
+                        <label htmlFor="things_to_do" className="label">Suggestions:</label>
+                        <input value={things_to_do} onChange={e => {setThingsToDo(e.target.value)}} type="text" className="form-control mt-1" id="things_to_do" placeholder="(optional) e.g. Pay for picture package"/>
+                </div>
+                <div className="form-group mt-3">
+                        <label htmlFor="resources" className="label">Resources:</label>
+                        <input value={resources} onChange={e => {setResources(e.target.value)}} type="text" className="form-control mt-1" id="resources" placeholder="(optional) e.g. Links, Blogs, Videos, etc."/>
+                </div>
+                {/* <div className="form-group mt-3">
+                        <label htmlFor="things_not_to_do" className="label">Things NOT To Do:</label>
+                        <input value={things_not_to_do} onChange={e => {setThingsNotToDo(e.target.value)}} type="text" className="form-control mt-1" id="things_not_to_do" placeholder="(optional) e.g. Eat a big lunch"/>
+                </div> */}
+                <div className="d-grid gap-2 mt-4">
+                    <input className="btn btn-outline-dark" type="submit" value="submit" />
+                </div>
+            </div>
         </form>
+        </div>
     )
     }
     else {
         return (
-        <div> You must be logged in to create an Accomplist Item </div>
+        <h1>You must be logged in to create an Accomplist Item.</h1>
         )
     }
 }

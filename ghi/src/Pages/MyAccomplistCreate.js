@@ -49,8 +49,9 @@ const user_id = user.id
 
     if (token) {
     return(
-        <form onSubmit={handleSubmit}>
-        <div>Add An Accomplist Item To Your Bucketlist!</div>
+        <div className="container">
+            <form onSubmit={handleSubmit}>
+        <h1 style={{ marginTop: '150px' }}>Add An Accomplist Item To Your Bucketlist!</h1>
                 <div className="mb-3">
                 <label htmlFor="items" className="form-label">Choose Accomplist Item</label>
                 <select onChange={handleChangeItem} required className="form-select" id="items" aria-label="Choose Accomplist Item">
@@ -67,6 +68,7 @@ const user_id = user.id
         </div>
             <button disabled={items.length === 0} type="submit" className="btn btn-primary">Submit</button>
         </form>
+        </div>
     )
     }
     else {
@@ -74,4 +76,44 @@ const user_id = user.id
         <div> You must be logged in to add to your Accomplist Items </div>
         )
     }
-    }
+}
+
+
+    // async function handleSubmit(event) {
+    // event.preventDefault();
+
+    // const data = {
+    //     user_id: user_id,
+    //     item_id: item,
+    //     completed: completed,
+    // };
+
+    // const checkItemUrl = `${process.env.REACT_APP_API_HOST}/api/my_accomplist_items/check?user_id=${user_id}&item_id=${item}`;
+    // const checkResponse = await fetch(checkItemUrl);
+    // const existingItem = await checkResponse.json();
+
+    // let myItemUrl, fetchConfig;
+
+    // if (existingItem) {
+    //     // Update existing item
+    //     myItemUrl = `${process.env.REACT_APP_API_HOST}/api/my_accomplist_items/${existingItem.id}`;
+    //     fetchConfig = {
+    //         method: "PUT",
+    //         body: JSON.stringify(data),
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //         },
+    //     };
+    // } else {
+    //     // Create new item
+    //     myItemUrl = `${process.env.REACT_APP_API_HOST}/api/my_accomplist_items`;
+    //     fetchConfig = {
+    //         method: "POST",
+    //         body: JSON.stringify(data),
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //         },
+    //     };
+    // }
+
+    // const response = await fetch(myItemUrl, fetchConfig)
