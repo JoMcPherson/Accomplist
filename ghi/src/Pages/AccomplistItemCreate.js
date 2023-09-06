@@ -119,7 +119,7 @@ export default function AccomplistItemCreate({user}) {
                 </div>
                 <div className="form-group mt-3">
                         <label htmlFor="photo" className="label">Photo:</label>
-                        <input value={photo} onChange={e => {setPhoto(e.target.value)}} type="text" className="form-control mt-1" id="photo" placeholder="Photo Url"/>
+                        <input value={photo} onChange={e => {setPhoto(e.target.value)}} required type="text" className="form-control mt-1" id="photo" placeholder="Photo Url"/>
                 </div>
                 <div className="form-group mt-3">
                         <label htmlFor="resources" className="label">Resources:</label>
