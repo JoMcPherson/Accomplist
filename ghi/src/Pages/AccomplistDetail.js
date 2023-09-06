@@ -4,6 +4,8 @@ import { useAuthContext } from '@galvanize-inc/jwtdown-for-react';
 import { Card, Image, Modal, Form, Button, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import LoginForm from './Logon';
+import icon from './icon.png'
+console.log(icon,"icon")
 
 export default function AccomplistDetail({ user, my_accomplist_items }) {
   const { token } = useAuthContext();
@@ -114,6 +116,9 @@ export default function AccomplistDetail({ user, my_accomplist_items }) {
 
   const handleThingsToDoSubmit = (event) => {
     event.preventDefault();
+    if (user.photo === "") {
+      user.photo =  icon
+    }
     handleUpdate('comments', user.id.toString().concat(';&* ', user.username,';&* ', user.photo, ';&* ', thingToDo,';&*','ENDUSER'));
   };
 
