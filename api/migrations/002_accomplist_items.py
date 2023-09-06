@@ -9,8 +9,7 @@ steps = [
             details TEXT NOT NULL,
             photo TEXT,
             resources TEXT,
-            things_to_do TEXT,
-            things_not_to_do TEXT,
+            comments TEXT,
             date_added DATE
         );
         """,

@@ -14,8 +14,7 @@ class CreateAccomplistItemRepo:
             "details": "The Foo Barters",
             "photo": "foobar.jpg",
             "resources": "fooing.com",
-            "things_to_do": "foo foo",
-            "things_not_to_do": "bar bar",
+            "comments": "foo foo",
             "date_added": "2023-08-29",
         }
         result.update(accomplist_item)
@@ -33,8 +32,7 @@ def test_create_item():
         "details": "The Foo Barters",
         "photo": "foobar.jpg",
         "resources": "fooing.com",
-        "things_to_do": "foo foo",
-        "things_not_to_do": "bar bar",
+        "comments": "foo foo",
         "date_added": "2023-08-29",
     }
 
@@ -50,7 +48,6 @@ def test_create_item():
         "details": "The Foo Barters",
         "photo": "foobar.jpg",
         "resources": "fooing.com",
-        "things_to_do": "foo foo",
-        "things_not_to_do": "bar bar",
+        "comments": "foo foo",
         "date_added": "2023-08-29",
     }

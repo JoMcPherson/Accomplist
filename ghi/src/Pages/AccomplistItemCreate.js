@@ -21,8 +21,8 @@ export default function AccomplistItemCreate({user}) {
     const [details, setDetails] = useState('');
     const [photo, setPhoto] = useState('');
     const [resources, setResources] = useState('');
-    const [things_to_do, setThingsToDo] = useState('');
-    // const [things_not_to_do, setThingsNotToDo] = useState('');
+
+
 
 // custom background
   const mainBg = useMemo(() => ({
@@ -58,14 +58,12 @@ export default function AccomplistItemCreate({user}) {
     updatedResources = generateGoogleSearchUrl(title);
   }
 
-    console.log('Form data before submission:');
     console.table({
         user_id: user.id,
         title: title,
         details: details,
         photo: photo,
         resources: resources,
-        things_to_do: things_to_do,
         date_added: date,
     });
 
@@ -75,9 +73,7 @@ export default function AccomplistItemCreate({user}) {
         details: details,
         photo: photo,
         resources: updatedResources,
-        things_to_do: things_to_do,
         date_added: date
-        // things_not_to_do: things_not_to_do,
     };
 
     const ItemUrl = `${process.env.REACT_APP_API_HOST}/api/accomplist_items`;
@@ -126,17 +122,9 @@ export default function AccomplistItemCreate({user}) {
                         <input value={photo} onChange={e => {setPhoto(e.target.value)}} type="text" className="form-control mt-1" id="photo" placeholder="Photo Url"/>
                 </div>
                 <div className="form-group mt-3">
-                        <label htmlFor="things_to_do" className="label">Suggestions:</label>
-                        <input value={things_to_do} onChange={e => {setThingsToDo(e.target.value)}} type="text" className="form-control mt-1" id="things_to_do" placeholder="(optional) e.g. Pay for picture package"/>
-                </div>
-                <div className="form-group mt-3">
                         <label htmlFor="resources" className="label">Resources:</label>
                         <input value={resources} onChange={e => {setResources(e.target.value)}} type="text" className="form-control mt-1" id="resources" placeholder="(optional) e.g. Links, Blogs, Videos, etc."/>
                 </div>
-                {/* <div className="form-group mt-3">
-                        <label htmlFor="things_not_to_do" className="label">Things NOT To Do:</label>
-                        <input value={things_not_to_do} onChange={e => {setThingsNotToDo(e.target.value)}} type="text" className="form-control mt-1" id="things_not_to_do" placeholder="(optional) e.g. Eat a big lunch"/>
-                </div> */}
                 <div className="d-grid gap-2 mt-4">
                     <input className="btn btn-outline-dark" type="submit" value="submit" />
                 </div>

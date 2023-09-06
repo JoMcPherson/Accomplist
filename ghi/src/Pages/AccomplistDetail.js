@@ -10,7 +10,7 @@ export default function AccomplistDetail({ user, my_accomplist_items }) {
   const { id } = useParams();
   const [showModal, setShowModal] = useState(false);
   const [selectedImage, setSelectedImage] = useState('');
-  const [itemDetailData, setItemDetail] = useState({ photo: '', resources: '', things_to_do: '' });
+  const [itemDetailData, setItemDetail] = useState({ photo: '', resources: '', comments: '' });
   const [newResource, setNewResource] = useState('');
   const [newPhoto, setNewPhoto] = useState('');
   const [thingToDo, setThingToDo] = useState('');
@@ -18,22 +18,22 @@ export default function AccomplistDetail({ user, my_accomplist_items }) {
 
   // for the parallax scroll
   useEffect(() => {
-      const handleScroll = () => {
-          let scrolled = window.scrollY;
+    const handleScroll = () => {
+      let scrolled = window.scrollY;
 
-          let newHeight = 400 - (scrolled * 1);
-          if (newHeight < 170) newHeight = 170;
-          setHeight(newHeight);
+      let newHeight = 400 - (scrolled * 1);
+      if (newHeight < 170) newHeight = 170;
+      setHeight(newHeight);
 
-          let bgPosition = scrolled * 0.5;
-          document.querySelector('.hero-image-description').style.backgroundPosition = `center -${bgPosition}px`;
-      };
+      let bgPosition = scrolled * 0.5;
+      document.querySelector('.hero-image-description').style.backgroundPosition = `center -${bgPosition}px`;
+    };
 
-      window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll);
 
-      return () => {
-          window.removeEventListener('scroll', handleScroll);
-      };
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, []);
 
   // data stuffs
@@ -71,19 +71,19 @@ export default function AccomplistDetail({ user, my_accomplist_items }) {
     if (!token || !newValue.trim()) return;
 
     const updatedDataUrl = `${process.env.REACT_APP_API_HOST}/api/accomplist_items/${itemDetailData.id}`;
-    const newConcatenatedValue = itemDetailData[key] + (itemDetailData[key] ? ';' : '') + newValue;
+    const newConcatenatedValue = itemDetailData[key] + (itemDetailData[key] ? ';&*' : '') + newValue;
 
     const updated_data = {
       ...itemDetailData,
-      [key]: newConcatenatedValue
+      [key]: newConcatenatedValue,
     };
 
     const fetchConfig = {
-      method: "PUT",
+      method: 'PUT',
       body: JSON.stringify(updated_data),
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       },
     };
 
@@ -102,22 +102,22 @@ export default function AccomplistDetail({ user, my_accomplist_items }) {
   };
 
   // following three are for the submission fields
-  const handlePhotoSubmit = event => {
+  const handlePhotoSubmit = (event) => {
     event.preventDefault();
     handleUpdate('photo', newPhoto);
   };
 
-  const handleResourceSubmit = event => {
+  const handleResourceSubmit = (event) => {
     event.preventDefault();
     handleUpdate('resources', newResource);
   };
 
-  const handleThingsToDoSubmit = event => {
+  const handleThingsToDoSubmit = (event) => {
     event.preventDefault();
-    handleUpdate('things_to_do', user.username.concat(":",thingToDo));
+    handleUpdate('comments', user.id.toString().concat(';&* ', user.username,';&* ', user.photo, ';&* ', thingToDo,';&*','ENDUSER'));
   };
 
-  // modal code possibly redundant because of bootstrap but it works and i dont to want to faafo
+  // modal code possibly redundant because of bootstrap but it works and I don't want to faafo
   const handleImageClick = (image) => {
     setSelectedImage(image);
     setShowModal(true);
@@ -131,119 +131,122 @@ export default function AccomplistDetail({ user, my_accomplist_items }) {
   };
 
   if (token) {
-
-  return (
-    <div>
-      <div className="hero-image-description" style={{ height: `${height}px` }}>
-        <div className="hero-text-description">
-          <h1>{itemDetailData.title}</h1>
-          <p className="fst-italic fw-light">{itemDetailData.details}</p>
-          </div>
-      </div>
-              <div style={{ marginTop: '450px' }}>
-
-
-    <div className="container">
-      <h3 className="mt-3">Accomplished:</h3>
-      <p># have on their Accomplist list. | # have completed this item!</p>
-      <h3>Upcoming events: </h3>
-      <p>There are no events.</p>
-        {/* {itemDetailData.events && itemDetailData.events.length === 0 ? (
-            <p>There are no events.</p>
-        ) : (
-            itemDetailData.events && itemDetailData.events.map((event, index) => (
-                <p key={index}><a href={event.link} target="_blank" rel="noreferrer">{event.title}</a></p>
-            ))
-        )} */}
-      <h3 className='mt-3'>Photos:</h3>
-      <Row className="mx-auto">
-        {itemDetailData.photo && itemDetailData.photo.split(";").map((photo, index) => (
-          photo && (
-            <Col xs={6} md={4} lg={3} key={index}>
-              <div className="thumbnail-container mt-3 d-flex justify-content-center" onClick={() => handleImageClick(photo)}>
-                <Image className="thumbnail-image" alt="" src={photo} style={{ height: '200px' }} />
-              </div>
-            </Col>
-          )
-        ))}
-      </Row>
-      <Modal show={showModal} onHide={() => setShowModal(false)} size='lg'>
-        <Modal.Body>
-          <img src={selectedImage} alt="Selected Item" className="modal-image" />
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="btn btn-outline-dark" onClick={() => setShowModal(false)}>
-            Close
-          </Button>
-        </Modal.Footer>
-      </Modal>
-      <Form onSubmit={handlePhotoSubmit}>
-        <Form.Group className="mt-3" controlId="addPhoto">
-          <Form.Label>Add a photo:</Form.Label>
-          <div className="d-flex align-items-center">
-            <Form.Control placeholder="add a photo url" className="me-2" type="text" required value={newPhoto} onChange={(e) => setNewPhoto(e.target.value)} />
-            <Button variant="btn btn-outline-dark" type="submit">Submit</Button>
-          </div>
-        </Form.Group>
-      </Form>
-      <h3 className='mt-3'>Resources:</h3>
+    return (
       <div>
-        <ul>
-          {itemDetailData.resources && itemDetailData.resources.split(";").map((url, index) => (
-            <li key={index}>
-              <a href={url} target="_blank" rel="noreferrer">{url}</a>
-            </li>
-          ))}
-        </ul>
-      </div>
-      <Form onSubmit={handleResourceSubmit}>
-        <Form.Group className="mb-3" controlId="addResource">
-          <Form.Label>Share a link:</Form.Label>
-          <div className="d-flex align-items-center">
-            <Form.Control placeholder="add a url" className="me-2" type="text" required value={newResource} onChange={(e) => setNewResource(e.target.value)} />
-            <Button variant="btn btn-outline-dark" type="submit">Submit</Button>
+        <div className="hero-image-description" style={{ height: `${height}px` }}>
+          <div className="hero-text-description">
+            <h1>{itemDetailData.title}</h1>
+            <p className="fst-italic fw-light">{itemDetailData.details}</p>
           </div>
-        </Form.Group>
-      </Form>
-      <h3 className='mt-3'>Suggestions: </h3>
-      <Form onSubmit={handleThingsToDoSubmit}>
-        <Form.Group className="mb-3" controlId="thingToDoInput">
-          <Form.Label>Have a suggestion to add? A story to share? Some advice on what to avoid?</Form.Label>
-          <Form.Control
-            as="textarea"
-            rows={3}
-            value={thingToDo}
-            onChange={(e) => setThingToDo(e.target.value)}
-          />
-          <Button variant="btn btn-outline-dark" type="submit" className="mt-2">Submit</Button>
-        </Form.Group>
-      </Form>
-      <div className="suggestions-container">
-        {itemDetailData && itemDetailData.things_to_do && itemDetailData.things_to_do.split(";").map((thing, index) => (
-          <Card className="suggestion-card mb-3" key={index}>
-            <Card.Body className="custom-card-body d-flex">
-              <div className="profile-pic-container">
-                <Link to={`/user/${user.id}`}>
-                  <Image src={user.photo} />
-                </Link>
-              </div>
-              <div className="comment-content">
-                <div className="comment-header d-flex justify-content-between">
-                  <strong className="comment-author">{user.username}</strong>
-                  <span className="comment-datetime">2023-09-05 14:30</span>
+        </div>
+        <div style={{ marginTop: '450px' }}>
+          <div className="container">
+            <h3 className="mt-3">Accomplished:</h3>
+            <p># have on their Accomplist list. | # have completed this item!</p>
+            <h3>Upcoming events: </h3>
+            <p>There are no events.</p>
+            <h3 className="mt-3">Photos:</h3>
+            <Row className="mx-auto">
+              {itemDetailData.photo &&
+                itemDetailData.photo.split(';&*').map((photo, index) => (
+                  photo && (
+                    <Col xs={6} md={4} lg={3} key={index}>
+                      <div className="thumbnail-container mt-3 d-flex justify-content-center" onClick={() => handleImageClick(photo)}>
+                        <Image className="thumbnail-image" alt="" src={photo} style={{ height: '200px' }} />
+                      </div>
+                    </Col>
+                  )
+                ))}
+            </Row>
+            <Modal show={showModal} onHide={() => setShowModal(false)} size="lg">
+              <Modal.Body>
+                <img src={selectedImage} alt="Selected Item" className="modal-image" />
+              </Modal.Body>
+              <Modal.Footer>
+                <Button variant="btn btn-outline-dark" onClick={() => setShowModal(false)}>
+                  Close
+                </Button>
+              </Modal.Footer>
+            </Modal>
+            <Form onSubmit={handlePhotoSubmit}>
+              <Form.Group className="mt-3" controlId="addPhoto">
+                <Form.Label>Add a photo:</Form.Label>
+                <div className="d-flex align-items-center">
+                  <Form.Control placeholder="add a photo url" className="me-2" type="text" required value={newPhoto} onChange={(e) => setNewPhoto(e.target.value)} />
+                  <Button variant="btn btn-outline-dark" type="submit">Submit</Button>
                 </div>
-                <p>{thing}</p>
+              </Form.Group>
+            </Form>
+            <h3 className="mt-3">Resources:</h3>
+            <div>
+              <ul>
+                {itemDetailData.resources &&
+                  itemDetailData.resources.split(';&*').map((url, index) => (
+                    <li key={index}>
+                      <a href={url} target="_blank" rel="noreferrer">{url}</a>
+                    </li>
+                  ))}
+              </ul>
+            </div>
+            <Form onSubmit={handleResourceSubmit}>
+              <Form.Group className="mb-3" controlId="addResource">
+                <Form.Label>Share a link:</Form.Label>
+                <div className="d-flex align-items-center">
+                  <Form.Control placeholder="add a url" className="me-2" type="text" required value={newResource} onChange={(e) => setNewResource(e.target.value)} />
+                  <Button variant="btn btn-outline-dark" type="submit">Submit</Button>
+                </div>
+              </Form.Group>
+            </Form>
+            <h3 className="mt-3">Comments: </h3>
+            <Form onSubmit={handleThingsToDoSubmit}>
+              <Form.Group className="mb-3" controlId="thingToDoInput">
+                <Form.Label>Have a suggestion to add? A story to share? Some advice on what to avoid?</Form.Label>
+                <Form.Control
+                  as="textarea"
+                  rows={3}
+                  value={thingToDo}
+                  onChange={(e) => setThingToDo(e.target.value)}
+                />
+                <Button variant="btn btn-outline-dark" type="submit" className="mt-2">Submit</Button>
+                <div className="suggestion-card mb-3">
+                <Form.Label>Commenting as {user.username}</Form.Label>
+                <div className="profile-pic-container">
+                <Image src={user.photo} />
+                </div>
+                </div>
+              </Form.Group>
+            </Form>
+
+<div className="suggestions-container">
+  {itemDetailData &&
+    itemDetailData.comments &&
+    itemDetailData.comments.split('ENDUSER').filter(comment => comment.trim() !== '').map((userDetails, index) => {
+      // Split the userDetails into an array of [userId, userPhoto, userName, userComment]
+      const [userId, userName, userPhoto, userComment] = userDetails.split(';&*').filter(detail => detail.trim() !== '');
+      return (
+        <Card className="suggestion-card mb-3" key={index}>
+          <Card.Body className="custom-card-body d-flex">
+            <div className="profile-pic-container">
+              <Link to={`/user/${userId}`}>
+                <Image src={userPhoto} />
+              </Link>
+            </div>
+            <div className="comment-content">
+              <div className="comment-header d-flex justify-content-between">
+                <strong className="comment-author">{userName}</strong>
               </div>
-            </Card.Body>
-          </Card>
-        ))}
+              <p>{userComment}</p>
+            </div>
+          </Card.Body>
+        </Card>
+      );
+    })}
+</div>
+          </div>
+        </div>
       </div>
-    </div>
-    </div>
-    </div>
-  );
-}
+    );
+  }
 
-return <LoginForm />;
-
+  return <LoginForm />;
 }

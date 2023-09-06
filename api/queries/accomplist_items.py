@@ -14,8 +14,7 @@ class AccomplistItemIn(BaseModel):
     details: str
     photo: Optional[str]
     resources: Optional[str]
-    things_to_do: Optional[str]
-    things_not_to_do: Optional[str]
+    comments: Optional[str]
     date_added: date
 
 
@@ -26,8 +25,7 @@ class AccomplistItemOut(BaseModel):
     details: str
     photo: Optional[str]
     resources: Optional[str]
-    things_to_do: Optional[str]
-    things_not_to_do: Optional[str]
+    comments: Optional[str]
     date_added: date
 
 
@@ -67,9 +65,8 @@ class AccomplistItemRepository:
             details=record[3],
             photo=record[4],
             resources=record[5],
-            things_to_do=record[6],
-            things_not_to_do=record[7],
-            date_added=record[8],
+            comments=record[6],
+            date_added=record[7],
         )
 
     def get_accomplist_item(
@@ -88,8 +85,7 @@ class AccomplistItemRepository:
                                details,
                                photo,
                                resources,
-                               things_to_do,
-                               things_not_to_do,
+                               comments,
                                date_added
                         FROM accomplist_items
                         WHERE id = %s
@@ -140,8 +136,7 @@ class AccomplistItemRepository:
                             details = %s,
                             photo = %s,
                             resources = %s,
-                            things_to_do = %s,
-                            things_not_to_do = %s,
+                            comments = %s,
                             date_added = %s
                         WHERE id = %s
                         """,
@@ -151,8 +146,7 @@ class AccomplistItemRepository:
                             accomplist_item.details,
                             accomplist_item.photo,
                             accomplist_item.resources,
-                            accomplist_item.things_to_do,
-                            accomplist_item.things_not_to_do,
+                            accomplist_item.comments,
                             accomplist_item.date_added,
                             accomplist_item_id,
                         ],
@@ -179,8 +173,7 @@ class AccomplistItemRepository:
                             details,
                             photo,
                             resources,
-                            things_to_do,
-                            things_not_to_do,
+                            comments,
                             date_added
                         FROM accomplist_items
                         ORDER BY id
@@ -209,11 +202,10 @@ class AccomplistItemRepository:
                              details,
                              photo,
                              resources,
-                             things_to_do,
-                             things_not_to_do,
+                             comments,
                              date_added)
                         VALUES
-                            (%s,%s, %s, %s, %s, %s, %s, %s)
+                            (%s,%s, %s, %s, %s, %s, %s)
                         RETURNING id;
                         """,
                         [
@@ -222,8 +214,7 @@ class AccomplistItemRepository:
                             accomplist_item.details,
                             accomplist_item.photo,
                             accomplist_item.resources,
-                            accomplist_item.things_to_do,
-                            accomplist_item.things_not_to_do,
+                            accomplist_item.comments,
                             accomplist_item.date_added,
                         ],
                     )
@@ -233,3 +224,29 @@ class AccomplistItemRepository:
         except Exception as e:
             print(e)
             return Error(message="could not create accomplist item")
+
+    def get_my_accomplist_items_completed(
+        self, accomplist_item_id: int, completed: bool
+    ):
+        try:
+            # Connect to the database
+            with pool.connection() as conn:
+                # Get a cursor
+                with conn.cursor() as cur:
+                    # Execute the query to fetch matching items
+                    # from my_accomplist_items table
+                    cur.execute(
+                        """
+                        SELECT COUNT(*)
+                        FROM my_accomplist_items
+                        WHERE item_id = %s AND completed = %s
+                        """,
+                        [accomplist_item_id, completed],
+                    )
+                    # Fetch the count
+                    count = cur.fetchone()[0]
+
+                    return count
+
+        except Exception as e:
+            print(e)
