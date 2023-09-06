@@ -21,7 +21,7 @@ def create_my_accomplist_item(
 
 
 @router.get(
-    "/api/my_accomplist_items/{user_id}",
+    "/api/my_accomplist_items/account/{user_id}",
     response_model=Union[List[MyAccomplistItemOut], Error],
 )
 async def get_items_for_account(
@@ -69,4 +69,4 @@ def get_my_accomplist_item(
     my_accomplist_item = repo.get_my_accomplist_item(my_accomplist_item_id)
     if my_accomplist_item is None:
         response.status_code = 404
-        return my_accomplist_item
+    return my_accomplist_item

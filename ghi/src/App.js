@@ -73,7 +73,7 @@ function App() {
   const [my_accomplist_items, setMyItems] = useState([]);
   const getMyItems = async () => {
     if (token) {
-      const myItemUrl = `${process.env.REACT_APP_API_HOST}/api/my_accomplist_items/${user.id}`;
+      const myItemUrl = `${process.env.REACT_APP_API_HOST}/api/my_accomplist_items/account/${user.id}`;
       const response = await fetchWithToken(myItemUrl);
       // Filter items based on user_id
       const filteredItems = response.filter((item) => item.user_id === user.id);

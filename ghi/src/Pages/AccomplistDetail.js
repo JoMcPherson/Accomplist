@@ -5,7 +5,7 @@ import { Card, Image, Modal, Form, Button, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import LoginForm from './Logon';
 import icon from './icon.png'
-console.log(icon,"icon")
+
 
 export default function AccomplistDetail({ user, my_accomplist_items }) {
   const { token } = useAuthContext();
@@ -72,13 +72,18 @@ export default function AccomplistDetail({ user, my_accomplist_items }) {
   const handleUpdate = async (key, newValue) => {
     if (!token || !newValue.trim()) return;
 
-    const updatedDataUrl = `${process.env.REACT_APP_API_HOST}/api/accomplist_items/${itemDetailData.id}`;
-    const newConcatenatedValue = itemDetailData[key] + (itemDetailData[key] ? ';&*' : '') + newValue;
+  const updatedDataUrl = `${process.env.REACT_APP_API_HOST}/api/accomplist_items/${itemDetailData.id}`;
 
-    const updated_data = {
-      ...itemDetailData,
-      [key]: newConcatenatedValue,
-    };
+  let newConcatenatedValue = newValue;
+
+  if (itemDetailData[key]) {
+    newConcatenatedValue = `${itemDetailData[key]};&*${newValue}`;
+  }
+
+  const updated_data = {
+    ...itemDetailData,
+    [key]: newConcatenatedValue,
+  };
 
     const fetchConfig = {
       method: 'PUT',
@@ -228,6 +233,7 @@ export default function AccomplistDetail({ user, my_accomplist_items }) {
     itemDetailData.comments.split('ENDUSER').filter(comment => comment.trim() !== '').map((userDetails, index) => {
       // Split the userDetails into an array of [userId, userPhoto, userName, userComment]
       const [userId, userName, userPhoto, userComment] = userDetails.split(';&*').filter(detail => detail.trim() !== '');
+      console.log("userdetails",userDetails)
       return (
         <Card className="suggestion-card mb-3" key={index}>
           <Card.Body className="custom-card-body d-flex">
