@@ -26,6 +26,7 @@ function App() {
   const domain = /https:\/\/[^/]+/;
   const basename = process.env.PUBLIC_URL.replace(domain, "");
 
+  // function to get logged in user data from token
   async function getUserData() {
     if (token) {
       let userInformation = JSON.parse(atob(token.split(".")[1])).account;
@@ -128,7 +129,7 @@ function App() {
             />
             <Route
               path="profile"
-              element={<AccountProfilePage user={user} />}
+              element={<AccountProfilePage user={user} my_accomplist_items={my_accomplist_items} items={items} />}
             />
             <Route
               path="*"

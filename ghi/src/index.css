@@ -81,6 +81,14 @@ body {
   color: black;
 }
 
+.arrow-button:focus {
+  border-color: transparent !important;
+  color: black !important;
+  box-shadow: 0 0 5px #000 !important;
+  outline: none !important;
+  margin-left: 10px !important;
+}
+
 .Auth-form-container {
   display: flex;
   justify-content: center;
