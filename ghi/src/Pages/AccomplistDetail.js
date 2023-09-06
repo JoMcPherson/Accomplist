@@ -16,6 +16,8 @@ export default function AccomplistDetail({ user, my_accomplist_items }) {
   const [newResource, setNewResource] = useState('');
   const [newPhoto, setNewPhoto] = useState('');
   const [thingToDo, setThingToDo] = useState('');
+  const [usersCompletedCount, setUsersCompletedCount] = useState(0);
+  const [usersNotCompletedCount, setUsersNotCompletedCount] = useState(0);
   const [height, setHeight] = useState(400);
 
   // for the parallax scroll
@@ -65,7 +67,31 @@ export default function AccomplistDetail({ user, my_accomplist_items }) {
       }
     };
 
-    // submission field
+  const getUsersCount = async (completed) => {
+    const countUrl = `${process.env.REACT_APP_API_HOST}/api/accomplist_items/${id}/${completed}`;
+    const fetchConfig = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    try {
+      const fetchedResponse = await fetch(countUrl, fetchConfig);
+      if (fetchedResponse.ok) {
+        const count = await fetchedResponse.json();
+        completed ? setUsersCompletedCount(count) : setUsersNotCompletedCount(count);
+      } else {
+        console.log(`Fetch failed for ${completed ? 'completed' : 'not completed'} users count:`, fetchedResponse);
+      }
+    } catch (error) {
+      console.error(`Error fetching ${completed ? 'completed' : 'not completed'} users count:`, error);
+    }
+  };
+
+    getUsersCount(true); // for completed users
+    getUsersCount(false); // for not completed users
     getItemDetailData();
   }, [token, id, my_accomplist_items]);
 
@@ -152,7 +178,7 @@ export default function AccomplistDetail({ user, my_accomplist_items }) {
         <div style={{ marginTop: '450px' }}>
           <div className="container">
             <h3 className="mt-3">Accomplished:</h3>
-            <p># have on their Accomplist list. | # have completed this item!</p>
+            <p>{usersNotCompletedCount} {usersNotCompletedCount === 1 ? 'has' : 'have'} on their Accomplist list. | {usersCompletedCount} {usersCompletedCount === 1 ? 'has' : 'have'} completed this item!</p>
             <h3>Upcoming events: </h3>
             <p>There are no events.</p>
             <h3 className="mt-3">Photos:</h3>
@@ -214,45 +240,38 @@ export default function AccomplistDetail({ user, my_accomplist_items }) {
                 <Form.Control
                   as="textarea"
                   rows={3}
+                  placeholder={`Leaving a comment as ${user.username}`}
                   value={thingToDo}
                   onChange={(e) => setThingToDo(e.target.value)}
                 />
                 <Button variant="btn btn-outline-dark" type="submit" className="mt-2">Submit</Button>
-                <div className="suggestion-card mb-3">
-                <Form.Label>Commenting as {user.username}</Form.Label>
-                <div className="profile-pic-container">
-                <Image src={user.photo} />
-                </div>
-                </div>
               </Form.Group>
             </Form>
-
-<div className="suggestions-container">
-  {itemDetailData &&
-    itemDetailData.comments &&
-    itemDetailData.comments.split('ENDUSER').filter(comment => comment.trim() !== '').map((userDetails, index) => {
-      // Split the userDetails into an array of [userId, userPhoto, userName, userComment]
-      const [userId, userName, userPhoto, userComment] = userDetails.split(';&*').filter(detail => detail.trim() !== '');
-      console.log("userdetails",userDetails)
-      return (
-        <Card className="suggestion-card mb-3" key={index}>
-          <Card.Body className="custom-card-body d-flex">
-            <div className="profile-pic-container">
-              <Link to={`/user/${userId}`}>
-                <Image src={userPhoto} />
-              </Link>
+            <div className="suggestions-container">
+              {itemDetailData &&
+                itemDetailData.comments &&
+                itemDetailData.comments.split('ENDUSER').filter(comment => comment.trim() !== '').map((userDetails, index) => {
+                  // Split the userDetails into an array of [userId, userPhoto, userName, userComment]
+                  const [userId, userName, userPhoto, userComment] = userDetails.split(';&*').filter(detail => detail.trim() !== '');
+                  return (
+                    <Card className="suggestion-card mb-3" key={index}>
+                      <Card.Body className="custom-card-body d-flex">
+                        <div className="profile-pic-container">
+                          <Link to={`/user/${userId}`}>
+                            <Image src={userPhoto} />
+                          </Link>
+                        </div>
+                        <div className="comment-content">
+                          <div className="comment-header d-flex justify-content-between">
+                            <strong className="comment-author">{userName}</strong>
+                          </div>
+                          <p>{userComment}</p>
+                        </div>
+                      </Card.Body>
+                    </Card>
+                  );
+                })}
             </div>
-            <div className="comment-content">
-              <div className="comment-header d-flex justify-content-between">
-                <strong className="comment-author">{userName}</strong>
-              </div>
-              <p>{userComment}</p>
-            </div>
-          </Card.Body>
-        </Card>
-      );
-    })}
-</div>
           </div>
         </div>
       </div>

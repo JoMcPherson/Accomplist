@@ -1,6 +1,6 @@
 import useToken from "@galvanize-inc/jwtdown-for-react";
 import { useState, useEffect, useMemo } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const LoginForm = () => {
   const [username, setUsername] = useState("");
@@ -10,7 +10,7 @@ const LoginForm = () => {
 
 // custom background
   const mainBg = useMemo(() => ({
-    backgroundImage: 'url("https://i.imgur.com/kNQZqfa.jpg)',
+    backgroundImage: 'url("https://i.imgur.com/4txdQ8n.jpg)',
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'cover',
     backgroundPosition: 'center',
@@ -41,9 +41,9 @@ const LoginForm = () => {
     <div className="Auth-form-container">
     <form className="Auth-form" onSubmit={(e) => handleSubmit(e)}>
       <div className="Auth-form-content">
-          <h5 className="Auth-form-title">Login</h5>
+          <h1 className="Auth-form-title">Login</h1>
           <h6 className="text-center mt-2">
-            Need to <a href="/signup">Signup</a>?
+            Need to <Link to="/signup"> Create An Account</ Link> ?
           </h6>
           <div className="form-group mt-3">
             <label className="label">Username:</label>
@@ -71,7 +71,7 @@ const LoginForm = () => {
             <input className="btn btn-outline-dark" type="submit" value="Login" />
           </div>
           <p className="text-center mt-2">
-            Forgot <a href="/">password?</a>
+            Forgot <Link to="https://www.alz.org/">password</Link> ?
           </p>
       </div>
       </form>

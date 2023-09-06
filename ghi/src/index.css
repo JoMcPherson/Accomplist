@@ -4,15 +4,36 @@ body {
   overflow-x: hidden;
 }
 
-.hero-image {
-  background-image: url("https://images.pexels.com/photos/14583017/pexels-photo-14583017.jpeg");
-  /* background-image: url("https://images.pexels.com/photos/1647962/pexels-photo-1647962.jpeg"); */
-  background-color: #cccccc;
-  height: 500px;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  position: relative;
+.truncate {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    font-size: 1rem;
+}
+
+.truncate-description {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 0.8rem;
+    font-style: italic;
+    min-height: 35px;
+    max-height: calc(2 * 1.5em);
+}
+
+.blackandwhite {
+    filter: grayscale(70%);
+    -webkit-filter: grayscale(70%);
+    transition: 2s;
+}
+
+.blackandwhite:hover {
+    filter: none;
+    -webkit-filter: grayscale(0);
+    transition: 2s;
 }
 
 .hero-text {
@@ -25,7 +46,28 @@ body {
   width: 80%;
 }
 
-.hero-image-description {
+.hero-image {
+  background-image: url("https://images.pexels.com/photos/14583017/pexels-photo-14583017.jpeg");
+  /* background-image: url("https://images.pexels.com/photos/1647962/pexels-photo-1647962.jpeg"); */
+  background-color: #cccccc;
+  height: 500px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+}
+
+.hero-image-events {
+  background-image: url("https://images.pexels.com/photos/2417730/pexels-photo-2417730.jpeg");
+  background-color: #cccccc;
+  height: 400px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+}
+
+.hero-image-description {    /* this is for parallax needs js to match
   /* background-image: url("https://images.pexels.com/photos/2387793/pexels-photo-2387793.jpeg"); */
   /* background-image: url("https://images.pexels.com/photos/2170473/pexels-photo-2170473.jpeg"); */
   /* background-image: url("https://images.pexels.com/photos/1025469/pexels-photo-1025469.jpeg"); */
@@ -43,7 +85,7 @@ body {
   background-color: rgb(156, 72, 72);
 }
 
-.hero-text-description {
+.hero-text-description { /* this is for parallax needs js to match */
   text-align: center;
   position: absolute;
   top: 45%;
@@ -140,10 +182,6 @@ label {
   height: 35px;
 }
 
-.custom-searchbar {
-  margin-right: -80px;
-}
-
 .item-card {
   /* max-width: 300px; */
   background-color: #FFF;
@@ -179,7 +217,7 @@ label {
   top: -30px;
   color: #FFF;
   font-size: 22px;
-  text-shadow: 2px 2px 2px black;
+  text-shadow: 2px 2px 5px black;
   overflow: hidden;
   text-overflow: clip;
   height: 30px;
@@ -222,17 +260,67 @@ label {
   content: "";
   position: absolute;
   height: 35px;
-  top: -10px;
+  top: -12px;
   left: 0px;
   right: 0px;
   background-color: #FFF;
   z-index: 0;
-  transform: skewY(3deg);
+  transform: skewY(2deg);
+  overflow: none;
 }
 
 .item-card:hover img {
-  transform: scale(1.15);
-  filter: brightness(100%);
+  transform: scale(1.16);
+  filter: brightness(105%);
+}
+
+.item-card-b {
+  background-color: #FFF;
+  border-radius: 5px;
+  box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  position: relative;
+  margin: 10px auto;
+  margin-bottom: 30px;
+}
+
+.item-card-b img {
+  width: 100%;
+  height: 260px;
+  object-position: center;
+  object-fit: cover;
+}
+
+.shine-wrapper {
+  position: relative;
+  overflow: hidden;
+}
+
+.shine-wrapper::before {
+  background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.7) 100%);
+  content: "";
+  display: block;
+  height: 100%;
+  left: -75%;
+  position: absolute;
+  top: 0;
+  transform: skewX(-25deg);
+  width: 50%;
+  z-index: 2;
+}
+
+.shine-wrapper:hover::before {
+  animation: shine 0.85s;
+}
+
+.card.title {
+  height: 100px !important;
+}
+
+@keyframes shine {
+  100% {
+    left: 125%;
+  }
 }
 
 .thumbnail-container {
@@ -255,6 +343,7 @@ label {
     color: white;
 }
 
+/* comment field until custom-card-body */
 .suggestions-container {
     margin-top: 20px;
 }
@@ -266,9 +355,9 @@ label {
 }
 
 .suggestion-card .profile-pic-container {
-    margin-right: 15px;
-    width: 50px;
-    height: 50px;
+    margin-right: 12px;
+    width: 51px;
+    height: 51px;
     overflow: hidden;
     flex-shrink: 0;
 }
@@ -277,7 +366,7 @@ label {
     width: 100%;
     height: auto;
     object-fit: cover;
-    border-radius: 4px; /* slightly rounded corners */
+    border-radius: 3px;
 }
 
 .suggestion-card .comment-content {
@@ -288,7 +377,7 @@ label {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #f8f8f8;  /* light gray background for contrast */
+    background-color: #EEE;
     padding: 2px;
     border-radius: 4px;
     width: 100%;
@@ -296,12 +385,12 @@ label {
 
 .comment-author {
     font-weight: bold;
-    margin-right: 10px;
+    margin-left: 5px;
 }
 
 .comment-datetime {
-    font-size: 0.8em; /* slightly smaller font size */
-    color: #888;  /* gray color for date-time */
+    font-size: 0.8em;
+    color: #888;
 }
 
 .comment-content p {
@@ -309,24 +398,5 @@ label {
 }
 
 .custom-card-body {
-    padding: 10px !important; /* or whatever value you'd prefer */
+    padding: 10px !important;
 }
-
-/* .item-card .card-action-a {
-    position: relative;
-    float: right;
-    margin-top: -20px;
-    margin-right: 230px;
-    z-index: auto;
-    color: #E26D5C;
-    background: #fff;
-    border-radius: 100%;
-    padding: 15px;
-    font-size: 15px;
-    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 1px 2px 0 rgba(0, 0, 0, 0.19);
-}
-
-.item-card .card-action:hover {
-    color: #fff;
-    background: #E26D5C;
-} */

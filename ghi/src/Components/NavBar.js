@@ -68,15 +68,15 @@ const CustomNavbar = () => {
               </NavItem>
             )}
             <NavDropdown
-              title="temp.drop"
+              title="Accomplist Items"
               id="basic-nav-dropdown"
               className="custom-dropdown"
             >
               <NavDropdown.Item as={Link} to="/accomplist_items/new">
                 Create Accomplist Item
               </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="/my_accomplist_items/new">
-                Add Accomplist Items
+              <NavDropdown.Item href="/my_accomplist_items/new">
+                Add To My Accomplist Items
               </NavDropdown.Item>
               <NavDropdown.Item as={Link} to="/my_accomplist_items">
                 View My Accomplist Items

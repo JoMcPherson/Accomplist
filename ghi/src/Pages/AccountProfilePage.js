@@ -10,6 +10,7 @@ import {
   Button,
   FormControl,
 } from "react-bootstrap";
+import { Link } from 'react-router-dom';
 
 export default function AccountProfilePage({
   user,
@@ -74,8 +75,8 @@ export default function AccountProfilePage({
 
   return (
     <div className="container" style={{ marginTop: "150px" }}>
-      <div style={{ display: "flex", alignItems: "center" }}>
-        <div>
+      <div style={{ display: "flex" }}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           {user.photo && (
             <img
               src={user.photo}
@@ -89,6 +90,7 @@ export default function AccountProfilePage({
               }}
             />
           )}
+          <Link to="/updateprofile" className="btn btn-outline-dark mt-3">Update Profile</Link>
         </div>
         <div style={{ marginLeft: "20px" }}>
           <h1>
@@ -108,14 +110,13 @@ export default function AccountProfilePage({
       {completedItems.length > 0 && (
         <Container className="mt-4">
           <Row className="mb-4">
-            <Col>
-              <h3>My Completed Items</h3>
+            <Col xs="auto">
+              <h3>My Completed Items:</h3>
             </Col>
-            <Col className="text-right">
+            <Col xs="auto">
               <Button
                 className="btn btn-light"
-                onClick={() => setShowCompleted(!showCompleted)}
-              >
+                onClick={() => setShowCompleted(!showCompleted)}>
                 {showCompleted ? <span>&#9660;</span> : <span>&#9654;</span>}
               </Button>
             </Col>
@@ -127,37 +128,37 @@ export default function AccountProfilePage({
               );
               return (
                 <Col md={3} key={my_item.id}>
-                  <Card className="item-card text-center">
-                    {accomplist_item?.photo && (
-                      <Card.Img
-                        variant="top"
-                        src={accomplist_item.photo}
-                        className="card-img-top"
-                        alt=""
-                      />
-                    )}
+                  <Card className="item-card-b">
+                    <div className="shine-wrapper">
+                      {accomplist_item?.photo && (
+                        <Link to={`/accomplist_items/${accomplist_item.id}`}>
+                            <Card.Img
+                                variant="top"
+                                src={accomplist_item.photo}
+                                className="card-img-top"
+                                alt=""/>
+                        </Link>
+                      )}
+                    </div>
                     <Card.Body>
-                      <Card.Title className="profile-content">
-                        <strong>{my_item.item_title}</strong>
+                      <Card.Title className="truncate" style={{ fontSize: "1rem", color: "darkgreen" }}>
+                        {my_item.item_title}
                       </Card.Title>
-                      <FormControl
-                        as="select"
-                        defaultValue={my_item.completed ? "Done" : "Will Do!"}
-                        onChange={(event) =>
-                          handleCompleteChange(event, my_item.id)
-                        }
-                        style={{ textAlign: "center", textAlignLast: "center" }}
-                      >
-                        <option>Done</option>
-                        <option>Will Do!</option>
-                      </FormControl>
-                      <Card.Text
-                        style={{ textAlign: "center", textAlignLast: "center" }}
-                      >
+                      <Card.Text className="truncate-description" >
                         {accomplist_item?.details}
                       </Card.Text>
+                      <FormControl
+                          as="select"
+                          defaultValue={my_item.completed ? "Done" : "Will Do!"}
+                          onChange={(event) =>
+                              handleCompleteChange(event, my_item.id)
+                          }
+                          style={{ textAlign: "center", textAlignLast: "center" }}>
+                          <option value="Done">Done!</option>
+                          <option value="Will Do!">Will Do!</option>
+                      </FormControl>
                     </Card.Body>
-                  </Card>
+                    </Card>
                 </Col>
               );
             })}
@@ -167,17 +168,16 @@ export default function AccountProfilePage({
       {incompleteItems.length > 0 && (
         <Container className="mt-4">
           <Row className="mb-4">
-            <Col>
-              <h3>My To Do Items</h3>
-            </Col>
-            <Col className="text-right">
-              <Button
-                className="btn btn-light"
-                onClick={() => setShowIncomplete(!showIncomplete)}
-              >
-                {showIncomplete ? <span>&#9660;</span> : <span>&#9654;</span>}
-              </Button>
-            </Col>
+              <Col xs="auto">
+                  <h3>My To Do Items:</h3>
+              </Col>
+              <Col xs="auto">
+                  <Button
+                      className="btn btn-light"
+                      onClick={() => setShowIncomplete(!showIncomplete)}>
+                      {showIncomplete ? <span>&#9660;</span> : <span>&#9654;</span>}
+                  </Button>
+              </Col>
           </Row>
           <Row>
             {displayedIncompleteItems.map((my_item) => {
@@ -186,35 +186,35 @@ export default function AccountProfilePage({
               );
               return (
                 <Col md={3} key={my_item.id}>
-                  <Card className="item-card text-center">
+                  <Card className="item-card-b">
                     {accomplist_item?.photo && (
+                      <Link to={`/accomplist_items/${accomplist_item.id}`}>
+                      <div className="blackandwhite">
                       <Card.Img
                         variant="top"
                         src={accomplist_item.photo}
                         className="card-img-top"
                         alt=""
-                      />
+                      /></div></Link>
                     )}
                     <Card.Body>
-                      <Card.Title className="profile-content">
+                      <Card.Title className="truncate" style={{ fontSize: "1rem" }}>
                         {my_item.item_title}
                       </Card.Title>
+                      <Card.Text className="truncate-description" >
+                        {accomplist_item?.details}
+                      </Card.Text>
                       <FormControl
                         as="select"
                         defaultValue={my_item.completed ? "Done" : "Will Do!"}
                         onChange={(event) =>
                           handleCompleteChange(event, my_item.id)
                         }
-                        style={{ textAlign: "center", textAlignLast: "center" }}
+                        style={{ textAlign: "center", textAlignLast: "center", appearance: 'auto' }}
                       >
                         <option>Done</option>
                         <option>Will Do!</option>
                       </FormControl>
-                      <Card.Text
-                        style={{ textAlign: "center", textAlignLast: "center" }}
-                      >
-                        {accomplist_item?.details}
-                      </Card.Text>
                     </Card.Body>
                   </Card>
                 </Col>

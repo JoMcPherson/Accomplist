@@ -1,45 +1,60 @@
 import useToken from "@galvanize-inc/jwtdown-for-react";
+import React from "react";
+import { Container, Row } from 'react-bootstrap';
 
-export default function MyAccomplistItemsList({my_accomplist_items}) {
-const { token } = useToken();
+export default function MyAccomplistItemsList({my_accomplist_items, user}) {
+    const { token } = useToken();
 
     if (token) {
-    return(
-        <div>
-            <h1>My Accomplist Items</h1>
-            <table>
-                <thead>
-                    <tr>
-                        <th>
-                            User Name
-                        </th>
-                        <th>
-                            Item Name
-                        </th>
-                        <th>
-                            Completed
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {my_accomplist_items.map(my_item => {
-                        return (
-                            <tr key={my_item.id} >
-                                <td>{my_item.username}</td>
-                                <td>{my_item.item_title}</td>
-                                <td>{my_item.completed ? "Done" : "Will Do!"}</td>
-                            </tr>
-                        )
-                    })}
-                </tbody>
-            </table>
-        </div>
+        const completedItems = my_accomplist_items.filter(item => item.completed);
+        const pendingItems = my_accomplist_items.filter(item => !item.completed);
 
-    )
-                }
-    else {
         return (
-        <div> You must be logged in to view your Accomplist Items </div>
-        )
+            <Container>
+                <h1 style={{ marginTop: '150px' }}>{user.username}'s Accomplist items.</h1>
+
+                <Row>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Item ID</th>
+                                <th>Item Name</th>
+                                <th>Completed</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {completedItems.map(my_item => (
+                                <tr key={my_item.id}>
+                                    <td>{my_item.item_id}</td>
+                                    <td>{my_item.item_title}</td>
+                                    <td>Done</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </Row>
+
+                <Row>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Item ID</th>
+                                <th>Item Name</th>
+                                <th>Completed</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {pendingItems.map(my_item => (
+                                <tr key={my_item.id}>
+                                    <td>{my_item.item_id}</td>
+                                    <td>{my_item.item_title}</td>
+                                    <td>Will Do!</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </Row>
+            </Container>
+        );
     }
 }

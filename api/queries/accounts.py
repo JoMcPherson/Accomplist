@@ -22,7 +22,7 @@ class UpdateAccount(BaseModel):
     # last_name: Optional[str] = None
     # email: Optional[str] = None
     # date_created: Optional[str] = None
-    # photo: Optional[str] = None
+    photo: Optional[str] = None
     bio: Optional[str] = None
 
 
@@ -234,30 +234,35 @@ class AccountRepo:
                     raise Exception("Update failed: Account not found")
 
     def patch_bio(self, pk: int, update_data: UpdateAccount) -> AccountOut:
+        update_mappings = {
+            "bio": update_data.bio,
+            "photo": update_data.photo,
+        }
+
+        # Filter out None values and construct query
+        update_fields = [
+            f"{field} = %s"
+            for field, value in update_mappings.items()
+            if value is not None
+        ]
+        values = [
+            value for value in update_mappings.values() if value is not None
+        ]
+        if not update_fields:  # If there's nothing to update
+            raise ValueError("No valid fields provided for update.")
+
+        values.append(pk)
+
+        update_query = f"""
+            UPDATE user_accounts
+            SET {', '.join(update_fields)}
+            WHERE id = %s
+            RETURNING id, username, first_name, last_name, email,
+                    date_created, bio, photo;
+        """
+
         with pool.connection() as conn:
             with conn.cursor() as cur:
-                update_fields = []
-                values = []
-
-                if update_data.bio is not None:
-                    update_fields.append("bio")
-                    values.append(update_data.bio)
-
-                if not update_fields:
-                    raise HTTPException(
-                        status_code=400, detail="No fields to update"
-                    )
-
-                values.append(pk)
-
-                update_query = f"""
-                    UPDATE user_accounts
-                    SET {', '.join(f"{field} = %s" for field in update_fields)}
-                    WHERE id = %s
-                    RETURNING id, username, first_name, last_name, email,
-                              date_created, bio, photo;
-                """
-
                 cur.execute(update_query, values)
                 updated_account = cur.fetchone()
 

@@ -1,31 +1,70 @@
 import { useAuthContext } from '@galvanize-inc/jwtdown-for-react';
 import { useParams } from "react-router-dom";
 import React, { useState, useEffect, useMemo } from "react";
+import { useNavigate } from 'react-router-dom';
 
 export default function UpdateProfile({ user }) {
   const params = useParams();
+  const userId = params.user_id || user?.id;  // Use passed user id as a fallback
   const { token } = useAuthContext();
   const [formData, setFormData] = useState({
     bio: '',
+    photo: '',
   });
 
+  // Background configuration
   const mainBg = useMemo(() => ({
-    backgroundImage: 'url("https://i.imgur.com/BdE1wpj.jpg")',
+    backgroundImage: 'url("https://images.pexels.com/photos/4553164/pexels-photo-4553164.jpeg")',
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     minHeight: '100vh',
-    }),
-  []);
+  }), []);
 
+  // Fetching user data on component mount
+  useEffect(() => {
+    const fetchUserData = async () => {
+      if (token) {
+        try {
+          const profileUrl = `${process.env.REACT_APP_API_HOST}/api/accounts/${userId}`;
+          const response = await fetch(profileUrl, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            },
+          });
+
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+
+          const userData = await response.json();
+
+          // Set fetched user data to formData
+          setFormData({
+            bio: userData.bio || '',
+            photo: userData.photo || '',
+          });
+
+        } catch (error) {
+          console.error("Failed to fetch user data:", error);
+        }
+      }
+    };
+
+    fetchUserData();
+  }, [token, userId]);
+
+  // Setting background styling
   useEffect(() => {
     Object.keys(mainBg).forEach((styleProp) => {
       document.body.style[styleProp] = mainBg[styleProp];
-  });
+    });
 
-  return () => {
-    Object.keys(mainBg).forEach((styleProp) => {
-      document.body.style[styleProp] = '';
+    return () => {
+      Object.keys(mainBg).forEach((styleProp) => {
+        document.body.style[styleProp] = '';
       });
     };
   }, [mainBg]);
@@ -38,12 +77,14 @@ export default function UpdateProfile({ user }) {
     }));
   };
 
+  const navigate = useNavigate();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (token) {
       try {
-        const updateProfileUrl = `${process.env.REACT_APP_API_HOST}/api/accounts/${params.user_id}`;
+        const updateProfileUrl = `${process.env.REACT_APP_API_HOST}/api/accounts/${userId}`;
         console.log(updateProfileUrl);
         console.log('API Call Successful');
 
@@ -65,10 +106,12 @@ export default function UpdateProfile({ user }) {
 
         const updatedUserData = await response.json();
         console.log('Updated User Data:', updatedUserData);
+        navigate('/profile');
 
         setFormData((prevData) => ({
           ...prevData,
-          bio: updatedUserData.bio
+          bio: updatedUserData.bio,
+          photo: updatedUserData.photo
         }));
         console.log('Updated formData:', formData);
 
@@ -82,30 +125,39 @@ export default function UpdateProfile({ user }) {
   };
 
   if (token) {
-  return (
-    <div className="Auth-form-container">
-      <form className="Auth-form" onSubmit={handleSubmit}>
-        <div className="Auth-form-content">
-          <h5 className="Auth-form-title">Update Account</h5>
-          <input
-            className="form-control mt-1"
-            type="text"
-            name="bio"
-            placeholder="update bio"
-            value={formData.bio}
-            onChange={handleChange}
-          />
-          <div className="d-grid gap-2 mt-3">
-            <input className="btn btn-info" type="submit" value="Update" />
+    return (
+      <div className="Auth-form-container">
+        <form className="Auth-form" onSubmit={handleSubmit}>
+          <div className="Auth-form-content">
+            <h5 className="Auth-form-title">Update Profile</h5>
+            <input
+              className="form-control mt-1"
+              type="text"
+              name="photo"
+              placeholder="update photo URL"
+              value={formData.photo}
+              onChange={handleChange}
+            />
+            <textarea
+              className="form-control mt-1"
+              name="bio"
+              placeholder="update bio"
+              rows="4"
+              value={formData.bio}
+              onChange={handleChange}
+            ></textarea>
+            <div className="d-grid gap-2 mt-3">
+              <button type="submit" className="btn btn-outline-dark">
+                Update
+              </button>
+            </div>
           </div>
-        </div>
-      </form>
-    </div>
-  );
+        </form>
+      </div>
+    );
+  } else {
+    return (
+      <h1>You must be logged in to Update your profile.</h1>
+    );
   }
-    else {
-        return (
-        <h1>You must be logged in to Update your profile.</h1>
-        )
-    }
 }

@@ -1,37 +1,38 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
-    function AccomplistItem(props) {
-        return (
-            <div className='col-sm'>
-                {props.list.map(accomplist_items => {
-                    return (
-                        <div key={accomplist_items.id}>
-                            <div className="item-card text-center">
-                                <a href={`/accomplist_items/${accomplist_items.id}`}><img src={accomplist_items.photo} className="card-img-top" alt=""></img></a>
-                                <div className="profile-content">
-                                    {/* <a className="card-action-a" href="#"><i className="fa fa-heart"></i></a> */}
-                                    <h3 className="profile-name">{accomplist_items.title}</h3>
-                                </div>
-                                <div className="profile-description">{accomplist_items.details}</div>
-                                <div className="row">
-                                    <div className="col">
-                                        <div className="profile-overview">
+function AccomplistItem(props) {
+    return (
+        <div className='col-sm'>
+            {props.list.map(accomplist_item => {
+                return (
+                    <div key={accomplist_item.id}>
+                        <div className="item-card text-center">
+                            <Link to={`/accomplist_items/${accomplist_item.id}`}>
+                            <img src={accomplist_item.photo} className="card-img-top" alt=""></img></Link>
+                            <div className="profile-content">
+                                <h3 className="profile-name">{accomplist_item.title}</h3>
+                            </div>
+                            <div className="profile-description">{accomplist_item.details}</div>
+                            <div className="row">
+                                <div className="col">
+                                    <div className="profile-overview">
                                         Wanted by: <h6>0</h6>
-                                        </div>
                                     </div>
-                                    <div className="col">
-                                        <div className="profile-overview">
+                                </div>
+                                <div className="col">
+                                    <div className="profile-overview">
                                         Completed by: <h6>0</h6>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    );}
-                )}
-            </div>
-        );
-    }
+                    </div>
+                );
+            })}
+        </div>
+    );
+}
 
 class AccomplistItemCards extends React.Component {
     state = {
@@ -50,6 +51,7 @@ class AccomplistItemCards extends React.Component {
                 const data = await response.json();
                 const accomplistItemIds = data.map(item => item.id);
                 const requests = accomplistItemIds.map(id => fetch(`${process.env.REACT_APP_API_HOST}/api/accomplist_items/${id}`));
+
 
                 const responses = await Promise.all(requests);
                 const itemColumns = [[], [], []]
@@ -115,12 +117,13 @@ class AccomplistItemCards extends React.Component {
             { value: 'id2', label: 'Date (oldest to newest)' },
         ];
 
+
         return (
             <div>
                 <div className="hero-image">
                 <div className="hero-text">
                     <h1>Let's accomplish something.</h1>
-                    <p>Don't see your item? <a href="/accomplist_items/new">Create a new one</a>.</p>
+                    <p>Don't see your item? <Link to="/accomplist_items/new">Create a new one</Link></p>
                 </div>
             </div>
                 <div className="container col-md">
@@ -143,7 +146,7 @@ class AccomplistItemCards extends React.Component {
                             <input
                                 type="text"
                                 className="form-control"
-                                placeholder="Search..."
+                                placeholder="Filter..."
                                 value={this.state.searchTerm}
                                 onChange={this.handleSearchChange}
                             />
