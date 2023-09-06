@@ -13,7 +13,7 @@ import {
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./NavBar.css";
 import useToken from "@galvanize-inc/jwtdown-for-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 
 const CustomNavbar = () => {
@@ -43,7 +43,7 @@ const CustomNavbar = () => {
   return (
     <Navbar className={`navbar ${navbarClass}`} expand="lg" fixed="top">
       <Container>
-        <NavbarBrand href="/accomplist_items">Accomplist</NavbarBrand>
+        <NavbarBrand as={Link} to="/accomplist_items">Accomplist</NavbarBrand>
         <Navbar.Toggle aria-controls="exampleNavComponents" />
         <Navbar.Collapse className="justify-content-end">
           <Nav className="ml-auto">
@@ -51,26 +51,11 @@ const CustomNavbar = () => {
               <NavLink onClick={()=>{navigate('/accomplist_items')}}>Bucket List</NavLink>
             </NavItem>
             <NavItem className="px-2">
-              <NavLink href="/events">Events</NavLink>
-            </NavItem>
-            <NavItem className="px-1">
-              <NavLink href="/accomplist_items/new">
-                Create A Public Accomplist Item
-              </NavLink>
-            </NavItem>
-            <NavItem className="px-1">
-              <NavLink href="/my_accomplist_items/new">
-                Add To My Accomplist Items
-              </NavLink>
-            </NavItem>
-            <NavItem className="px-1">
-              <NavLink href="/my_accomplist_items">
-                View My Accomplist Items
-              </NavLink>
+              <NavLink as={Link} to="/events">Events</NavLink>
             </NavItem>
             {token ? (
               <NavItem className="px-2">
-                <Nav.Link href="/profile">My Profile</Nav.Link>
+                <Nav.Link as={Link} to="/profile">My Profile</Nav.Link>
               </NavItem>
             ) : null}
             {token ? (
@@ -79,7 +64,7 @@ const CustomNavbar = () => {
               </NavItem>
             ) : (
               <NavItem className="px-3">
-                <NavLink href="/Login">Login</NavLink>
+                <NavLink as={Link} to="/Login">Login</NavLink>
               </NavItem>
             )}
             <NavDropdown
@@ -87,13 +72,13 @@ const CustomNavbar = () => {
               id="basic-nav-dropdown"
               className="custom-dropdown"
             >
-              <NavDropdown.Item href="/accomplist_items/new">
-                Create A Public Accomplist Item
+              <NavDropdown.Item as={Link} to="/accomplist_items/new">
+                Create Accomplist Item
               </NavDropdown.Item>
-              <NavDropdown.Item href="/my_accomplist_items/new">
-                Add To My Accomplist Items
+              <NavDropdown.Item as={Link} to="/my_accomplist_items/new">
+                Add Accomplist Items
               </NavDropdown.Item>
-              <NavDropdown.Item href="/my_accomplist_items">
+              <NavDropdown.Item as={Link} to="/my_accomplist_items">
                 View My Accomplist Items
               </NavDropdown.Item>
             </NavDropdown>
