@@ -29,10 +29,6 @@ const user_id = user.id
         if (response.ok) {
             setItem('');
             setCompleted(false);
-
-            // Refreshes my accomplist list and redirects
-            //pass in get my items
-            window.location.href = `${process.env.PUBLIC_URL}/my_accomplist_items`
         }
 
     }

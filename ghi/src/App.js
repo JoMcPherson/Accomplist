@@ -109,7 +109,12 @@ function App() {
             <Route path="events/:event_id" element={<EventDetailDisplay />} />
             <Route
               path="accomplist_items/:id"
-              element={<AccomplistDetail user={user} my_accomplist_items={my_accomplist_items}/>}
+              element={
+                <AccomplistDetail
+                  user={user}
+                  my_accomplist_items={my_accomplist_items}
+                />
+              }
             />
             <Route
               path="accomplist_items/new"
@@ -130,7 +135,13 @@ function App() {
             />
             <Route
               path="profile"
-              element={<AccountProfilePage user={user} my_accomplist_items={my_accomplist_items} items={items} />}
+              element={
+                <AccountProfilePage
+                  user={user}
+                  my_accomplist_items={my_accomplist_items}
+                  items={items}
+                />
+              }
             />
             <Route
               path="*"
