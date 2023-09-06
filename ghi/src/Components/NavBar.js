@@ -8,17 +8,21 @@ import {
   NavbarBrand,
   NavDropdown,
   Container,
+  NavLink
 } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./NavBar.css";
 import useToken from "@galvanize-inc/jwtdown-for-react";
+import { useNavigate } from "react-router-dom";
+
 
 const CustomNavbar = () => {
   const [navbarClass, setNavbarClass] = useState("");
   const { logout, token } = useToken();
+  const navigate = useNavigate();
   const handleLogout = () => {
     logout();
-    window.location.href = "/accomplist_items";
+    window.location.href = `${process.env.PUBLIC_URL}/accomplist_items`;
   };
 
   useEffect(() => {
@@ -43,11 +47,26 @@ const CustomNavbar = () => {
         <Navbar.Toggle aria-controls="exampleNavComponents" />
         <Navbar.Collapse className="justify-content-end">
           <Nav className="ml-auto">
-            <NavItem className="px-1">
-              <Nav.Link href="/accomplist_items">Accomplist List</Nav.Link>
+            <NavItem className="px-2">
+              <NavLink onClick={()=>{navigate('/accomplist_items')}}>Bucket List</NavLink>
+            </NavItem>
+            <NavItem className="px-2">
+              <NavLink href="/events">Events</NavLink>
             </NavItem>
             <NavItem className="px-1">
-              <Nav.Link href="/events">Events</Nav.Link>
+              <NavLink href="/accomplist_items/new">
+                Create A Public Accomplist Item
+              </NavLink>
+            </NavItem>
+            <NavItem className="px-1">
+              <NavLink href="/my_accomplist_items/new">
+                Add To My Accomplist Items
+              </NavLink>
+            </NavItem>
+            <NavItem className="px-1">
+              <NavLink href="/my_accomplist_items">
+                View My Accomplist Items
+              </NavLink>
             </NavItem>
             {token ? (
               <NavItem className="px-2">
@@ -56,11 +75,11 @@ const CustomNavbar = () => {
             ) : null}
             {token ? (
               <NavItem className="px-2">
-                <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
+                <NavLink onClick={handleLogout}>Logout</NavLink>
               </NavItem>
             ) : (
-              <NavItem className="px-2">
-                <Nav.Link href="/Login">Login</Nav.Link>
+              <NavItem className="px-3">
+                <NavLink href="/Login">Login</NavLink>
               </NavItem>
             )}
             <NavDropdown

@@ -92,9 +92,10 @@ function App() {
 
   return (
     <div>
+      <BrowserRouter basename={basename}>
       <NavBar />
       <Outlet />
-      <BrowserRouter basename={basename}>
+
         <div>
           <Routes>
             <Route path="/" element={<Home />} />
