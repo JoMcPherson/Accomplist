@@ -140,6 +140,7 @@ function App() {
                   user={user}
                   my_accomplist_items={my_accomplist_items}
                   items={items}
+                  getMyItems={getMyItems}
                 />
               }
             />

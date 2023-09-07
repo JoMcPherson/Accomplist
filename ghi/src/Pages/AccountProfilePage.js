@@ -13,7 +13,7 @@ import { Link } from "react-router-dom";
 
 export default function AccountProfilePage({
   user,
-  // get_user_data,
+  getMyItems,
   my_accomplist_items,
   items,
 }) {
@@ -72,7 +72,7 @@ export default function AccountProfilePage({
           user_id: myItemUserID,
           completed: event.target.value,
         };
-        await fetch(updateMyAccomplistUrl, {
+        const response = await fetch(updateMyAccomplistUrl, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
@@ -80,6 +80,9 @@ export default function AccountProfilePage({
           },
           body: JSON.stringify(data),
         });
+        if (response.ok) {
+          getMyItems();
+        }
       } catch (error) {
         console.error("Call Error:", error);
       }
