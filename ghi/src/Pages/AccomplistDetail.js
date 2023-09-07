@@ -3,8 +3,8 @@ import { useParams } from 'react-router-dom';
 import { useAuthContext } from '@galvanize-inc/jwtdown-for-react';
 import { Card, Image, Modal, Form, Button, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import LoginForm from './Logon';
-import icon from './icon.png'
+import Logen from '../Components/Logen';
+import icon from '../assets/icon.png';
 
 
 export default function AccomplistDetail({ user, my_accomplist_items }) {
@@ -278,5 +278,5 @@ export default function AccomplistDetail({ user, my_accomplist_items }) {
     );
   }
 
-  return <LoginForm />;
+  return <Logen />;
 }

@@ -1,5 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
 import useToken from "@galvanize-inc/jwtdown-for-react";
+import friend from '../assets/friend.png';
+import Logen from "../Components/Logen";
 
 function getDate() {
   const today = new Date();
@@ -26,7 +28,8 @@ export default function AccomplistItemCreate({user}) {
 
 // custom background
   const mainBg = useMemo(() => ({
-    backgroundImage: 'url("https://images.pexels.com/photos/5302953/pexels-photo-5302953.jpeg")',
+    backgroundImage: `url(${friend})`,
+    // backgroundImage: 'url("https://images.pexels.com/photos/5302953/pexels-photo-5302953.jpeg")',
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'cover',
     backgroundPosition: 'center',
@@ -102,8 +105,10 @@ export default function AccomplistItemCreate({user}) {
     }
 }
 
-    if (token) {
-    return(
+if (!token) {
+    return <Logen />;
+}
+return (
         token && <div className="Auth-form-container">
         < form className="Auth-form" onSubmit={handleSubmit}>
             <div className="Auth-form-content">
@@ -132,10 +137,4 @@ export default function AccomplistItemCreate({user}) {
         </form>
         </div>
     )
-    }
-    else {
-        return (
-        <h1>You must be logged in to create an Accomplist Item.</h1>
-        )
-    }
 }

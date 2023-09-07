@@ -9,8 +9,10 @@ import EventCreateForm from "./Pages/EventCreatePage.js";
 import EventDetailDisplay from "./Pages/EventDetailsPage.js";
 import EventEditor from "./Pages/EventEditPage.js";
 import EventsList from "./Pages/EventsListPage.js";
+import ForgotPassword from "./Components/Password.js";
 import Home from "./Pages/Home.js";
 import LoginForm from "./Pages/Logon.js";
+import Lost from "./Components/Lost.js";
 import MyAccomplistItemCreate from "./Pages/MyAccomplistCreate.js";
 import NavBar from "./Components/NavBar.js";
 import Register from "./Pages/Register.js";
@@ -94,7 +96,6 @@ function App() {
       <BrowserRouter basename={basename}>
       <NavBar />
       <Outlet />
-
         <div>
           <Routes>
             <Route path="/" element={<Home />} />
@@ -134,14 +135,8 @@ function App() {
                 />
               }
             />
-            <Route
-              path="*"
-              element={
-                <main style={{ padding: "1rem" }}>
-                  <p>You're in the wrong spot cowboy.</p>
-                </main>
-              }
-            />
+            <Route path="/whoops" element={<ForgotPassword />}/>
+            <Route path="*" element={<Lost />}/>
           </Routes>
         </div>
         <ErrorNotification error={error} />

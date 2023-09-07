@@ -10,7 +10,7 @@ const LoginForm = () => {
 
 // custom background
   const mainBg = useMemo(() => ({
-    backgroundImage: 'url("https://i.imgur.com/4txdQ8n.jpg)',
+    backgroundImage: 'url("https://images.pexels.com/photos/1536437/pexels-photo-1536437.jpeg")',
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'cover',
     backgroundPosition: 'center',
@@ -71,7 +71,7 @@ const LoginForm = () => {
             <input className="btn btn-outline-dark" type="submit" value="Login" />
           </div>
           <p className="text-center mt-2">
-            Forgot <Link to="https://www.alz.org/">password</Link> ?
+            Forgot <Link to="/whoops">Password</Link> ?
           </p>
       </div>
       </form>

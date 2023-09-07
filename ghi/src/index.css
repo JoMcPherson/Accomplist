@@ -1,7 +1,10 @@
-body {
-  margin: 0;
-  background-color: whitesmoke;
-  overflow-x: hidden;
+/* utility */
+.spacer {
+    height: 100px;
+}
+
+.whitey {
+    color: white;
 }
 
 .truncate {
@@ -25,8 +28,8 @@ body {
 }
 
 .blackandwhite {
-    filter: grayscale(70%);
-    -webkit-filter: grayscale(70%);
+    filter: grayscale(60%);
+    -webkit-filter: grayscale(60%);
     transition: 2s;
 }
 
@@ -44,13 +47,14 @@ body {
   transform: translate(-50%);
   color: white;
   width: 80%;
+  font-size: 1.1em;
 }
 
 .hero-image {
   background-image: url("https://images.pexels.com/photos/14583017/pexels-photo-14583017.jpeg");
   /* background-image: url("https://images.pexels.com/photos/1647962/pexels-photo-1647962.jpeg"); */
   background-color: #cccccc;
-  height: 500px;
+  height: 450px;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -58,9 +62,9 @@ body {
 }
 
 .hero-image-events {
-  background-image: url("https://images.pexels.com/photos/2417730/pexels-photo-2417730.jpeg");
+  background-image: url("https://images.pexels.com/photos/4577179/pexels-photo-4577179.jpeg");
   background-color: #cccccc;
-  height: 400px;
+  height: 450px;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -339,9 +343,7 @@ label {
   margin: 0 auto;
 }
 
-.whitey {
-    color: white;
-}
+
 
 /* comment field until custom-card-body */
 .suggestions-container {
@@ -399,4 +401,27 @@ label {
 
 .custom-card-body {
     padding: 10px !important;
+}
+
+/* error pages */
+.btn.custom-button {
+    background-color: hotpink;
+    color: white;
+    border: 2px solid hotpink;
+}
+
+.btn.custom-button:hover {
+    background-color: white;
+    color: hotpink;
+    border: 2px solid hotpink;
+}
+
+.pinklink a {
+  color: hotpink;
+  text-decoration: none;
+}
+
+.full-width-container {
+  width: 100%;
+  box-sizing: border-box;
 }

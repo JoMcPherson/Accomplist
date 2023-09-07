@@ -1,49 +1,51 @@
-import React, { useState, useEffect } from "react";
-import {
-  Navbar,
-  Nav,
-  NavItem,
-  Form,
-  FormControl,
-  NavbarBrand,
-  NavDropdown,
-  Container,
-  NavLink
-} from "react-bootstrap";
+import React, { useEffect, useRef, useState } from "react";
+import { Navbar, Nav, NavItem, Form,FormControl, NavbarBrand, NavDropdown, Container, NavLink } from "react-bootstrap";
+import { useNavigate, Link } from "react-router-dom";
+import useToken from "@galvanize-inc/jwtdown-for-react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./NavBar.css";
-import useToken from "@galvanize-inc/jwtdown-for-react";
-import { useNavigate, Link } from "react-router-dom";
-
+import logo from "../assets/logolarge.png";
 
 const CustomNavbar = () => {
-  const [navbarClass, setNavbarClass] = useState("");
   const { logout, token } = useToken();
+  const [navbarClass, setNavbarClass] = useState("");
   const navigate = useNavigate();
+  const navbarRef = useRef(null);
   const handleLogout = () => {
     logout();
     window.location.href = `${process.env.PUBLIC_URL}/accomplist_items`;
   };
-
   useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY >= 80) {
-        setNavbarClass("compressed");
-      } else {
-        setNavbarClass("");
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
+      const handleScroll = () => {
+        if (window.scrollY >= 80) {
+          setNavbarClass("compressed");
+        } else {
+          setNavbarClass("");
+        }
+      };
+      const handleDocumentClick = (event) => {
+        if (navbarRef.current && !navbarRef.current.contains(event.target)) {
+          const navbarToggler = document.querySelector(".navbar-toggler");
+          if (navbarToggler && !navbarToggler.classList.contains("collapsed")) {
+            navbarToggler.click();
+          }
+        }
+      };
+      window.addEventListener("scroll", handleScroll);
+      document.addEventListener("click", handleDocumentClick);
+      return () => {
+        window.removeEventListener("scroll", handleScroll);
+        document.removeEventListener("click", handleDocumentClick);
+      };
   }, []);
 
   return (
-    <Navbar className={`navbar ${navbarClass}`} expand="lg" fixed="top">
+    <Navbar ref={navbarRef} className={`navbar ${navbarClass}`} expand="lg" fixed="top">
       <Container>
-        <NavbarBrand as={Link} to="/accomplist_items">Accomplist</NavbarBrand>
+        <NavbarBrand as={Link} to="/accomplist_items">
+          <img src={logo} alt="Logo" className="logo" style={{ height: '22px', marginRight: '2px', marginTop: '-8px' }} />
+          Accomplist
+        </NavbarBrand>
         <Navbar.Toggle aria-controls="exampleNavComponents" />
         <Navbar.Collapse className="justify-content-end">
           <Nav className="ml-auto">
@@ -88,5 +90,4 @@ const CustomNavbar = () => {
     </Navbar>
   );
 };
-
 export default CustomNavbar;
