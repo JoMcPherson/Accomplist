@@ -68,3 +68,18 @@ def get_one_event(
     if event is None:
         response.status_code = 404
     return event
+
+
+@router.get(
+    "/events/account/{account_id}", response_model=Union[Error, List[EventOut]]
+)
+def get_account_events(
+    account_id: int,
+    response: Response,
+    repo: eventsRepo = Depends(),
+    account: dict = Depends(authenticator.get_current_account_data),
+) -> List[EventOut]:
+    events_hosted = repo.get_events_hosted(account_id)
+    if events_hosted is None:
+        response.status_code = 404
+    return events_hosted

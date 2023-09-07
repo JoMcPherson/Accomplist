@@ -249,7 +249,7 @@ class eventsRepo:
                             description=record[6],
                             organizer_id=record[7],
                             organizer_username=record[8],
-                            goal_id=record[9]
+                            goal_id=record[9],
                         )
                         result.append(event)
                     return result
@@ -268,5 +268,40 @@ class eventsRepo:
             description=record[6],
             organizer_id=record[7],
             organizer_username=record[8],
-            goal_id=record[9]
+            goal_id=record[9],
         )
+
+    def get_events_hosted(
+        self, account_id: int
+    ) -> Union[Error, List[EventOut]]:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    result = db.execute(
+                        """
+                        SELECT event_id, name, date, time, cost, location,
+                        description, organizer_id, organizer_username, goal_id
+                        FROM events
+                        WHERE organizer_id = %s
+                        """,
+                        [account_id],
+                    )
+                    result = []
+                    for record in db:
+                        event = EventOut(
+                            event_id=record[0],
+                            name=record[1],
+                            date=record[2],
+                            time=record[3],
+                            cost=record[4],
+                            location=record[5],
+                            description=record[6],
+                            organizer_id=record[7],
+                            organizer_username=record[8],
+                            goal_id=record[9],
+                        )
+                        result.append(event)
+                    return result
+        except Exception as e:
+            print(e)
+            return {"message": "Could not get events hosted"}
