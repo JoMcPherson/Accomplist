@@ -71,13 +71,13 @@ export default function EventDetailDisplay(event_id) {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr key={eventDetailData.id} >
-                        <td>{eventDetailData.id}</td>
+                    <tr key={eventDetailData.event_id} >
+                        <td>{eventDetailData.event_id}</td>
                         <td>{eventDetailData.name}</td>
                         <td>{eventDetailData.location}</td>
                         <td>{eventDetailData.cost}</td>
-                        <td><button onClick={()=>deleteEvent(eventDetailData.id)}>Delete this event</button></td>
-                        <td><button onClick={()=>{navigate(`/events/edit/${eventDetailData.id}`)}}>Edit</button></td>
+                        <td><button onClick={()=>deleteEvent(eventDetailData.event_id)}>Delete this event</button></td>
+                        <td><button onClick={()=>{navigate(`/events/edit/${eventDetailData.event_id}`)}}>Edit</button></td>
                     </tr>
                 </tbody>
             </table>

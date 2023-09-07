@@ -20,7 +20,7 @@ class AccountOut(BaseModel):
 
 
 class EventOut(BaseModel):
-    id: int
+    event_id: int
     name: str
     date: str
     time: str
@@ -33,7 +33,7 @@ class EventOut(BaseModel):
 class fakeEventsRepo:
     def get_one(*args) -> Optional[EventOut]:
         event = EventOut(
-            id=700,
+            event_id=700,
             name="testEvent",
             date="datetime_object",
             time="10:00 PM",

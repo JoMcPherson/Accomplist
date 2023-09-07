@@ -14,7 +14,9 @@ class EventIn(BaseModel):
     cost: str
     location: str
     description: str
-    organizer: Optional[str]
+    organizer_id: Optional[int]
+    organizer_username: Optional[str]
+    goal_id: Optional[int]
 
 
 class UpdatedEventIn(BaseModel):
@@ -24,48 +26,111 @@ class UpdatedEventIn(BaseModel):
     cost: Optional[str]
     location: Optional[str]
     description: Optional[str]
-    organizer: Optional[str]
+    organizer_id: Optional[int]
+    organizer_username: Optional[str]
+    goal_id: Optional[int]
 
 
 class EventOut(BaseModel):
-    id: int
+    event_id: int
     name: str
     date: str
     time: str
     cost: str
     location: str
     description: str
-    organizer: Optional[str]
+    organizer_id: Optional[int]
+    organizer_username: Optional[str]
+    goal_id: Optional[int]
 
 
 class UpdatedEventOut(BaseModel):
-    id: int
+    event_id: int
     name: Optional[str]
     date: Optional[str]
     time: Optional[str]
     cost: Optional[str]
     location: Optional[str]
     description: Optional[str]
-    organizer: Optional[str]
+    organizer_id: Optional[int]
+    organizer_username: Optional[str]
+    goal_id: Optional[int]
+
+
+class MyEventIn(BaseModel):
+    event_id: int
+    user_id: int
+
+
+class MyEventOut(BaseModel):
+    my_event_id: int
+    event_id: int
+    user_id: int
+    myevent_name: str
+    myevent_organizer: str
 
 
 class eventsRepo:
+    def get_name_by_id(self, event_id: int) -> str:
+        try:
+            # connect to the database
+            with pool.connection() as conn:
+                # get a cursor
+                with conn.cursor() as cur:
+                    cur.execute(
+                        """
+                        SELECT name
+                        FROM events
+                        WHERE event_id = %s
+                        """,
+                        [event_id],
+                    )
+                    result = cur.fetchone()
+                    if result:
+                        return result[0]
+        except Exception as e:
+            print(e)
+            return {"message": "could not retrieve event name from events"}
+
+    def get_organizer_by_id(self, organizer: int) -> str:
+        try:
+            # connect to the database
+            with pool.connection() as conn:
+                # get a cursor
+                with conn.cursor() as cur:
+                    cur.execute(
+                        """
+                        SELECT username
+                        FROM user_accounts
+                        WHERE id = %s
+                        """,
+                        [organizer],
+                    )
+                    result = cur.fetchone()
+                    if result:
+                        return result[0]
+        except Exception as e:
+            print(e)
+            return {"message": "could not retrive organizer by user id"}
+
     def get_one(self, event_id: int) -> Optional[EventOut]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
                     result = db.execute(
                         """
-                    SELECT id
+                    SELECT event_id
                     , name
                     , date
                     , time
                     , cost
                     , location
                     , description
-                    , organizer
+                    , organizer_id
+                    , organizer_username
+                    , goal_id
                     FROM events
-                    WHERE id = %s
+                    WHERE event_id = %s
                         """,
                         [event_id],
                     )
@@ -84,7 +149,7 @@ class eventsRepo:
                     db.execute(
                         """
                     DELETE FROM events
-                    WHERE id = %s
+                    WHERE event_id = %s
                         """,
                         [event_id],
                     )
@@ -111,7 +176,7 @@ class eventsRepo:
                         f"""
                         UPDATE events
                         SET {', '.join(query_list)}
-                        WHERE id=%s
+                        WHERE event_id=%s
                         RETURNING *;
                         """,
                         [*update_event.values(), event_id],
@@ -133,11 +198,12 @@ class eventsRepo:
                 result = db.execute(
                     """
                     INSERT INTO events (
-                    name, date, time, cost, location, description, organizer
+                    name, date, time, cost, location, description,
+                    organizer_id, organizer_username, goal_id
                     )
                     VALUES
-                    (%s, %s, %s, %s, %s, %s, %s)
-                    RETURNING id;
+                    (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+                    RETURNING event_id;
                     """,
                     [
                         event.name,
@@ -146,13 +212,15 @@ class eventsRepo:
                         event.cost,
                         event.location,
                         event.description,
-                        event.organizer,
+                        event.organizer_id,
+                        event.organizer_username,
+                        event.goal_id,
                     ],
                 )
                 id = result.fetchone()[0]
 
                 old_data = event.dict()
-                return EventOut(id=id, **old_data)
+                return EventOut(event_id=id, **old_data)
 
     def get_all(self) -> Union[Error, List[EventOut]]:
         try:
@@ -163,8 +231,8 @@ class eventsRepo:
                     # run select statement
                     result = db.execute(
                         """
-                        SELECT id, name, date, time, cost, location,
-                        description, organizer
+                        SELECT event_id, name, date, time, cost, location,
+                        description, organizer_id, organizer_username, goal_id
                         FROM events
                         ORDER BY date
                         """
@@ -172,14 +240,16 @@ class eventsRepo:
                     result = []
                     for record in db:
                         event = EventOut(
-                            id=record[0],
+                            event_id=record[0],
                             name=record[1],
                             date=record[2],
                             time=record[3],
                             cost=record[4],
                             location=record[5],
                             description=record[6],
-                            organizer=record[7],
+                            organizer_id=record[7],
+                            organizer_username=record[8],
+                            goal_id=record[9]
                         )
                         result.append(event)
                     return result
@@ -189,12 +259,14 @@ class eventsRepo:
 
     def record_to_event_out(self, record):
         return EventOut(
-            id=record[0],
+            event_id=record[0],
             name=record[1],
             date=record[2],
             time=record[3],
             cost=record[4],
             location=record[5],
             description=record[6],
-            organizer=record[7],
+            organizer_id=record[7],
+            organizer_username=record[8],
+            goal_id=record[9]
         )

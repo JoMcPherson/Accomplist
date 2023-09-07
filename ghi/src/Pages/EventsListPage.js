@@ -13,10 +13,6 @@ export default function EventsList() {
     };
 
     useEffect(() => {
-
-        function sleep(ms) {
-            return new Promise(resolve => setTimeout(resolve, ms));}
-
         async function getAllEvents() {
             if (token){
         const eventsUrl = `${process.env.REACT_APP_API_HOST}/events`
@@ -34,7 +30,6 @@ export default function EventsList() {
         }
         }};
     async function demo() {
-            await sleep(50);
             getAllEvents()
     }
 
@@ -49,39 +44,46 @@ export default function EventsList() {
                 </div>
             </div>
             <script src="sorttable.js"></script>
-            <div className='container'>
-                <table className="sortable">
-                    <thead>
-                        <tr>
-                            <th>
-                                Name
-                            </th>
-                            <th>
-                                Location
-                            </th>
-                            <th>
-                                Cost
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {eventListData.map(event => {
-                            return (
-                                <tr key={event.id} >
-                                    <td>{event.name}</td>
-                                    <td>{event.location}</td>
-                                    <td>{event.cost}</td>
-                                    <td><button className={eventstyles.button49} onClick={()=>navigate(`/events/${event.id}`)}>Details</button></td>
-                                    <td><button className={eventstyles.button49} onClick={()=>navigate(`/events/edit/${event.id}`)}>Edit Details</button></td>
-                                </tr>
-                            )
-                        })}
-                    </tbody>
-                </table>
-                <div>
-                <button className={eventstyles.button49} onClick={handleNewEventCreationPlace}>Create Event</button>
-                </div>
-            </div>
+        <div>
+            <h1>Event list!</h1>
+            <table className="sortable">
+                <thead>
+                    <tr>
+                        <th>
+                            Name
+                        </th>
+                        <th>
+                            Location
+                        </th>
+                        <th>
+                            Cost
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {eventListData.map(event => {
+                        return (
+                            <tr key={event.event_id} >
+                                <td>{event.name}</td>
+                                <td>{event.location}</td>
+                                <td>{event.cost}</td>
+                                <td><button className={eventstyles.button49} onClick={()=>navigate(`/events/${event.event_id}`)}>Details</button></td>
+                                <td><button className={eventstyles.button49} onClick={()=>navigate(`/events/edit/${event.event_id}`)}>Edit Details</button></td>
+                            </tr>
+                        )
+                    })}
+                </tbody>
+            </table>
+        </div>
+
+        <div>
+
+        </div>
+
+        <div>
+            <button className={eventstyles.button49} onClick={handleNewEventCreationPlace}>Create Event</button>
+        </div>
+
         </div>
     )
 }
