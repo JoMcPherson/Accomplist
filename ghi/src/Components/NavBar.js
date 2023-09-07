@@ -78,9 +78,6 @@ const CustomNavbar = () => {
               <NavDropdown.Item as={Link} to="/my_accomplist_items/new">
                 Add To My Accomplist Items
               </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="/my_accomplist_items">
-                View My Accomplist Items
-              </NavDropdown.Item>
             </NavDropdown>
           </Nav>
           <Form className="navbar-form navbar-right px-2">

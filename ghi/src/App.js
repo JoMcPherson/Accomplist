@@ -12,7 +12,6 @@ import EventsList from "./Pages/EventsListPage.js";
 import Home from "./Pages/Home.js";
 import LoginForm from "./Pages/Logon.js";
 import MyAccomplistItemCreate from "./Pages/MyAccomplistCreate.js";
-import MyAccomplistItemsList from "./Pages/MyAccomplistItemsList.js";
 import NavBar from "./Components/NavBar.js";
 import Register from "./Pages/Register.js";
 import UpdateProfile from "./Pages/UpdateProfile.js";
@@ -122,16 +121,7 @@ function App() {
             />
             <Route
               path="my_accomplist_items/new"
-              element={<MyAccomplistItemCreate user={user} items={items} />}
-            />
-            <Route
-              path="my_accomplist_items"
-              element={
-                <MyAccomplistItemsList
-                  user={user}
-                  my_accomplist_items={my_accomplist_items}
-                />
-              }
+              element={<MyAccomplistItemCreate user={user} items={items} getMyItems={getMyItems} my_accomplist_items={my_accomplist_items} />}
             />
             <Route
               path="profile"

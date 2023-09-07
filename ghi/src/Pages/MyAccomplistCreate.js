@@ -1,10 +1,13 @@
 import { useState } from "react";
 import useToken from "@galvanize-inc/jwtdown-for-react";
+import { Container, Row } from 'react-bootstrap';
 
-export default function MyAccomplistItemCreate({user, items}) {
+
+export default function MyAccomplistItemCreate({user, items, my_accomplist_items, getMyItems}) {
     const {token} = useToken();
     const [item, setItem] = useState('');
     const [completed, setCompleted] = useState(false);
+
 
 //  Set User ID
 const user_id = user.id
@@ -29,6 +32,9 @@ const user_id = user.id
         if (response.ok) {
             setItem('');
             setCompleted(false);
+            getMyItems();
+            console.log("nice!")
+            window.location.href = `${process.env.PUBLIC_URL}/my_accomplist_items/new`
         }
 
     }
@@ -43,7 +49,9 @@ const user_id = user.id
         setCompleted(value);
       }
 
-    if (token) {
+    if (token && my_accomplist_items) {
+        const completedItems = my_accomplist_items.filter(item => item.completed);
+        const pendingItems = my_accomplist_items.filter(item => !item.completed);
     return(
         <div className="container">
             <form onSubmit={handleSubmit}>
@@ -64,6 +72,47 @@ const user_id = user.id
         </div>
             <button disabled={items.length === 0} type="submit" className="btn btn-primary">Submit</button>
         </form>
+             <Container>
+                <h1 style={{ marginTop: '150px' }}>{user.username}'s Accomplist items.</h1>
+
+                <Row>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Item Name</th>
+                                <th>Completed</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {completedItems.map(my_item => (
+                                <tr key={my_item.id}>
+                                    <td>{my_item.item_title}</td>
+                                    <td>Done</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </Row>
+
+                <Row>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Item Name</th>
+                                <th>Will Do</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {pendingItems.map(my_item => (
+                                <tr key={my_item.id}>
+                                    <td>{my_item.item_title}</td>
+                                    <td>Will Do!</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </Row>
+            </Container>
         </div>
     )
     }
@@ -73,43 +122,3 @@ const user_id = user.id
         )
     }
 }
-
-
-    // async function handleSubmit(event) {
-    // event.preventDefault();
-
-    // const data = {
-    //     user_id: user_id,
-    //     item_id: item,
-    //     completed: completed,
-    // };
-
-    // const checkItemUrl = `${process.env.REACT_APP_API_HOST}/api/my_accomplist_items/check?user_id=${user_id}&item_id=${item}`;
-    // const checkResponse = await fetch(checkItemUrl);
-    // const existingItem = await checkResponse.json();
-
-    // let myItemUrl, fetchConfig;
-
-    // if (existingItem) {
-    //     // Update existing item
-    //     myItemUrl = `${process.env.REACT_APP_API_HOST}/api/my_accomplist_items/${existingItem.id}`;
-    //     fetchConfig = {
-    //         method: "PUT",
-    //         body: JSON.stringify(data),
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //         },
-    //     };
-    // } else {
-    //     // Create new item
-    //     myItemUrl = `${process.env.REACT_APP_API_HOST}/api/my_accomplist_items`;
-    //     fetchConfig = {
-    //         method: "POST",
-    //         body: JSON.stringify(data),
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //         },
-    //     };
-    // }
-
-    // const response = await fetch(myItemUrl, fetchConfig)
