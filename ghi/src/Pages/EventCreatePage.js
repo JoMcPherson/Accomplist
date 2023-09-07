@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useAuthContext } from "@galvanize-inc/jwtdown-for-react";
-import LoginForm from './Logon';
+import Logen from "../Components/Logen";
 
 export default function EventCreateForm({user, items}) {
     const { token } = useAuthContext();
@@ -123,29 +123,28 @@ export default function EventCreateForm({user, items}) {
     return(
         <div className="Event-Create-form-container">
             <form onSubmit={handleSubmit} >
-                {/* <div className="Auth-form-content"> */}
+
                 <h1 className="event-form-title">Create an Event:</h1>
-                {/* <div className="form-group mt-3"> */}
+
                 <div className='outerforminputcb1'>
                     <input value={name} onChange={handleNameChange} placeholder="Name" required type="text" name="name" id="name" className="forminputcb1" />
                     <label className="event-label">Event Name:</label>
                 </div>
-                {/* </div> */}
+
                 <div className="outerforminputcb1">
-                    <input value={date} onChange={handleDateChange} placeholder="Date" required type="date" id="date" name="date" className="forminputcb1" />
+                    <input value={date} onChange={handleDateChange} placeholder="Date" required type="date" id="date" name="date" className="forminputcb1datetime" />
                     <label htmlFor="date" className="event-label">Date:</label>
                 </div>
                 <div className="outerforminputcb1">
-                    <input value={time} onChange={handleTimeChange} placeholder="Time" required type="time" id="time" name="time" className="forminputcb1" />
+                    <input value={time} onChange={handleTimeChange} placeholder="Time" required type="time" id="time" name="time" className="forminputcb1datetime" />
                     <label htmlFor="time" className="event-label">Time:</label>
                 </div>
                 <div className="outerforminputcb1">
-                    {/* <input className="btn btn-outline-dark" type="submit" value="submit" /> */}
-                    <label htmlFor="eventID" className="event-label">Accomplistment:</label>
-                    <select onChange={handleGoalIDChange} id="items" className="forminputcb1" >
-                        <option value="" >Choose Accomplist Item From Dropdown Below!</option>
+                    <select onChange={handleGoalIDChange} id="items" className="forminputcb1select" >
+                        <option value="" color='pink' >Choose Accomplist Item From Dropdown Below!</option>
                         {items.map(item =><option value={item.id} key={item.id}>{item.title}</option>)}
                     </select>
+                    <label htmlFor="eventID" className="event-label">Accomplistment:</label>
                 </div>
                 <div className="outerforminputcb1">
                     <input value={cost} onChange={handleCostChange} placeholder="Total cost" id="cost" name="cost" className="forminputcb1" />
@@ -159,18 +158,12 @@ export default function EventCreateForm({user, items}) {
                     <input value={description} onChange={handleDescriptionChange} placeholder="Description" id="description" name="description" className="forminputcb1" />
                     <label htmlFor="description" className="event-label">Description:</label>
                 </div>
-                {/* <div className="outerforminputcb1">
-                    <input value={organizerID} onChange={handleOrganizerIDChange} placeholder={user.id} id="organizerID" name="organizerID" className="forminputcb1" />
-                    <label htmlFor="organizerID" className="event-label">Organizer ID:</label>
-                </div> */}
-
-                {/* </div> */}
                 <button disabled={items.length === 0} type="submit" className="btn btn-primary">Submit</button>
             </form>
         </div>
     )
     }
     else {
-        return <LoginForm />;
+        return <Logen></Logen>;
     }
 }

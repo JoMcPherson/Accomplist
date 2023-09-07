@@ -1,3 +1,5 @@
+@import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
+
 /* utility */
 .spacer {
     height: 100px;
@@ -150,6 +152,7 @@
   align-items: center;
   background-color: transparent;
   padding-top: 100px;
+  font-family: inherit;
 }
 
 .forminputcb1 {
@@ -167,7 +170,7 @@
   height: 3rem;
   border: 4px solid aliceblue;
   border-radius: 40px;
-  padding: 0px;
+  padding-left: 0.8rem;
   background: none;
   margin-left: 0%;
   margin-top: 4%;
@@ -177,10 +180,125 @@
   margin-left 500ms ease-in,
   margin-bottom 500ms ease-in,
   margin-right 500ms ease-in,
+  padding-left 500ms ease-in,
+  height 500ms ease-in,
+  width 500ms ease-in,
+  border 400ms ease-in,
+  background-color 600ms ease-in,
+  color 500ms linear,
+  font-size 500ms linear;
+  color: pink;
+}
+
+.forminputcb1select {
+/* *,
+*::before{
+  content: 'check!'
+};
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  }; */
+  position: flex;
+  width: 80%;
+  height: 3rem;
+  border: 4px solid aliceblue;
+  border-radius: 40px;
+  padding-left: 0.8rem;
+  background: none;
+  margin-left: 0%;
+  margin-top: 4%;
+  margin-right: 3%;
+  margin-bottom: 4%;
+  transition: margin-top 500ms ease-in,
+  margin-left 500ms ease-in,
+  margin-bottom 500ms ease-in,
+  margin-right 500ms ease-in,
+  padding-left 500ms ease-in,
+  height 500ms ease-in,
+  width 500ms ease-in,
+  border 400ms ease-in,
+  background-color 600ms ease-in,
+  color 500ms linear,
+  font-size 500ms linear;
+  color: pink;
+}
+
+.forminputcb1datetime {
+/* *,
+*::before{
+  content: 'check!'
+};
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  }; */
+  position: flex;
+  width: 80%;
+  height: 3rem;
+  border: 4px solid aliceblue;
+  border-radius: 40px;
+  padding-left: 1rem;
+  padding-right: 0rem;
+  background: none;
+  margin-left: 0%;
+  margin-top: 4%;
+  margin-right: 3%;
+  margin-bottom: 4%;
+  transition: margin-top 500ms ease-in,
+  margin-left 500ms ease-in,
+  margin-bottom 500ms ease-in,
+  margin-right 500ms ease-in,
+  padding-left 500ms ease-in,
   height 500ms ease-in,
   width 500ms ease-in,
   border-width 400ms ease-in,
-  background-color 600ms ease-in;
+  background-color 600ms ease-in,
+  padding-right 500ms linear,
+  font-size 500ms linear;
+  color: pink;
+  color-scheme: dark;
+}
+
+.forminputcb1select:hover{
+  border-color: rgb(248, 149, 238);
+  margin-top: 0%;
+  margin-left: 0%;
+  margin-right: 0%;
+  margin-bottom: 0%;
+  height: 4.5rem;
+  width: 29.5rem;
+  border: 5px solid rgb(248,149,238);
+  background-color: #000;
+  font-size: larger;
+}
+
+.forminputcb1select:focus{
+  border-color: rgb(248, 149, 238);
+  margin-top: 0%;
+  margin-left: 0%;
+  margin-right: 0%;
+  margin-bottom: 0%;
+  height: 4.5rem;
+  width: 29.5rem;
+  border-width: 3.5px;
+  background-color: #000;
+  color: white;
+  font-size: large;
+}
+
+.forminputcb1select:hover ~ .event-label{
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  left: 6rem;
+}
+
+.forminputcb1select:focus ~ .event-label{
+  visibility: hidden;
+  opacity: 0;
 }
 
 .forminputcb1:hover{
@@ -191,8 +309,25 @@
   margin-bottom: 0%;
   height: 4.5rem;
   width: 29.5rem;
+  border: 5px solid rgb(248,149,238);
+  background-color: #000;
+  font-size: larger;
+  padding-left: 3rem;
+}
+
+.forminputcb1datetime:hover{
+  border-color: rgb(248, 149, 238);
+  margin-top: 0%;
+  margin-left: 0%;
+  margin-right: 0%;
+  margin-bottom: 0%;
+  height: 4.5rem;
+  width: 29.5rem;
   border-width: 3.5px;
   background-color: #000;
+  padding-right: 4rem;
+  padding-left: 3rem;
+  font-size: large;
 }
 
 .forminputcb1:focus{
@@ -205,27 +340,68 @@
   width: 29.5rem;
   border-width: 3.5px;
   background-color: #000;
+  color: white;
+  font-size: large;
+  padding-left: 3rem;
+}
+
+.forminputcb1datetime:focus{
+  border-color: rgb(248, 149, 238);
+  margin-top: 0%;
+  margin-left: 0%;
+  margin-right: 0%;
+  margin-bottom: 0%;
+  height: 4.5rem;
+  width: 29.5rem;
+  border-width: 3.5px;
+  background-color: #000;
+  font-size: large;
 }
 
 .forminputcb1:hover ~ .event-label{
   visibility: hidden;
   opacity: 0;
   position: absolute;
-  left: 2rem;
+  left: 6rem;
+}
+
+.forminputcb1datetime:hover ~ .event-label{
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  left: 6rem;
+}
+
+.forminputcb1datetime:focus ~ .event-label{
+  background-color: black;
+  border-radius: 10px;
+  color: white;
+  padding-left: .5rem;
+  padding-right: .5rem;
+}
+
+.forminputcb1:focus ~ .event-label{
+  background-color: black;
+  border-radius: 10px;
+  color: white;
+  padding-left: .5rem;
+  padding-right: .5rem;
 }
 
 .event-label {
   font-size: 14px;
   font-weight: 600;
-  /* margin-bottom: 0px; */
   color: aliceblue;
-  /* padding: 1.25rem; */
-  transition: visibility 2500ms, opacity 500ms linear;
+  transition: visibility 500ms, opacity 500ms linear,
+  background-color 400ms ease-in;
   position: absolute;
-  left: 2rem;
+  left: 6rem;
   bottom: 4rem;
   padding: 1px;
-  background: transparent;
+  background-color: transparent;
+  border-radius: 10px;
+  padding-left: .5rem;
+  padding-right: .5rem;
 }
 
 /* .event-label:hover {
@@ -241,15 +417,17 @@
   padding: 0;
   }
   border: 4px solid aliceblue;
-  border-radius: 40px;
+  width: 100%;
+  border-radius: 0px;
   padding: 0px;
-  background: none;
+  background: transparent;
   height: 5rem;
   display: flex;
   flex-direction: row-reverse;
   min-width: 30rem;
   position: relative;
   margin-bottom: 5px;
+  max-width: 30rem;
 }
 
 .outerforminputcb1:hover{
