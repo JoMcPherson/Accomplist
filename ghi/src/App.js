@@ -103,7 +103,7 @@ function App() {
             <Route path="accomplist_items" element={<AcomplistItemCards />} />
             <Route path="signup" element={<Register />} />
             <Route path="updateprofile" element={<UpdateProfile user={user} />} />
-            <Route path="events/new" element={<EventCreateForm />} />
+            <Route path="events/new" element={<EventCreateForm user={user} items={items}/>} />
             <Route path="events" element={<EventsList />} />
             <Route path="events/edit/:event_id" element={<EventEditor />} />
             <Route path="events/:event_id" element={<EventDetailDisplay />} />

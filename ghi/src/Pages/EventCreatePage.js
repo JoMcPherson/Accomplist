@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useAuthContext } from "@galvanize-inc/jwtdown-for-react";
 import LoginForm from './Logon';
 
-export default function EventCreateForm() {
+export default function EventCreateForm({user, items}) {
     const { token } = useAuthContext();
     const [name, setName] = useState('');
     const [date, setDate] = useState('')
@@ -10,7 +10,9 @@ export default function EventCreateForm() {
     const [cost, setCost] = useState('');
     const [location, setLocation] = useState('');
     const [description, setDescription] = useState('');
-    const [organizer, setOrganizer] = useState('');
+    const organizerID = `${user.id}`;
+    const organizerUsername = `${user.username}`;
+    const [goalID, setGoalID] = useState ('');
 
 // custom background
   const mainBg = useMemo(() => ({
@@ -65,14 +67,23 @@ export default function EventCreateForm() {
         setDescription(value)
     }
 
-    const handleOrganizerChange = (event) => {
+    // const handleOrganizerIDChange = (event) => {
+    //     const value = event.target.value;
+    //     setOrganizerID(value)
+    // }
+
+    // const handleOrganizerNameChange = (event) => {
+    //     const value = event.target.value;
+    //     setOrganizerUsername(value)
+    // }
+
+    const handleGoalIDChange = (event) => {
         const value = event.target.value;
-        setOrganizer(value)
+        setGoalID(value)
     }
 
     const handleSubmit = async (event) => {
         event.preventDefault()
-
 
         const data = {
         name: name,
@@ -81,8 +92,11 @@ export default function EventCreateForm() {
         cost: cost,
         location: location,
         description: description,
-        organizer: organizer,
+        organizer_id: organizerID,
+        organizer_username: organizerUsername,
+        goal_id: goalID,
         }
+        console.log('data:', data)
         const eventsUrl = `${process.env.REACT_APP_API_HOST}/events`;
         const fetchConfig = {
             method: 'POST',
@@ -100,7 +114,6 @@ export default function EventCreateForm() {
             setCost('');
             setLocation('');
             setDescription('');
-            setOrganizer('');
 
             window.location.href = `${process.env.PUBLIC_URL}/events`
             };
@@ -108,42 +121,51 @@ export default function EventCreateForm() {
 
     if (token) {
     return(
-        <div className="Auth-form-container">
-            <form onSubmit={handleSubmit} id="create-customer-form" className="Auth-form">
-                <div className="Auth-form-content">
-                <h1 className="Auth-form-title">Create an Event:</h1>
-                <div className="form-group mt-3">
-                    <label htmlFor="name"className="label">Event Name:</label>
-                    <input value={name} onChange={handleNameChange} placeholder="Name" required type="text" name="name" id="name" className="form-control mt-1" />
+        <div className="Event-Create-form-container">
+            <form onSubmit={handleSubmit} >
+                {/* <div className="Auth-form-content"> */}
+                <h1 className="event-form-title">Create an Event:</h1>
+                {/* <div className="form-group mt-3"> */}
+                <div className='outerforminputcb1'>
+                    <input value={name} onChange={handleNameChange} placeholder="Name" required type="text" name="name" id="name" className="forminputcb1" />
+                    <label className="event-label">Event Name:</label>
                 </div>
-                <div className="form-group mt-3">
-                    <label htmlFor="date" className="label">Date:</label>
-                    <input value={date} onChange={handleDateChange} placeholder="Date" required type="date" id="date" name="date" className="form-control mt-1" />
+                {/* </div> */}
+                <div className="outerforminputcb1">
+                    <input value={date} onChange={handleDateChange} placeholder="Date" required type="date" id="date" name="date" className="forminputcb1" />
+                    <label htmlFor="date" className="event-label">Date:</label>
                 </div>
-                <div className="form-group mt-3">
-                    <label htmlFor="time" className="label">Time:</label>
-                    <input value={time} onChange={handleTimeChange} placeholder="Time" required type="time" id="time" name="time" className="form-control mt-1" />
+                <div className="outerforminputcb1">
+                    <input value={time} onChange={handleTimeChange} placeholder="Time" required type="time" id="time" name="time" className="forminputcb1" />
+                    <label htmlFor="time" className="event-label">Time:</label>
                 </div>
-                <div className="form-group mt-3">
-                    <label htmlFor="cost" className="label">Event cost:</label>
-                    <input value={cost} onChange={handleCostChange} placeholder="Total cost" required type="cost" id="cost" name="cost" className="form-control mt-1" />
+                <div className="outerforminputcb1">
+                    {/* <input className="btn btn-outline-dark" type="submit" value="submit" /> */}
+                    <label htmlFor="eventID" className="event-label">Accomplistment:</label>
+                    <select onChange={handleGoalIDChange} id="items" className="forminputcb1" >
+                        <option value="" >Choose Accomplist Item From Dropdown Below!</option>
+                        {items.map(item =><option value={item.id} key={item.id}>{item.title}</option>)}
+                    </select>
                 </div>
-                <div className="form-group mt-3">
-                    <label htmlFor="location" className="label">Location:</label>
-                    <input value={location} onChange={handleLocationChange} placeholder="Location" required type="location" id="location" name="location" className="form-control mt-1" />
+                <div className="outerforminputcb1">
+                    <input value={cost} onChange={handleCostChange} placeholder="Total cost" id="cost" name="cost" className="forminputcb1" />
+                    <label htmlFor="cost" className="event-label">Event Cost:</label>
                 </div>
-                <div className="form-group mt-3">
-                    <label htmlFor="description" className="label">Description:</label>
-                    <input value={description} onChange={handleDescriptionChange} placeholder="Description" required type="description" id="description" name="description" className="form-control mt-1" />
+                <div className="outerforminputcb1">
+                    <input value={location} onChange={handleLocationChange} placeholder="Location" id="location" name="location" className="forminputcb1" />
+                    <label htmlFor="location" className="event-label">Location:</label>
                 </div>
-                <div className="form-group mt-3">
-                    <label htmlFor="organizer" className="label">Organizer:</label>
-                    <input value={organizer} onChange={handleOrganizerChange} placeholder="Organizer" required type="organizer" id="organizer" name="organizer" className="form-control mt-1" />
+                <div className="outerforminputcb1">
+                    <input value={description} onChange={handleDescriptionChange} placeholder="Description" id="description" name="description" className="forminputcb1" />
+                    <label htmlFor="description" className="event-label">Description:</label>
                 </div>
-                <div className="d-grid gap-2 mt-4">
-                    <input className="btn btn-outline-dark" type="submit" value="submit" />
-                </div>
-                </div>
+                {/* <div className="outerforminputcb1">
+                    <input value={organizerID} onChange={handleOrganizerIDChange} placeholder={user.id} id="organizerID" name="organizerID" className="forminputcb1" />
+                    <label htmlFor="organizerID" className="event-label">Organizer ID:</label>
+                </div> */}
+
+                {/* </div> */}
+                <button disabled={items.length === 0} type="submit" className="btn btn-primary">Submit</button>
             </form>
         </div>
     )

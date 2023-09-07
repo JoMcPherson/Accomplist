@@ -1,5 +1,15 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Navbar, Nav, NavItem, Form,FormControl, NavbarBrand, NavDropdown, Container, NavLink } from "react-bootstrap";
+import React, { useRef, useEffect, useState } from "react";
+import {
+  Navbar,
+  Nav,
+  NavItem,
+  Form,
+  FormControl,
+  NavbarBrand,
+  NavDropdown,
+  Container,
+  NavLink
+} from "react-bootstrap";
 import { useNavigate, Link } from "react-router-dom";
 import useToken from "@galvanize-inc/jwtdown-for-react";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -16,14 +26,15 @@ const CustomNavbar = () => {
     window.location.href = `${process.env.PUBLIC_URL}/accomplist_items`;
   };
   useEffect(() => {
-      const handleScroll = () => {
-        if (window.scrollY >= 80) {
-          setNavbarClass("compressed");
-        } else {
-          setNavbarClass("");
-        }
-      };
-      const handleDocumentClick = (event) => {
+    const handleScroll = () => {
+      if (window.scrollY >= 80) {
+        setNavbarClass("compressed");
+      } else {
+        setNavbarClass("");
+      }
+    };
+
+    const handleDocumentClick = (event) => {
         if (navbarRef.current && !navbarRef.current.contains(event.target)) {
           const navbarToggler = document.querySelector(".navbar-toggler");
           if (navbarToggler && !navbarToggler.classList.contains("collapsed")) {
@@ -31,12 +42,13 @@ const CustomNavbar = () => {
           }
         }
       };
-      window.addEventListener("scroll", handleScroll);
-      document.addEventListener("click", handleDocumentClick);
-      return () => {
-        window.removeEventListener("scroll", handleScroll);
-        document.removeEventListener("click", handleDocumentClick);
-      };
+
+    window.addEventListener("scroll", handleScroll);
+    document.addEventListener("click", handleDocumentClick);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      document.removeEventListener("click", handleDocumentClick);
+    };
   }, []);
 
   return (
