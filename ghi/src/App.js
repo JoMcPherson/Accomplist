@@ -9,6 +9,7 @@ import EventCreateForm from "./Pages/EventCreatePage.js";
 import EventDetailDisplay from "./Pages/EventDetailsPage.js";
 import EventEditor from "./Pages/EventEditPage.js";
 import EventsList from "./Pages/EventsListPage.js";
+import Footer from "./Components/Footer.js";
 import ForgotPassword from "./Components/Password.js";
 import Home from "./Pages/Home.js";
 import LoginForm from "./Pages/Logon.js";
@@ -96,7 +97,8 @@ function App() {
       <BrowserRouter basename={basename}>
       <NavBar />
       <Outlet />
-        <div>
+        <div className="app-container">
+        <div className="content-wrapper">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="login" element={<LoginForm />} />
@@ -139,6 +141,8 @@ function App() {
             <Route path="*" element={<Lost />}/>
           </Routes>
         </div>
+        </div>
+        <Footer />
         <ErrorNotification error={error} />
       </BrowserRouter>
     </div>

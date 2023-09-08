@@ -53,6 +53,7 @@ const LoginForm = () => {
               placeholder="username"
               className="form-control mt-1"
               required
+              autoComplete="username"
               onChange={(e) => setUsername(e.target.value)}
             />
           </div>
@@ -64,6 +65,7 @@ const LoginForm = () => {
               placeholder="password"
               className="form-control mt-1"
               required
+              autoComplete="current-password"
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>

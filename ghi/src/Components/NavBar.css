@@ -4,14 +4,18 @@
 body {
   font-family: 'Poppins', sans-serif;
   margin: 0;
+  padding: 0;
   background-color: whitesmoke;
   overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 a {
     text-decoration: none !important;
 }
 
+/* logo */
 .logo {
     transition: filter 1.5s ease;
 }
@@ -36,8 +40,8 @@ a {
 .navbar.compressed {
   padding-top: 15px;
   padding-bottom: 15px;
-  background: rgb(0, 0, 0);
-  color: rgb(0, 0, 0);
+  background: #000000;
+  color: #000000;
   box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
   border-bottom: 1px solid hotpink;
 }
@@ -111,13 +115,14 @@ a {
 }
 
 .custom-dropdown .dropdown-menu {
-  background-color: #222;
+  background-color: honeydew;
 }
 
 .custom-dropdown .dropdown-item {
-  color: white !important;
+  color: rgb(0, 0, 0) !important;
 }
 
+/* navbar underline media */
 @media only screen and (max-width: 992px) {
   .navbar .navbar-brand {
     padding: 0 0.7em;
@@ -136,4 +141,29 @@ a {
   .navbar .navbar-nav .nav-item:hover::after {
   width: 10%;
   }
+}
+
+/* footer */
+.main-footer{
+  color: white;
+  position: relative;
+  bottom: 0;
+  width: 100%;
+  flex-shrink: 0;
+  font-size: 16px;
+  background-color: black !important;
+  border-top: 1px solid hotpink;
+}
+
+.main-footer .col-sm-7 {
+    text-align: right;
+    padding-top: 8px;
+}
+
+.main-footer .col-sm-5 {
+    text-align: left;
+}
+
+.main-footer .col-sm-7 .SocialIcon:hover {
+    background-color: hotpink !important;
 }

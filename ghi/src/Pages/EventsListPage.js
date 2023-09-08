@@ -41,7 +41,7 @@ export default function EventsList() {
                 <div className="hero-image-events">
                 <div className="hero-text">
                     <h1>Come and join the party.</h1>
-                    <p>Or better yet <Link to="/events/new">Start your own</Link></p>
+                    <p>Or better yet... <Link to="/events/new">Start your own</Link></p>
                 </div>
             </div>
             <script src="sorttable.js"></script>

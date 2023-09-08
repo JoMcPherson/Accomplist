@@ -1,16 +1,6 @@
 import React, { useRef, useEffect, useState } from "react";
-import {
-  Navbar,
-  Nav,
-  NavItem,
-  Form,
-  FormControl,
-  NavbarBrand,
-  NavDropdown,
-  Container,
-  NavLink
-} from "react-bootstrap";
-import { useNavigate, Link } from "react-router-dom";
+import { Navbar,Nav,NavItem,Form,FormControl,NavbarBrand,NavDropdown,Container,NavLink} from "react-bootstrap";
+import { Link } from "react-router-dom";
 import useToken from "@galvanize-inc/jwtdown-for-react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./NavBar.css";
@@ -19,7 +9,6 @@ import logo from "../assets/logolarge.png";
 const CustomNavbar = () => {
   const { logout, token } = useToken();
   const [navbarClass, setNavbarClass] = useState("");
-  const navigate = useNavigate();
   const navbarRef = useRef(null);
   const handleLogout = () => {
     logout();
@@ -61,9 +50,20 @@ const CustomNavbar = () => {
         <Navbar.Toggle aria-controls="exampleNavComponents" />
         <Navbar.Collapse className="justify-content-end">
           <Nav className="ml-auto">
-            <NavItem className="px-2">
-              <NavLink onClick={()=>{navigate('/accomplist_items')}}>Bucket List</NavLink>
-            </NavItem>
+            <NavDropdown
+              title="Accomplist Items"
+              id="basic-nav-dropdown"
+              className="custom-dropdown">
+              <NavDropdown.Item as={Link} to="/accomplist_items/new">
+                Create an Accomplist Item
+              </NavDropdown.Item>
+              <NavDropdown.Item as={Link} to="/accomplist_items">
+                View all Accommplist Items
+              </NavDropdown.Item>
+              <NavDropdown.Item as={Link} to="/my_accomplist_items/new">
+                Add to my Accomplist Items
+              </NavDropdown.Item>
+            </NavDropdown>
             <NavItem className="px-2">
               <NavLink as={Link} to="/events">Events</NavLink>
             </NavItem>
@@ -81,18 +81,6 @@ const CustomNavbar = () => {
                 <NavLink as={Link} to="/Login">Login</NavLink>
               </NavItem>
             )}
-            <NavDropdown
-              title="Accomplist Items"
-              id="basic-nav-dropdown"
-              className="custom-dropdown"
-            >
-              <NavDropdown.Item as={Link} to="/accomplist_items/new">
-                Create Accomplist Item
-              </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="/my_accomplist_items/new">
-                Add To My Accomplist Items
-              </NavDropdown.Item>
-            </NavDropdown>
           </Nav>
           <Form className="navbar-form navbar-right px-2">
             <FormControl type="text" placeholder="Search" />
