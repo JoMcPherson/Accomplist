@@ -58,7 +58,7 @@ const CustomNavbar = () => {
                 Create an Accomplist Item
               </NavDropdown.Item>
               <NavDropdown.Item as={Link} to="/accomplist_items">
-                View all Accommplist Items
+                View all Accomplist Items
               </NavDropdown.Item>
               <NavDropdown.Item as={Link} to="/my_accomplist_items/new">
                 Add to my Accomplist Items

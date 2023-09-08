@@ -20,6 +20,17 @@
     color: white;
 }
 
+.whitey-shadow {
+    color: white;
+    text-shadow: 1px 1px 3px grey;
+    padding: 3px;
+}
+
+.black-shadow {
+    color: black;
+    background-color: white;
+}
+
 .pinklink a {
   color: hotpink;
   text-decoration: none;

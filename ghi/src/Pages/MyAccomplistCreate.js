@@ -7,9 +7,14 @@ export default function MyAccomplistItemCreate({ user, items, my_accomplist_item
   const { token } = useToken();
   const [item, setItem] = useState('');
   const [completed, setCompleted] = useState(false);
-
   const userId = user.id;
 
+  const customBackgroundStyle = {
+  backgroundImage: `url(https://i.imgur.com/WFCPRp8.jpeg)`,
+  backgroundRepeat: 'no-repeat',
+  backgroundSize: 'cover',
+  minHeight: '100vh',
+};
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -37,6 +42,24 @@ export default function MyAccomplistItemCreate({ user, items, my_accomplist_item
     }
   }
 
+   async function handleDelete(event) {
+    event.preventDefault();
+    const myAccomplistItemId = event.target.value
+
+    const myItemUrl = `${process.env.REACT_APP_API_HOST}/api/my_accomplist_items/${myAccomplistItemId}`;
+    const fetchConfig = {
+      method: "delete",
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+    const response = await fetch(myItemUrl, fetchConfig);
+    if (response.ok) {
+      getMyItems();
+      window.location.href = `${process.env.PUBLIC_URL}/my_accomplist_items/new`;
+    }
+  }
+
   function handleChangeItem(event) {
     setItem(event[0].id);
   }
@@ -55,12 +78,13 @@ export default function MyAccomplistItemCreate({ user, items, my_accomplist_item
     const filteredItems = items.filter(item => !myAccomplistItemIds.includes(item.id));
 
     return (
-        <div style={{ marginTop: '180px' }}>
-      <Container>
-        <h1 className="mt-5">Add An Accomplist Item To Your Bucketlist!</h1>
+    <div style={customBackgroundStyle}>
+        <div style={{ paddingTop: '200px' }}>
+            <Container>
+                <h1 className="whitey-shadow">Add An Accomplist Item To Your Bucketlist!</h1>
         <Form onSubmit={handleSubmit}>
-          <Form.Group className="mb-3">
-            <Form.Label htmlFor="items">Choose Accomplist Item</Form.Label>
+          <Form.Group >
+            <h5 className="whitey-shadow" htmlFor="items">Choose Accomplist Item</h5>
             <Typeahead
               id="items"
               labelKey="title"
@@ -71,7 +95,7 @@ export default function MyAccomplistItemCreate({ user, items, my_accomplist_item
           </Form.Group>
 
           <Form.Group className="mb-3">
-            <Form.Label htmlFor="completed">Have You Done It?</Form.Label>
+            <h5 className="whitey-shadow" htmlFor="completed">Have You Done It?</h5>
             <Form.Control
               as="select"
               onChange={handleChangeCompleted}
@@ -92,40 +116,41 @@ export default function MyAccomplistItemCreate({ user, items, my_accomplist_item
         </Form>
 
         <Container className="mt-5">
-          <h1>{user.username}'s Accomplist items.</h1>
+          <h1 className="whitey-shadow">{user.username}'s accomplistments and bucket list!</h1>
 
           <Row>
-            <Table striped bordered hover>
+               <Table striped bordered hover>
               <thead>
                 <tr>
-                  <th style={{ width: '80%' }}>Accomplist Item</th>
+                  <th style={{ width: '75%' }}>Accomplist Item</th>
                   <th style={{ width: '20%' }}>Status</th>
+                  <th style={{ width: '5%' }}>Actions</th>
                 </tr>
               </thead>
-              <tbody>
-                {completedItems.map(my_item => (
+              <tbody>{completedItems.map(my_item => (
                   <tr key={my_item.id}>
                     <td>{my_item.item_title}</td>
                     <td>Done</td>
+                    <td><Button className="btn btn-sm custom-button" onClick={handleDelete} value={my_item.id}>Delete</Button></td>
                   </tr>
-                ))}
-              </tbody>
+                     ))}
+                  </tbody>
             </Table>
           </Row>
-
           <Row>
             <Table striped bordered hover>
               <thead>
                 <tr>
-                  <th style={{ width: '80%' }}>Accomplist Item</th>
+                  <th style={{ width: '75%' }}>Accomplist Item</th>
                   <th style={{ width: '20%' }}>Status</th>
+                  <th style={{ width: '5%' }}>Actions</th>
                 </tr>
               </thead>
-              <tbody>
-                {pendingItems.map(my_item => (
+              <tbody>{pendingItems.map(my_item => (
                   <tr key={my_item.id}>
                     <td>{my_item.item_title}</td>
                     <td>Will Do!</td>
+                    <td><Button className="btn btn-sm custom-button" onClick={handleDelete} value={my_item.id}>Delete</Button></td>
                   </tr>
                 ))}
               </tbody>
@@ -134,7 +159,9 @@ export default function MyAccomplistItemCreate({ user, items, my_accomplist_item
         </Container>
 
       </Container>
-       </div>
+      </div>
+      </div>
+
     );
   } else {
     return (

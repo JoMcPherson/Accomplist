@@ -61,15 +61,6 @@ export default function AccomplistItemCreate({user}) {
     updatedResources = generateGoogleSearchUrl(title);
   }
 
-    console.table({
-        user_id: user.id,
-        title: title,
-        details: details,
-        photo: photo,
-        resources: resources,
-        date_added: date,
-    });
-
     const data = {
         user_id: user.id,
         title: title,
