@@ -57,6 +57,22 @@
   font-size: 1.1em;
 }
 
+.hero-text a {
+  color: hotpink;
+  text-decoration: none;
+  /* background-color: transparent;
+  color: white;
+  padding: 10px 16px;
+  text-align: center;
+  display: inline-block;
+  border: 1px solid; */
+}
+
+.hero-text a:hover, a:active {
+  /* background-color: white; */
+  color: white;
+}
+
 .hero-image {
   background-image: url("https://images.pexels.com/photos/14583017/pexels-photo-14583017.jpeg");
   /* background-image: url("https://images.pexels.com/photos/1647962/pexels-photo-1647962.jpeg"); */
@@ -107,23 +123,32 @@
   transition: height 0.4s;
 }
 
-.hero-text a {
-  color: hotpink;
-  text-decoration: none;
-  /* background-color: transparent;
-  color: white;
-  padding: 10px 16px;
-  text-align: center;
-  display: inline-block;
-  border: 1px solid; */
-}
-
-.hero-text a:hover, a:active {
-  /* background-color: white; */
-  color: white;
-}
-
 /* profile page things */
+.hero-image-profile {
+  background-image: url("https://images.pexels.com/photos/4040648/pexels-photo-4040648.jpeg");
+  height: 250px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: static;
+  z-index: 1;
+  border-bottom: 1px solid black;
+}
+
+.container .user-profile-image {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center;
+    border: 1px solid black;
+}
+
+.container--profile {
+  z-index: 2;
+  margin-top: -75px;
+}
+
 .blackandwhite {
     filter: grayscale(60%);
     -webkit-filter: grayscale(60%);

@@ -1,15 +1,9 @@
 import { useEffect, useState } from "react";
 import useToken from "@galvanize-inc/jwtdown-for-react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import {
-  Card,
-  Container,
-  Row,
-  Col,
-  Button,
-  FormControl,
-} from "react-bootstrap";
+import { Card, Container, Row, Col, Button,FormControl } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import Logen from '../Components/Logen';
 
 export default function AccountProfilePage({
   user,
@@ -126,39 +120,25 @@ export default function AccountProfilePage({
     : completedItems.slice(0, 4);
 
   if (!token) {
-    return <div> Please log in to access your profile! </div>;
+    return <Logen />;
   }
 
   return (
-    <div className="container" style={{ marginTop: "150px" }}>
+  <div style={{position: "relative"}}>
+    <div className="hero-image-profile"></div>
+    <div className="container container--profile">
       <div style={{ display: "flex" }}>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", }}>
           {user.photo && (
-            <img
-              src={userInfo.photo}
-              alt="User's Profile"
-              style={{
-                width: "150px",
-                height: "150px",
-                borderRadius: "50%",
-                objectFit: "cover",
-                objectPosition: "center",
-              }}
-            />
-          )}
+            <img src={userInfo.photo} alt="User's Profile" className="user-profile-image"/>
+            )}
           <Link to="/updateprofile" className="btn btn-outline-dark mt-3">
             Update Profile
           </Link>
         </div>
-        <div style={{ marginLeft: "20px" }}>
+        <div style={{ marginLeft: "20px", marginTop: "21px"}}>
           <h1>
-            <strong>{user.username}</strong>
+            <strong className="whitey">{user.username}</strong>
           </h1>
           <div>
             <strong>{fullName}</strong>
@@ -167,7 +147,7 @@ export default function AccountProfilePage({
             <b>Member Since: </b>
             {formattedDate}
           </div>
-          <strong>Bio</strong>
+          <strong>Bio:</strong>
           <div>{userInfo.bio}</div>
         </div>
       </div>
@@ -314,5 +294,34 @@ export default function AccountProfilePage({
         </Container>
       )}
     </div>
+    </div>
   );
 }
+
+  // <div style={{position: "relative"}}>
+  //   <div className="hero-image-profile"></div>
+  //   <div className="container container--profile">
+  //     <div style={{ display: "flex" }}>
+  //       <div style={{ display: "flex", flexDirection: "column", alignItems: "center", }}>
+  //         {user.photo && (
+  //           <img src={userInfo.photo} alt="User's Profile" className="user-profile-image"/>
+  //           )}
+  //         <Link to="/updateprofile" className="btn btn-outline-dark mt-3">
+  //           Update Profile
+  //         </Link>
+  //       </div>
+  //       <div style={{ marginLeft: "20px", marginTop: "21px"}}>
+  //         <h1>
+  //           <strong className="whitey">{user.username}</strong>
+  //         </h1>
+  //         <div>
+  //           <strong>{fullName}</strong>
+  //         </div>
+  //         <div>
+  //           <b>Member Since: </b>
+  //           {formattedDate}
+  //         </div>
+  //         <strong>Bio:</strong>
+  //         <div>{userInfo.bio}</div>
+  //       </div>
+  //     </div>

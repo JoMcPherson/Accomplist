@@ -130,23 +130,28 @@ export default function UpdateProfile({ user }) {
         <form className="Auth-form" onSubmit={handleSubmit}>
           <div className="Auth-form-content">
             <h5 className="Auth-form-title">Update Profile</h5>
+            <div className="form-group">
+            <label className="label">Update profile photo:</label>
             <input
-              className="form-control mt-1"
+              className="form-control"
               type="text"
               name="photo"
               placeholder="update photo URL"
               value={formData.photo}
               onChange={handleChange}
-            />
+            /></div>
+            <div className="form-group mt-1">
+            <label className="label">Tell us about yourself:</label>
             <textarea
-              className="form-control mt-1"
+              className="form-control"
               name="bio"
               placeholder="update bio"
               rows="4"
               value={formData.bio}
               onChange={handleChange}
             ></textarea>
-            <div className="d-grid gap-2 mt-3">
+            </div>
+            <div className="d-grid gap-2 mt-4">
               <button type="submit" className="btn btn-outline-dark">
                 Update
               </button>

@@ -6,6 +6,15 @@ import { Link } from 'react-router-dom';
 import Logen from '../Components/Logen';
 import icon from '../assets/icon.png';
 
+function formatDate(timestamp) {
+  const date = new Date(timestamp);
+  const month = date.toLocaleString('default', { month: 'short' }); // This gets the abbreviated month name (i.e., "MMM")
+  const day = String(date.getDate()).padStart(2, '0'); // This ensures the day is two digits
+  const year = date.getFullYear();
+
+  return `${month}/${day}/${year}`;
+}
+
 
 export default function AccomplistDetail({ user, my_accomplist_items }) {
   const { token } = useAuthContext();
@@ -19,6 +28,7 @@ export default function AccomplistDetail({ user, my_accomplist_items }) {
   const [usersCompletedCount, setUsersCompletedCount] = useState(0);
   const [usersNotCompletedCount, setUsersNotCompletedCount] = useState(0);
   const [height, setHeight] = useState(400);
+  const timestamp = new Date().toISOString();
 
   // for the parallax scroll
   useEffect(() => {
@@ -150,7 +160,7 @@ export default function AccomplistDetail({ user, my_accomplist_items }) {
     if (user.photo === "") {
       user.photo =  icon
     }
-    handleUpdate('comments', user.id.toString().concat(';&* ', user.username,';&* ', user.photo, ';&* ', thingToDo,';&*','ENDUSER'));
+    handleUpdate('comments', user.id.toString().concat(';&* ', user.username,';&* ', user.photo, ';&* ', thingToDo,';&*', timestamp ,';&*','ENDUSER'));
   };
 
   // modal code possibly redundant because of bootstrap but it works and I don't want to faafo
@@ -251,8 +261,8 @@ export default function AccomplistDetail({ user, my_accomplist_items }) {
               {itemDetailData &&
                 itemDetailData.comments &&
                 itemDetailData.comments.split('ENDUSER').filter(comment => comment.trim() !== '').map((userDetails, index) => {
-                  // Split the userDetails into an array of [userId, userPhoto, userName, userComment]
-                  const [userId, userName, userPhoto, userComment] = userDetails.split(';&*').filter(detail => detail.trim() !== '');
+                  // Split the userDetails into an array of [userId, userPhoto, userName, userComment.. and now timestamp]
+                  const [userId, userName, userPhoto, userComment, userTimestamp] = userDetails.split(';&*').filter(detail => detail.trim() !== '');
                   return (
                     <Card className="suggestion-card mb-3" key={index}>
                       <Card.Body className="custom-card-body d-flex">
@@ -261,12 +271,13 @@ export default function AccomplistDetail({ user, my_accomplist_items }) {
                             <Image src={userPhoto} />
                           </Link>
                         </div>
-                        <div className="comment-content">
-                          <div className="comment-header d-flex justify-content-between">
-                            <strong className="comment-author">{userName}</strong>
+                          <div className="comment-content">
+                              <div className="comment-header d-flex justify-content-between">
+                                  <strong className="comment-author">{userName}</strong>
+                                  <small className="comment-timestamp">{formatDate(userTimestamp)}</small>
+                              </div>
+                              <p>{userComment}</p>
                           </div>
-                          <p>{userComment}</p>
-                        </div>
                       </Card.Body>
                     </Card>
                   );

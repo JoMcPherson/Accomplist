@@ -29,16 +29,16 @@ function AccomplistItem(props) {
 
     if (wantedCount !== null && completedCount !== null) {
 
-        return (
+    return (
         <div className='col-sm'>
             {props.list.map(accomplist_item => {
-               let wanted = wantedCount[accomplist_item.id]
-               let completed = completedCount[accomplist_item.id]
+               let wanted = accomplist_item.wantedCount;
+               let completed = accomplist_item.completedCount;
                 return (
                     <div key={accomplist_item.id}>
                         <div className="item-card text-center">
                             <Link to={`/accomplist_items/${accomplist_item.id}`}>
-                            <img src={accomplist_item.photo} className="card-img-top" alt=""></img></Link>
+                            <img src={accomplist_item.photo} className="card-img-top" alt={accomplist_item.title}></img></Link>
                             <div className="profile-content">
                                 <h2 className="profile-name">{accomplist_item.title}</h2>
                             </div>
@@ -66,12 +66,10 @@ function AccomplistItem(props) {
 
 class AccomplistItemCards extends React.Component {
     state = {
-        originalItems: [],
         itemColumns: [[], [], []],
         selectedSortOption: '',
         searchTerm: '',
-        wantedCount: {},
-        completedCount: {},
+        originalItems: []
     };
 
     async componentDidMount() {
@@ -81,62 +79,52 @@ class AccomplistItemCards extends React.Component {
             const response = await fetch(url);
             if (response.ok) {
                 const data = await response.json();
-                const accomplistItemIds = data.map(item => item.id);
-                const requests = accomplistItemIds.map(id => fetch(`${process.env.REACT_APP_API_HOST}/api/accomplist_items/${id}`));
 
-                const responses = await Promise.all(requests);
-                const itemColumns = [[], [], []]
+                const loadedItemsWithCounts = await Promise.all(data.map(async (item) => {
+                    const wantedCount = await this.fetchItemCount(item.id, false);
+                    const completedCount = await this.fetchItemCount(item.id, true);
+                    return {
+                        ...item,
+                        wantedCount,
+                        completedCount
+                    };
+                }));
 
-                let i = 0;
-                for (const itemResponse of responses) {
-                    if (itemResponse.ok) {
-                        const details = await itemResponse.json();
-                        itemColumns[i].push(details);
-                        i = (i + 1) % 3;
-                    } else {
-                        console.error(itemResponse);
-                    }
-                }
+                const itemColumns = this.distributeItemsToColumns(loadedItemsWithCounts);
 
-                const wantedCounts = await this.fetchCountsForAllItems(false);
-                const completedCounts = await this.fetchCountsForAllItems(true);
-
-                this.setState({
-                    wantedCount: wantedCounts,
-                    completedCount: completedCounts,
-                    itemColumns,
-                    originalItems: data });
+                this.setState({ itemColumns, originalItems: loadedItemsWithCounts });
             }
         } catch (e) {
             console.error(e);
         }
     }
 
-    fetchCountsForAllItems = async (isCompleted) => {
-    const counts = {};
-    for (const item of this.state.originalItems) {
-        const countUrl = `${process.env.REACT_APP_API_HOST}/api/accomplist_items/${item.id}/${isCompleted}`;
+    distributeItemsToColumns = (items) => {
+    const itemColumns = [[], [], []];
+    items.forEach((item, i) => {
+        itemColumns[i % 3].push(item);
+    });
+    return itemColumns;
+}
+
+    fetchItemCount = async (itemId, isCompleted) => {
+        const countUrl = `${process.env.REACT_APP_API_HOST}/api/accomplist_items/${itemId}/${isCompleted}`;
         const response = await fetch(countUrl);
         const data = await response.json();
-        counts[item.id] = data;
+        return data;
     }
-    return counts;
-}
 
     handleSearchChange = event => {
         const searchTerm = event.target.value;
 
-        // Filtering the items based on search term
-        const filteredItems = this.state.originalItems.filter(item =>
+        const filteredItems = (this.state.originalItems).filter(item =>
             item.title.toLowerCase().includes(searchTerm.toLowerCase())
         );
 
-        // Sorting the filtered items alphabetically
         const sortedItems = searchTerm ?
             filteredItems.sort((a, b) => a.title.localeCompare(b.title)) :
             filteredItems;
 
-        // Re-arranging the sorted items into columns
         const itemColumns = [[], [], []];
         for (let i = 0; i < sortedItems.length; i++) {
             itemColumns[i % 3].push(sortedItems[i]);
@@ -147,7 +135,7 @@ class AccomplistItemCards extends React.Component {
 
     handleSortChange = event => {
         const selectedSortOption = event.target.value;
-        const allItems = this.state.originalItems.slice();
+        const allItems = [].concat(...this.state.itemColumns);
 
         allItems.sort((a, b) => {
             switch (selectedSortOption) {
@@ -156,26 +144,23 @@ class AccomplistItemCards extends React.Component {
                 case 'id2':
                     return a.id - b.id;
                 case 'wanted':
-                    return this.state.wantedCount[b.id] - this.state.wantedCount[a.id];
+                    return b.wantedCount - a.wantedCount;
                 case 'completed':
-                    return this.state.completedCount[b.id] - this.state.completedCount[a.id];
+                    return b.completedCount - a.completedCount;
                 default:
                     return 0;
             }
         });
 
-        const itemColumns = [[], [], []];
-        for (let i = 0; i < allItems.length; i++) {
-            itemColumns[i % 3].push(allItems[i]);
-        }
+        const itemColumns = this.distributeItemsToColumns(allItems);
 
         this.setState({ selectedSortOption, itemColumns });
     };
 
     render() {
     const sortOptions = [
-        { value: 'wanted', label: 'Mosted Wanted' },
-        { value: 'completed', label: 'Most Completed' },
+        { value: 'wanted', label: 'Wanted Most' },
+        { value: 'completed', label: 'Completed Most' },
         { value: 'id', label: 'Date created (newest)' },
         { value: 'id2', label: 'Date created (oldest)' },
     ];
@@ -219,10 +204,7 @@ class AccomplistItemCards extends React.Component {
                     <br />
                     <div className="row">
                         {this.state.itemColumns.map((list, index) => {
-                            const filteredList = list.filter(item =>
-                                item.title.toLowerCase().includes(this.state.searchTerm.toLowerCase())
-                            );
-                            return <AccomplistItem key={index} list={filteredList} />;
+                            return <AccomplistItem key={index} list={list} />;
                         })}
                     </div>
                 </div>

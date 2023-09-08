@@ -250,3 +250,78 @@ class AccomplistItemRepository:
 
         except Exception as e:
             print(e)
+
+    def search_by_title(self, title: str) -> List[AccomplistItemOut]:
+        sql_query = """
+            SELECT
+            id,
+            user_id,
+            title,
+            details,
+            photo,
+            resources,
+            comments,
+            date_added
+            FROM accomplist_items
+            WHERE LOWER(title) LIKE %s
+        """
+        title_query = f"%{title.lower()}%"
+
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as cur:
+                    cur.execute(sql_query, [title_query])
+
+                    results = cur.fetchall()
+
+                    return [
+                        AccomplistItemOut(
+                            id=row[0],
+                            user_id=row[1],
+                            title=row[2],
+                            details=row[3],
+                            photo=row[4],
+                            resources=row[5],
+                            comments=row[6],
+                            date_added=row[7],
+                        )
+                        for row in results
+                    ]
+        except Exception as e:
+            print("Error encountered while fetching results:", e)
+            return []
+
+    # def search_by_title(self, title: str, page: int = 1,
+    #  <<<items_per_page: int = 10) -> List[AccomplistItemOut]:
+    #     offset = (page - 1) * items_per_page
+    #     sql_query = """
+    #         SELECT id, user_id, title, details, photo,
+    #  <<<resources, comments, date_added
+    #         FROM accomplist_items
+    #         WHERE LOWER(title) LIKE %s
+    #         LIMIT %s OFFSET %s
+    #     """
+    #     title_query = f"%{title.lower()}%"
+
+    #     try:
+    #         with pool.connection() as conn:
+    #             with conn.cursor() as cur:
+    #                 cur.execute(sql_query,
+    #  <<<[title_query, items_per_page, offset])
+
+    #                 results = cur.fetchall()
+
+    #                 return [AccomplistItemOut(
+    #                     id=row[0],
+    #                     user_id=row[1],
+    #                     title=row[2],
+    #                     details=row[3],
+    #                     photo=row[4],
+    #                     resources=row[5],
+    #                     comments=row[6],
+    #                     date_added=row[7]
+    #                 ) for row in results]
+    #     except Exception as e:
+    #         print("Error encountered while fetching results:")
+    #         print(e)
+    #         return []
