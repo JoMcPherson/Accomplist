@@ -32,7 +32,6 @@ function App() {
   async function getUserData() {
     if (token) {
       let userInformation = JSON.parse(atob(token.split(".")[1])).account;
-      console.log(userInformation);
       setUser(userInformation);
     } else {
       console.log("No token");
@@ -104,11 +103,21 @@ function App() {
             <Route path="login" element={<LoginForm />} />
             <Route path="accomplist_items" element={<AcomplistItemCards />} />
             <Route path="signup" element={<Register />} />
-            <Route path="updateprofile" element={<UpdateProfile user={user} />} />
-            <Route path="events/new" element={<EventCreateForm user={user} items={items}/>} />
+            <Route
+              path="updateprofile"
+              element={<UpdateProfile user={user} />}
+            />
+            <Route
+              path="events/new"
+              element={<EventCreateForm user={user} items={items} />}
+            />
             <Route path="events" element={<EventsList />} />
             <Route path="events/edit/:event_id" element={<EventEditor />} />
             <Route path="events/:event_id" element={<EventDetailDisplay />} />
+            <Route
+              path="events/account/:account_id"
+              element={<AccountProfilePage />}
+            />
             <Route
               path="accomplist_items/:id"
               element={
@@ -124,7 +133,14 @@ function App() {
             />
             <Route
               path="my_accomplist_items/new"
-              element={<MyAccomplistItemCreate user={user} items={items} getMyItems={getMyItems} my_accomplist_items={my_accomplist_items} />}
+              element={
+                <MyAccomplistItemCreate
+                  user={user}
+                  items={items}
+                  getMyItems={getMyItems}
+                  my_accomplist_items={my_accomplist_items}
+                />
+              }
             />
             <Route
               path="profile"
@@ -137,8 +153,8 @@ function App() {
                 />
               }
             />
-            <Route path="/whoops" element={<ForgotPassword />}/>
-            <Route path="*" element={<Lost />}/>
+            <Route path="/whoops" element={<ForgotPassword />} />
+            <Route path="*" element={<Lost />} />
           </Routes>
         </div>
         </div>

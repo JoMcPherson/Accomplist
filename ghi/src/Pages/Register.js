@@ -49,7 +49,6 @@ const SignUp = () => {
       bio: bio,
       email: email,
     };
-    console.log(accountData);
     register(accountData, `${process.env.REACT_APP_API_HOST}/api/accounts`);
     e.target.reset();
     navigate("/accomplist_items");
