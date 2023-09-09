@@ -1,6 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
 import useToken from "@galvanize-inc/jwtdown-for-react";
-import friend from '../assets/friend.png';
 import Logen from "../Components/Logen";
 
 function getDate() {

@@ -1,8 +1,20 @@
 import React, { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
 const AccomplistSearch = () => {
     const [items, setItems] = useState([]);
     const [searchTitle, setSearchTitle] = useState('');
+    const [searchParams] = useSearchParams();
+    const searchTerm = searchParams.get('query');
+
+    console.log("Search term and title:", searchTerm, searchTitle);
+
+    useEffect(() => {
+        // Set searchTitle with searchTerm if they're different
+        if (searchTerm !== searchTitle) {
+            setSearchTitle(searchTerm);
+        }
+    }, [searchTerm, searchTitle]);
 
     useEffect(() => {
         async function fetchData() {
@@ -11,9 +23,12 @@ const AccomplistSearch = () => {
                 if (searchTitle) {
                     url += `?title=${searchTitle}`;
                 }
+                console.log("Fetching from URL:", url);
 
                 const response = await fetch(url);
                 const data = await response.json();
+
+                console.log("Received data:", data);
 
                 if (data.message) {
                     // Handle the message here (e.g., display an error or notification)

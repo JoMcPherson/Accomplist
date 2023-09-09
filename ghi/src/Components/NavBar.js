@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from "react";
-import { Navbar,Nav,NavItem,Form,FormControl,NavbarBrand,NavDropdown,Container,NavLink} from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Navbar, Nav, NavItem, Form, FormControl, NavbarBrand, NavDropdown, Container, NavLink } from "react-bootstrap";
+import { Link, useNavigate } from "react-router-dom";
 import useToken from "@galvanize-inc/jwtdown-for-react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./NavBar.css";
@@ -8,12 +8,26 @@ import logo from "../assets/logolarge.png";
 
 const CustomNavbar = () => {
   const { logout, token } = useToken();
+  const navigate = useNavigate();
+  const [inputValue, setInputValue] = useState('');
   const [navbarClass, setNavbarClass] = useState("");
   const navbarRef = useRef(null);
   const handleLogout = () => {
     logout();
-    window.location.href = `${process.env.PUBLIC_URL}/accomplist_items`;
+    navigate("/accomplist_items");
   };
+
+  const handleSearchChange = (event) => {
+    setInputValue(event.target.value);
+  };
+
+  const handleSearchSubmit = (event) => {
+  event.preventDefault();
+  if (inputValue.trim()) {
+    navigate(`/search?query=${inputValue}`);
+  }
+};
+
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY >= 80) {
@@ -82,8 +96,13 @@ const CustomNavbar = () => {
               </NavItem>
             )}
           </Nav>
-          <Form className="navbar-form navbar-right px-2">
-            <FormControl type="text" placeholder="Search" />
+          <Form className="navbar-form navbar-right px-2" onSubmit={handleSearchSubmit}>
+            <FormControl
+              type="text"
+              placeholder="Search"
+              value={inputValue}
+              onChange={handleSearchChange}
+            />
           </Form>
         </Navbar.Collapse>
       </Container>
