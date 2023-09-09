@@ -3,26 +3,21 @@ import { useSearchParams } from 'react-router-dom';
 
 const AccomplistSearch = () => {
     const [items, setItems] = useState([]);
-    const [searchTitle, setSearchTitle] = useState('');
     const [searchParams] = useSearchParams();
     const searchTerm = searchParams.get('query');
 
-    console.log("Search term and title:", searchTerm, searchTitle);
-
-    useEffect(() => {
-        // Set searchTitle with searchTerm if they're different
-        if (searchTerm !== searchTitle) {
-            setSearchTitle(searchTerm);
-        }
-    }, [searchTerm, searchTitle]);
+    console.log("Search term and title:", searchTerm);
 
     useEffect(() => {
         async function fetchData() {
             try {
                 let url = `${process.env.REACT_APP_API_HOST}/api/accomplist_items`;
-                if (searchTitle) {
-                    url += `?title=${searchTitle}`;
+
+                // Only append title to the URL if searchTitle is not empty
+                if (searchTerm) {
+                    url += `?title=${searchTerm}`;
                 }
+
                 console.log("Fetching from URL:", url);
 
                 const response = await fetch(url);
@@ -41,16 +36,15 @@ const AccomplistSearch = () => {
             }
         }
 
-        fetchData();
-    }, [searchTitle]);
+        // If there's a searchTerm in the URL or searchTitle is not empty, fetch data.
+        if (searchTerm) {
+            fetchData();
+        }
+
+    }, [searchTerm]);
 
     return (
         <div style={{ paddingTop: "150px" }}>
-            <input
-                value={searchTitle}
-                onChange={(e) => setSearchTitle(e.target.value)}
-                placeholder="Search by title..."
-            />
             <ul>
                 {items.map(item => (
                     <li key={item.id}>
