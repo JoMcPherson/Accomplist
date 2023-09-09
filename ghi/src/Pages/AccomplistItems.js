@@ -1,68 +1,79 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
+function shuffleArray(array) {
+  const shuffledArray = [...array];
+
+  for (let i = shuffledArray.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
+  }
+
+  return shuffledArray;
+}
 
 function AccomplistItem(props) {
-    const [wantedCount, setWantedCount] = useState(null);
-    const [completedCount, setCompletedCount] = useState(null);
+  const [wantedCount, setWantedCount] = useState(null);
+  const [completedCount, setCompletedCount] = useState(null);
 
-    useEffect(() => {
-        const getCounts = async (isCompleted, setter) => {
-            const countItems = {};
-            for (const item of props.list) {
-                const countUrl = `${process.env.REACT_APP_API_HOST}/api/accomplist_items/${item.id}/${isCompleted}`;
-                try {
-                    const response = await fetch(countUrl);
-                    const data = await response.json();
-                    countItems[item.id] = data;
-                } catch (error) {
-                    console.error('Failed to fetch data:', error);
-                }
-            }
-            setter(countItems);
-        };
+  useEffect(() => {
+    const getCounts = async (isCompleted, setter) => {
+      const countItems = {};
+      for (const item of props.list) {
+        const countUrl = `${process.env.REACT_APP_API_HOST}/api/accomplist_items/${item.id}/${isCompleted}`;
+        try {
+          const response = await fetch(countUrl);
+          const data = await response.json();
+          countItems[item.id] = data;
+        } catch (error) {
+          console.error('Failed to fetch data:', error);
+        }
+      }
+      setter(countItems);
+    };
 
-        getCounts(false, setWantedCount);
-        getCounts(true, setCompletedCount);
-    }, [props.list]);
+    getCounts(false, setWantedCount);
+    getCounts(true, setCompletedCount);
+  }, [props.list]);
 
-
-    if (wantedCount !== null && completedCount !== null) {
-
+  if (wantedCount !== null && completedCount !== null) {
     return (
-        <div className='col-sm'>
-            {props.list.map(accomplist_item => {
-               let wanted = accomplist_item.wantedCount;
-               let completed = accomplist_item.completedCount;
-                return (
-                    <div key={accomplist_item.id}>
-                        <div className="item-card text-center">
-                            <Link to={`/accomplist_items/${accomplist_item.id}`}>
-                            <img src={accomplist_item.photo} className="card-img-top" alt={accomplist_item.title}></img></Link>
-                            <div className="profile-content">
-                                <h2 className="profile-name">{accomplist_item.title}</h2>
-                            </div>
-                            <div className="profile-description">{accomplist_item.details}</div>
-                            <div className="row">
-                                <div className="col">
-                                    <div className="profile-overview">
-                                        Wanted by: <h6>{wanted}</h6>
-                                    </div>
-                                </div>
-                                <div className="col">
-                                    <div className="profile-overview">
-                                        Completed by: <h6>{completed}</h6>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+      <div className='col-sm'>
+        {shuffleArray(props.list).map(accomplist_item => {
+          let wanted = accomplist_item.wantedCount;
+          let completed = accomplist_item.completedCount;
+          return (
+            <div key={accomplist_item.id}>
+              <div className="item-card text-center">
+                <Link to={`/accomplist_items/${accomplist_item.id}`}>
+                  <img src={accomplist_item.photo} className="card-img-top" alt={accomplist_item.title}></img>
+                </Link>
+                <div className="profile-content">
+                  <h2 className="profile-name">{accomplist_item.title}</h2>
+                </div>
+                <div className="profile-description">{accomplist_item.details}</div>
+                <div className="row">
+                  <div className="col">
+                    <div className="profile-overview">
+                      Wanted by: <h6>{wanted}</h6>
                     </div>
-                );
-            })}
-        </div>
+                  </div>
+                  <div className="col">
+                    <div className="profile-overview">
+                      Completed by: <h6>{completed}</h6>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
     );
-    }
+  }
 }
+
+
 
 class AccomplistItemCards extends React.Component {
     state = {
