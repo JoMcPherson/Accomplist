@@ -9,26 +9,27 @@ import {
   Button,
   FormControl,
 } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Logen from "../Components/Logen";
 
-export default function AccountProfilePage({
+export default function PublicProfilePage({
   user,
   getMyItems,
   my_accomplist_items,
   items,
 }) {
   const { token } = useToken();
-  const [userInfo, setUserInfo] = useState([]);
+  const [publicUserInfo, setPublicUserInfo] = useState([]);
   const [hostedEvents, setHostedEvents] = useState([]);
   const [showAllHostedEvents, setShowAllHostedEvents] = useState(false);
+  const { username } = useParams();
 
   useEffect(() => {
-    const fetchUserData = async () => {
+    const fetchPublicUserData = async () => {
       if (token && user.id !== undefined) {
         try {
-          const profileUrl = `${process.env.REACT_APP_API_HOST}/api/accounts/${user.id}`;
-          const response = await fetch(profileUrl, {
+          const publicProfileUrl = `${process.env.REACT_APP_API_HOST}/api/accounts/user/${username}`;
+          const response = await fetch(publicProfileUrl, {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
@@ -42,11 +43,12 @@ export default function AccountProfilePage({
             );
           }
 
-          const userData = await response.json();
+          const publicUserData = await response.json();
+          console.log(publicUserData);
 
-          setUserInfo({
-            bio: userData.bio || "",
-            photo: userData.photo || "",
+          setPublicUserInfo({
+            bio: publicUserData.bio || "",
+            photo: publicUserData.photo || "",
           });
         } catch (error) {
           console.error("Failed to fetch user data:", error);
@@ -93,7 +95,7 @@ export default function AccountProfilePage({
       }
     };
 
-    fetchUserData();
+    fetchPublicUserData();
     fetchHostedEvents();
   }, [token, user.id]);
 
@@ -222,14 +224,11 @@ export default function AccountProfilePage({
           >
             {user.photo && (
               <img
-                src={userInfo.photo}
+                src={publicUserInfo.photo}
                 alt="User's Profile"
                 className="user-profile-image"
               />
             )}
-            <Link to="/updateprofile" className="btn btn-outline-dark mt-3">
-              Update Profile
-            </Link>
           </div>
           <div style={{ marginLeft: "20px", marginTop: "21px" }}>
             <h1>
@@ -243,7 +242,7 @@ export default function AccountProfilePage({
               {formattedUserInfoDate}
             </div>
             <strong>Bio:</strong>
-            <div>{userInfo.bio}</div>
+            <div>{publicUserInfo.bio}</div>
           </div>
         </div>
         {completedItems.length > 0 && (
@@ -291,25 +290,9 @@ export default function AccountProfilePage({
                         <Card.Text className="truncate-description">
                           {accomplist_item?.details}
                         </Card.Text>
-                        <FormControl
-                          as="select"
-                          defaultValue={my_item.completed ? true : false}
-                          onChange={(event) =>
-                            handleCompleteChange(
-                              event,
-                              my_item.id,
-                              my_item.item_id,
-                              my_item.user_id
-                            )
-                          }
-                          style={{
-                            textAlign: "center",
-                            textAlignLast: "center",
-                          }}
-                        >
-                          <option value={true}>Done!</option>
-                          <option value={false}>Will Do!</option>
-                        </FormControl>
+                        <div className="card-footer bg-transparent border-secondary text-center">
+                          {my_item.completed ? "Done!" : "Will Do!"}
+                        </div>
                       </Card.Body>
                     </Card>
                   </Col>
@@ -363,26 +346,9 @@ export default function AccountProfilePage({
                         <Card.Text className="truncate-description">
                           {accomplist_item?.details}
                         </Card.Text>
-                        <FormControl
-                          as="select"
-                          defaultValue={my_item.completed ? true : false}
-                          onChange={(event) =>
-                            handleCompleteChange(
-                              event,
-                              my_item.id,
-                              my_item.item_id,
-                              my_item.user_id
-                            )
-                          }
-                          style={{
-                            textAlign: "center",
-                            textAlignLast: "center",
-                            appearance: "auto",
-                          }}
-                        >
-                          <option value={true}>Done!</option>
-                          <option value={false}>Will Do!</option>
-                        </FormControl>
+                        <div className="card-footer bg-transparent border-secondary text-center">
+                          {my_item.completed ? "Done!" : "Will Do!"}
+                        </div>
                       </Card.Body>
                     </Card>
                   </Col>

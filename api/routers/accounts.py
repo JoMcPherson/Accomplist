@@ -81,6 +81,19 @@ def get_user_by_id(
     return account
 
 
+@router.get("/api/accounts/user/{username}", response_model=Optional[AccountOut])
+def get_user_by_username(
+    username: str,
+    response: Response,
+    repo: AccountRepo = Depends(),
+    public_account: dict = Depends(authenticator.get_current_account_data),
+) -> AccountOut:
+    public_account = repo.get_user_by_username(username)
+    if public_account is None:
+        response.status_code = 404
+    return public_account
+
+
 @router.get("/api/accounts", response_model=List[AccountOut])
 def get_all_accounts(
     repo: AccountRepo = Depends(),
