@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
-const AccomplistSearch = () => {
+const Search = () => {
     const [items, setItems] = useState([]);
     const [searchParams] = useSearchParams();
     const searchTerm = searchParams.get('query');
@@ -57,4 +57,4 @@ const AccomplistSearch = () => {
     );
 }
 
-export default AccomplistSearch;
+export default Search;

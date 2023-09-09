@@ -20,7 +20,7 @@ import Register from "./Pages/Register.js";
 import UpdateProfile from "./Pages/UpdateProfile.js";
 import useToken from "@galvanize-inc/jwtdown-for-react";
 import "./index.css";
-import AccomplistSearch from "./Components/ItemSearch.js";
+import AccomplistSearch from "./Pages/Search.js";
 
 function App() {
   const [error] = useState(null);
