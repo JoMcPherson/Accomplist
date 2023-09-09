@@ -20,6 +20,7 @@ import Register from "./Pages/Register.js";
 import UpdateProfile from "./Pages/UpdateProfile.js";
 import useToken from "@galvanize-inc/jwtdown-for-react";
 import "./index.css";
+import AccomplistSearch from "./Components/ItemSearch.js";
 
 function App() {
   const [error] = useState(null);
@@ -100,6 +101,7 @@ function App() {
         <div className="content-wrapper">
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="search" element={<AccomplistSearch />} />
             <Route path="login" element={<LoginForm />} />
             <Route path="accomplist_items" element={<AcomplistItemCards />} />
             <Route path="signup" element={<Register />} />

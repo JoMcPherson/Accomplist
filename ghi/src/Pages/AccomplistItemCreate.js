@@ -28,8 +28,7 @@ export default function AccomplistItemCreate({user}) {
 
 // custom background
   const mainBg = useMemo(() => ({
-    backgroundImage: `url(${friend})`,
-    // backgroundImage: 'url("https://images.pexels.com/photos/5302953/pexels-photo-5302953.jpeg")',
+    backgroundImage: 'url("https://i.imgur.com/d6MPotL.jpg")',
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'cover',
     backgroundPosition: 'center',
