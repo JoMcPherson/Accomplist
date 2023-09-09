@@ -39,7 +39,7 @@ function AccomplistItem(props) {
   if (wantedCount !== null && completedCount !== null) {
     return (
       <div className='col-sm'>
-        {shuffleArray(props.list).map(accomplist_item => {
+        {props.list.map(accomplist_item => {   // Removed shuffleArray call from here
           let wanted = accomplist_item.wantedCount;
           let completed = accomplist_item.completedCount;
           return (
@@ -76,97 +76,87 @@ function AccomplistItem(props) {
 
 
 class AccomplistItemCards extends React.Component {
-    state = {
-        itemColumns: [[], [], []],
-        selectedSortOption: '',
-        searchTerm: '',
-        originalItems: []
-    };
+state = {
+    itemColumns: [[], [], []],
+    selectedSortOption: '',
+    searchTerm: '',
+    originalItems: [],
+    shuffledItems: []
+};
 
-    async componentDidMount() {
-        const url = `${process.env.REACT_APP_API_HOST}/api/accomplist_items`;
+  async componentDidMount() {
+      const url = `${process.env.REACT_APP_API_HOST}/api/accomplist_items`;
 
-        try {
-            const response = await fetch(url);
-            if (response.ok) {
-                const data = await response.json();
+      try {
+          const response = await fetch(url);
+          if (response.ok) {
+              const data = await response.json();
 
-                const loadedItemsWithCounts = await Promise.all(data.map(async (item) => {
-                    const wantedCount = await this.fetchItemCount(item.id, false);
-                    const completedCount = await this.fetchItemCount(item.id, true);
-                    return {
-                        ...item,
-                        wantedCount,
-                        completedCount
-                    };
-                }));
+              const loadedItemsWithCounts = await Promise.all(data.map(async (item) => {
+                  const wantedCount = await this.fetchItemCount(item.id, false);
+                  const completedCount = await this.fetchItemCount(item.id, true);
+                  return {
+                      ...item,
+                      wantedCount,
+                      completedCount
+                  };
+              }));
 
-                const itemColumns = this.distributeItemsToColumns(loadedItemsWithCounts);
+              const shuffledItems = shuffleArray(loadedItemsWithCounts); // Shuffle once after loading
+              const itemColumns = this.distributeItemsToColumns(shuffledItems);
 
-                this.setState({ itemColumns, originalItems: loadedItemsWithCounts });
-            }
-        } catch (e) {
-            console.error(e);
-        }
-    }
+              this.setState({ itemColumns, originalItems: loadedItemsWithCounts, shuffledItems });
+          }
+      } catch (e) {
+          console.error(e);
+      }
+  }
 
-    distributeItemsToColumns = (items) => {
-    const itemColumns = [[], [], []];
-    items.forEach((item, i) => {
-        itemColumns[i % 3].push(item);
-    });
-    return itemColumns;
+  distributeItemsToColumns = (items) => {
+  const itemColumns = [[], [], []];
+  items.forEach((item, i) => {
+      itemColumns[i % 3].push(item);
+  });
+  return itemColumns;
 }
 
-    fetchItemCount = async (itemId, isCompleted) => {
-        const countUrl = `${process.env.REACT_APP_API_HOST}/api/accomplist_items/${itemId}/${isCompleted}`;
-        const response = await fetch(countUrl);
-        const data = await response.json();
-        return data;
-    }
+  fetchItemCount = async (itemId, isCompleted) => {
+      const countUrl = `${process.env.REACT_APP_API_HOST}/api/accomplist_items/${itemId}/${isCompleted}`;
+      const response = await fetch(countUrl);
+      const data = await response.json();
+      return data;
+  }
 
-    handleSearchChange = event => {
-        const searchTerm = event.target.value;
+  handleSearchChange = event => {
+      const searchTerm = event.target.value;
+      const filteredItems = this.state.shuffledItems.filter(item => item.title.toLowerCase().includes(searchTerm.toLowerCase()));
+      const sortedItems = searchTerm ? filteredItems.sort((a, b) => a.title.localeCompare(b.title)) : filteredItems;
+      const itemColumns = this.distributeItemsToColumns(sortedItems);
+      this.setState({ searchTerm, itemColumns });
+  };
 
-        const filteredItems = (this.state.originalItems).filter(item =>
-            item.title.toLowerCase().includes(searchTerm.toLowerCase())
-        );
+  handleSortChange = event => {
+    const selectedSortOption = event.target.value;
+    const allItems = [...this.state.itemColumns.flat()]; // Use the current displayed items for sorting
 
-        const sortedItems = searchTerm ?
-            filteredItems.sort((a, b) => a.title.localeCompare(b.title)) :
-            filteredItems;
+    allItems.sort((a, b) => {
+      switch (selectedSortOption) {
+        case 'id':
+          return b.id - a.id;
+        case 'id2':
+          return a.id - b.id;
+        case 'wanted':
+          return b.wantedCount - a.wantedCount;
+        case 'completed':
+          return b.completedCount - a.completedCount;
+        default:
+          return 0;
+      }
+    });
 
-        const itemColumns = [[], [], []];
-        for (let i = 0; i < sortedItems.length; i++) {
-            itemColumns[i % 3].push(sortedItems[i]);
-        }
-
-        this.setState({ searchTerm, itemColumns });
-    };
-
-    handleSortChange = event => {
-        const selectedSortOption = event.target.value;
-        const allItems = [].concat(...this.state.itemColumns);
-
-        allItems.sort((a, b) => {
-            switch (selectedSortOption) {
-                case 'id':
-                    return b.id - a.id;
-                case 'id2':
-                    return a.id - b.id;
-                case 'wanted':
-                    return b.wantedCount - a.wantedCount;
-                case 'completed':
-                    return b.completedCount - a.completedCount;
-                default:
-                    return 0;
-            }
-        });
-
-        const itemColumns = this.distributeItemsToColumns(allItems);
-
-        this.setState({ selectedSortOption, itemColumns });
-    };
+    const itemColumns = this.distributeItemsToColumns(allItems);
+    this.setState({ selectedSortOption, itemColumns });
+  };
 
     render() {
     const sortOptions = [

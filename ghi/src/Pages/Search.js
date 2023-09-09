@@ -6,8 +6,6 @@ const Search = () => {
     const [searchParams] = useSearchParams();
     const searchTerm = searchParams.get('query');
 
-    console.log("Search term and title:", searchTerm);
-
     useEffect(() => {
         async function fetchData() {
             try {
@@ -18,15 +16,10 @@ const Search = () => {
                     url += `?title=${searchTerm}`;
                 }
 
-                console.log("Fetching from URL:", url);
-
                 const response = await fetch(url);
                 const data = await response.json();
 
-                console.log("Received data:", data);
-
                 if (data.message) {
-                    // Handle the message here (e.g., display an error or notification)
                     console.error(data.message);
                 } else {
                     setItems(data);
@@ -36,7 +29,6 @@ const Search = () => {
             }
         }
 
-        // If there's a searchTerm in the URL or searchTitle is not empty, fetch data.
         if (searchTerm) {
             fetchData();
         }
@@ -58,3 +50,64 @@ const Search = () => {
 }
 
 export default Search;
+
+
+// EXAMPLE SHIT
+
+// import React, { useState, useEffect } from 'react';
+// import { useSearchParams, useParams } from 'react-router-dom';
+
+// const GeneralSearch = () => {
+//     const [results, setResults] = useState([]);
+//     const [searchParams] = useSearchParams();
+//     const searchTerm = searchParams.get('query');
+
+//     // Using useParams to extract the search type from the URL
+//     const { searchType } = useParams();
+
+//     useEffect(() => {
+//         async function fetchData() {
+//             try {
+//                 // Dynamically build the URL based on the search type
+//                 let url = `${process.env.REACT_APP_API_HOST}/api/${searchType}`;
+//                 if (searchTerm) {
+//                     url += `?query=${searchTerm}`;
+//                 }
+//                 console.log("Fetching from URL:", url);
+
+//                 const response = await fetch(url);
+//                 const data = await response.json();
+//                 console.log("Received data:", data);
+
+//                 if (data.message) {
+//                     console.error(data.message);
+//                 } else {
+//                     setResults(data);
+//                 }
+//             } catch (error) {
+//                 console.error('Error fetching data:', error);
+//             }
+//         }
+
+//         if (searchTerm) {
+//             fetchData();
+//         }
+
+//     }, [searchTerm, searchType]);
+
+//     return (
+//         <div style={{ paddingTop: "150px" }}>
+//             <ul>
+//                 {results.map(result => (
+//                     <li key={result.id}>
+//                         <h3>{result.title || result.name}</h3>
+//                         <p>{result.details || result.email}</p>
+//                     </li>
+//                 ))}
+//             </ul>
+//         </div>
+//     );
+// }
+
+// export default GeneralSearch;
+// <Route path="/search/:searchType" component={GeneralSearch} />
