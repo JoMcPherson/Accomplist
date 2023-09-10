@@ -105,6 +105,17 @@
   position: relative;
 }
 
+.hero-image-search {
+  background-image: url("https://images.pexels.com/photos/10817533/pexels-photo-10817533.jpeg");
+  background-color: #cccccc;
+  height: 250px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+  border-bottom: 1px solid black;
+}
+
 .hero-image-description {    /* this is for parallax needs js to match
   /* background-image: url("https://images.pexels.com/photos/2387793/pexels-photo-2387793.jpeg"); */
   /* background-image: url("https://images.pexels.com/photos/2170473/pexels-photo-2170473.jpeg"); */

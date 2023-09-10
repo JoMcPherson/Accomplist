@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { Row, Col, Card, Container } from 'react-bootstrap';
 
 const Search = () => {
     const [items, setItems] = useState([]);
@@ -36,15 +37,48 @@ const Search = () => {
     }, [searchTerm]);
 
     return (
-        <div style={{ paddingTop: "150px" }}>
-            <ul>
+        <div>
+            <div className="hero-image-search">
+                <div className="hero-text">
+                    <h1>{searchTerm ? `Search results for: ${searchTerm}` : 'Come and join the party.'}</h1>
+                    <p>Hope you found what you're looking for.</p>
+                </div>
+            </div>
+            <Container fluid className='px-4 my-4'>
+                <h2>Accomplist Items:</h2>
+                <Row xs={1} md={2} lg={3} xl={4} className="g-4 mt-1">
                 {items.map(item => (
-                    <li key={item.id}>
-                        <h3>{item.title}</h3>
-                        <p>{item.details}</p>
-                    </li>
+                    <Col key={item.id}>
+                    <Card>
+                        <Card.Img variant="top" src={item.photo} />
+                        <Card.Body>
+                            <Card.Title>{item.title}</Card.Title>
+                            <Card.Subtitle>{item.details}</Card.Subtitle>
+                        </Card.Body>
+                    </Card>
+                    </Col>
                 ))}
-            </ul>
+                </Row>
+            </Container>
+            <Container fluid className='px-4 my-4'>
+                <h2>Accounts:</h2>
+                {/* <Row xs={1} md={2} lg={3} xl={4} className="g-4">
+                {items.map(item => (
+                    <Col key={item.id}>
+                    <Card>
+                        <Card.Img variant="top" src={item.photo} />
+                        <Card.Body>
+                            <Card.Title>{item.title}</Card.Title>
+                            <Card.Subtitle>{item.details}</Card.Subtitle>
+                        </Card.Body>
+                    </Card>
+                    </Col>
+                ))}
+                </Row> */}
+            </Container>
+            <Container fluid className='px-4 my-4'>
+            <h2>Events:</h2>
+            </Container>
         </div>
     );
 }
