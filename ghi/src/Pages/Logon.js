@@ -33,14 +33,27 @@ const LoginForm = () => {
 
 const handleSubmit = async (e) => {
   e.preventDefault();
+
   try {
-    await login(username, password);  // Try logging in
-    e.target.reset();
-    navigate("/accomplist_items");  // Navigate only if login is successful
+    const result = await login(username, password); // Try logging in
+    console.log("Login result:", result);
+
+    // This is where you need to check the result to confirm successful login.
+    // Since we don't know what the result looks like, this is just an example.
+    if (result && result.success /* adjust this based on what's logged */) {
+      e.target.reset();
+      navigate("/accomplist_items");  // Navigate only if login is successful
+    } else {
+      // Handle unsuccessful login (e.g., wrong credentials)
+      setError("Invalid credentials. Please try again.");
+    }
   } catch (err) {
-    // Handle error as before
+    console.error(err); // Log the error for clarity
+    // Adjust this based on the actual error messages you've encountered
     if (err.message.includes("Account not found")) {
       setError("Account not found! Please check your credentials or sign up.");
+    } else if (err.message.includes("Failed to get token after login")) {
+      setError("Failed to authenticate. Please try again.");
     } else {
       setError("An unexpected error occurred. Please try again.");
     }
