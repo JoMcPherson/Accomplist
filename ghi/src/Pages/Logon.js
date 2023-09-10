@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 const LoginForm = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState(null);
   const { login } = useToken();
   const navigate = useNavigate();
 
@@ -30,12 +31,21 @@ const LoginForm = () => {
     };
   }, [mainBg]);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    login(username, password);
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  try {
+    await login(username, password);  // Try logging in
     e.target.reset();
-    navigate("/accomplist_items");
-  };
+    navigate("/accomplist_items");  // Navigate only if login is successful
+  } catch (err) {
+    // Handle error as before
+    if (err.message.includes("Account not found")) {
+      setError("Account not found! Please check your credentials or sign up.");
+    } else {
+      setError("An unexpected error occurred. Please try again.");
+    }
+  }
+};
 
   return (
     <div className="Auth-form-container">
@@ -70,6 +80,7 @@ const LoginForm = () => {
             />
           </div>
           <div className="d-grid gap-2 mt-4">
+            {error && <p style={{ color: 'red' }}>{error}</p>}
             <input className="btn btn-outline-dark" type="submit" value="Login" />
           </div>
           <p className="text-center mt-2">
