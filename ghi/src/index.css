@@ -402,18 +402,18 @@
   position: absolute;
   left: 0px;
   right: 0px;
-  top: -60px;             /* Adjusted to accommodate two lines */
+  top: -60px;
   color: #FFF;
   font-size: 22px;
   text-shadow: 2px 2px 5px black;
   overflow: hidden;
   text-overflow: clip;
-  height: 90px;           /* Adjusted to accommodate two lines */
+  height: 90px;
   padding-left: 2px;
   padding-right: 2px;
-  display: flex;          /* Added for vertical centering */
-  align-items: center;    /* Added for vertical centering */
-  justify-content: center; /* Added for horizontal centering if needed */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .item-card .profile-name p {
@@ -506,34 +506,34 @@
 }
 
 .comment-author {
-    font-weight: bold;
-    margin-left: 5px;
+  font-weight: 600;
+  margin-left: 5px;
 }
 
 .comment-datetime {
-    font-size: 0.8em;
-    color: #888;
+  font-size: 0.8em;
+  color: #888;
 }
 
 .comment-content p {
-    margin: 0;
+  margin: 1px 0 0 5px;
 }
 
 .custom-card-body {
-    padding: 10px !important;
+  padding: 10px !important;
 }
 
 /* error pages */
 .btn.custom-button {
-    background-color: hotpink;
-    color: white;
-    border: 2px solid hotpink;
+  background-color: hotpink;
+  color: white;
+  border: 2px solid hotpink;
 }
 
 .btn.custom-button:hover {
-    background-color: white;
-    color: hotpink;
-    border: 2px solid hotpink;
+  background-color: white;
+  color: hotpink;
+  border: 2px solid hotpink;
 }
 
 
