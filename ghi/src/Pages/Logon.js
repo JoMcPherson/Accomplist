@@ -6,7 +6,6 @@ const LoginForm = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
-  const [error, setError] = useState(null);
   const { login } = useToken();
   const navigate = useNavigate();
 
@@ -21,46 +20,37 @@ const LoginForm = () => {
   []);
 
   useEffect(() => {
-    Object.keys(mainBg).forEach((styleProp) => {
-      document.body.style[styleProp] = mainBg[styleProp];
-  });
-
-  return () => {
-    Object.keys(mainBg).forEach((styleProp) => {
-      document.body.style[styleProp] = '';
+      Object.keys(mainBg).forEach((styleProp) => {
+        document.body.style[styleProp] = mainBg[styleProp];
       });
-    };
+
+      if (localStorage.getItem('rememberMe') === 'true') {
+          const rememberedUsername = localStorage.getItem('username');
+          setUsername(rememberedUsername || '');
+          setRememberMe(true);
+      }
+
+      return () => {
+        Object.keys(mainBg).forEach((styleProp) => {
+          document.body.style[styleProp] = '';
+        });
+      };
   }, [mainBg]);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = (e) => {
+      e.preventDefault();
 
-    try {
-      const result = await login(username, password);
-      console.log("Login result:", result);
+      if (rememberMe) {
+          localStorage.setItem('rememberMe', 'true');
+          localStorage.setItem('username', username);
+      } else {
+          localStorage.removeItem('rememberMe');
+          localStorage.removeItem('username');
+      }
 
-      if (localStorage.getItem('token')) {
-        if (!rememberMe) {
-            localStorage.removeItem('token');
-        }
-        console.log("howdy")
-        setError(null)
-        e.target.reset();
-        navigate("/accomplist_items");
-      } else {
-        setError("Invalid credentials. Please try again.");
-      }
-    } catch (err) {
-      console.error(err); // Log the error for clarity
-      // Adjust this based on the actual error messages you've encountered
-      if (err.message.includes("Account not found")) {
-        setError("Account not found! Please check your credentials or sign up.");
-      } else if (err.message.includes("Failed to get token after login")) {
-        setError("Failed to authenticate. Please try again.");
-      } else {
-        setError("An unexpected error occurred. Please try again.");
-      }
-    }
+      login(username, password);
+      e.target.reset();
+      navigate("/accomplist_items");
   };
 
   return (
@@ -107,7 +97,6 @@ const LoginForm = () => {
             </span>
           </div>
           <div className="d-grid gap-2 mt-4">
-            {error && <p style={{ color: 'red' }}>{error}</p>}
             <input className="btn btn-outline-dark" type="submit" value="Login" />
           </div>
           <h6 className="text-center mt-4 pinklink">
