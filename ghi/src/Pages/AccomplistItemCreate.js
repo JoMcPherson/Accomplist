@@ -101,23 +101,23 @@ return (
         token && <div className="Auth-form-container">
         < form className="Auth-form" onSubmit={handleSubmit}>
             <div className="Auth-form-content">
-                <h1 className="Auth-form-title">Add an Accomplist item:</h1>
+                <h1 className="Auth-form-title">Create an Accomplist item:</h1>
                 <p className="text-center mt-2 text-muted">Please check existing items before creating a new one.</p>
                 <div className="form-group mt-3">
                         <label htmlFor="title" className="label">Title:</label>
-                        <input value={title} onChange={e => {setTitle(e.target.value)}} required type="text" className="form-control mt-1" id="title" placeholder="e.g. Skydiving"/>
+                        <input value={title} onChange={e => {setTitle(e.target.value)}} required type="text" className="form-control" id="title" placeholder="e.g. Skydiving"/>
                 </div>
                 <div className="form-group mt-3">
                         <label htmlFor="details" className="label">Details:</label>
-                        <input value={details} onChange={e => {setDetails(e.target.value)}} required type="text" className="form-control mt-1" id="details" placeholder="e.g. Fall from airplane with a parachute"/>
+                        <input value={details} onChange={e => {setDetails(e.target.value)}} required type="text" className="form-control" id="details" placeholder="e.g. Fall from airplane with a parachute"/>
                 </div>
                 <div className="form-group mt-3">
                         <label htmlFor="photo" className="label">Photo:</label>
-                        <input value={photo} onChange={e => {setPhoto(e.target.value)}} required type="text" className="form-control mt-1" id="photo" placeholder="Photo Url"/>
+                        <input value={photo} onChange={e => {setPhoto(e.target.value)}} required type="text" className="form-control" id="photo" placeholder="Photo Url"/>
                 </div>
                 <div className="form-group mt-3">
                         <label htmlFor="resources" className="label">Resources:</label>
-                        <input value={resources} onChange={e => {setResources(e.target.value)}} type="text" className="form-control mt-1" id="resources" placeholder="(optional) e.g. Links, Blogs, Videos, etc."/>
+                        <input value={resources} onChange={e => {setResources(e.target.value)}} type="text" className="form-control" id="resources" placeholder="(optional) e.g. Links, Blogs, Videos, etc."/>
                 </div>
                 <div className="d-grid gap-2 mt-4">
                     <input className="btn btn-outline-dark" type="submit" value="submit" />

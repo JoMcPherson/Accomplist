@@ -274,7 +274,7 @@
   border-bottom: 1px solid hotpink;
 }
 
-label, .Auth-form input::placeholder, .Auth-form textarea::placeholder {
+.Auth-form input::placeholder, .Auth-form textarea::placeholder {
   color: #bbb;
 }
 
@@ -566,7 +566,7 @@ label, .Auth-form input::placeholder, .Auth-form textarea::placeholder {
   margin: 0 auto;
 }
 
-/* event form */
+/* chris event */
 .forminputcb1 {
 /* *,
 *::before{
