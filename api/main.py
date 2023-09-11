@@ -12,7 +12,7 @@ app.include_router(accounts.router)
 app.include_router(accomplist_items.router)
 app.include_router(my_accomplist_items.router)
 app.include_router(events.router)
-app.mount('/', app=sio_app)
+app.mount("/", app=sio_app)
 
 
 app.add_middleware(
