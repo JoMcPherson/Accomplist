@@ -5,43 +5,40 @@ const slideData = [
   {
     index: 0,
     headline: 'Welcome to Accomplist!',
-    subtext: 'blah blah',
-    src: 'https://i.imgur.com/YbVXdEF.jpg'
+    subtext: 'A website desgined to help you with crossing items off your bucket list!',
+    src: 'https://i.imgur.com/ODqj7vt.png'
   },
   {
     index: 1,
     headline: 'Get inspired',
-    // subtext: 'Take that first step and start adding some goals, and maybe find some you never knew you wanted.',
-    src: 'https://i.imgur.com/ECHTbKh.jpg'
+    subtext: 'Take that first step and start adding some goals, and maybe find a few you never knew you wanted.',
+    src: 'https://i.imgur.com/QSoLMjF.jpg'
   },
   {
     index: 2,
     headline: 'Create a gameplan',
-    // subtext: 'Listen to stories, advice, and resources who have been down the road you want to go down',
-    src: 'https://i.imgur.com/4txdQ8n.jpg'
+    subtext: 'Listen to stories, advice, and resources from people who went down the road you plan to',
+    src: 'https://images.pexels.com/photos/5589432/pexels-photo-5589432.jpeg'
   },
   {
     index: 3,
     headline: 'Achieve together',
-    // subtext: 'Plan with your peers to crush goals, set up events, and make life long friendships along the way',
-    src: 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/225363/typewriter.jpg'
+    subtext: 'Organize with your peers to crush goals, set up events, and make life long friendships along the way',
+    src: 'https://images.pexels.com/photos/1647962/pexels-photo-1647962.jpeg'
   },
   {
     index: 4,
-    headline: 'No task too small',
-    // subtext: 'Whether its learning to playing "Chopsticks" or "Flight of the Bumblebee", the important part is you get started!',
+    headline: 'No goal too small',
+    subtext: 'Whether its learning to play "Chopsticks" or "Flight of the Bumblebee", the important part is you get started!',
     src: 'https://i.imgur.com/IuI0RPr.jpg'
   }
 ];
 
 const Home = () => {
   return (
-    <>
-    {/* <h1>just incase</h1> */}
     <div className='d-flex justify-content-center align-items-center vh-100'>
       <Slider slides={slideData} heading="Slider Heading" />
     </div>
-    </>
   );
 };
 

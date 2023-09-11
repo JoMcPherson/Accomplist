@@ -178,13 +178,15 @@
 .slide__headline {
   font-size: 4vmin;
   position: relative;
-  margin-top: 300px;
+  margin-top: 450px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .slide__subtext {
   font-size: 2vmin;
-  font-weight: 600;
-  position: relative;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 2vmin 0;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
 }
 
 .slide__content {

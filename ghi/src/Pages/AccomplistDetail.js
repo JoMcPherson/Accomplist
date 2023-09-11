@@ -275,7 +275,7 @@ export default function AccomplistDetail({ user, my_accomplist_items }) {
                                   <strong className="comment-author">{userName}</strong>
                                   <small className="comment-timestamp">{formatDate(userTimestamp)}</small>
                               </div>
-                              <p>{userComment}</p>
+                              <p>{userComment}<span className='whitey'>{userId}</span></p>
                           </div>
                       </Card.Body>
                     </Card>
