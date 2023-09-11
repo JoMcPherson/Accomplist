@@ -12,17 +12,18 @@ import {
 import { Link, useParams } from "react-router-dom";
 import Logen from "../Components/Logen";
 
-export default function PublicProfilePage({user, items}) {
+export default function PublicProfilePage({ user, items }) {
   const { token, fetchWithToken } = useToken();
   const [publicUserInfo, setPublicUserInfo] = useState([]);
   const [hostedEvents, setHostedEvents] = useState([]);
   const [showAllHostedEvents, setShowAllHostedEvents] = useState(false);
   const [myItems, setMyItems] = useState([]);
+  const [formattedUserInfoDate, setFormattedUserInfoDate] = useState();
   const { username } = useParams();
 
   useEffect(() => {
     const fetchPublicUserData = async () => {
-      if (token && user.id !== undefined) {
+      if (token) {
         try {
           const publicProfileUrl = `${process.env.REACT_APP_API_HOST}/api/accounts/user/${username}`;
           const response = await fetch(publicProfileUrl, {
@@ -59,68 +60,75 @@ export default function PublicProfilePage({user, items}) {
     };
 
     fetchPublicUserData();
-  }, [token, user.id]);
+  }, [token]);
 
 
   useEffect(() => {
-  const fetchHostedEvents = async () => {
-    if (publicUserInfo.id !== undefined) {
-      try {
-        const hostedEventsUrl = `${process.env.REACT_APP_API_HOST}/events/account/${publicUserInfo.id}`;
-        const response = await fetch(hostedEventsUrl, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        if (!response.ok) {
-          throw new Error(`HTTP hosted events error! Status: ${response.status}`);
+    const fetchHostedEvents = async () => {
+      if (publicUserInfo.id !== undefined) {
+
+        setFormattedUserInfoDate(formatUserInfoDate(publicUserInfo.date_created));
+
+        try {
+          const hostedEventsUrl = `${process.env.REACT_APP_API_HOST}/events/account/${publicUserInfo.id}`;
+          const response = await fetch(hostedEventsUrl, {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          if (!response.ok) {
+            throw new Error(
+              `HTTP hosted events error! Status: ${response.status}`
+            );
+          }
+
+          let events = await response.json();
+
+          const now = new Date();
+          events.sort((a, b) => {
+            const dateA = new Date(a.date);
+            const dateB = new Date(b.date);
+
+            if (dateA < now && dateB < now) return dateA - dateB;
+            if (dateA > now && dateB > now) return dateA - dateB;
+            if (dateA < now) return 1;
+            if (dateB < now) return -1;
+
+            return 0;
+          });
+
+          setHostedEvents(events);
+        } catch (error) {
+          console.error("Failed to fetch events data:", error);
         }
-
-        let events = await response.json();
-
-        const now = new Date();
-        events.sort((a, b) => {
-          const dateA = new Date(a.date);
-          const dateB = new Date(b.date);
-
-          if (dateA < now && dateB < now) return dateA - dateB;
-          if (dateA > now && dateB > now) return dateA - dateB;
-          if (dateA < now) return 1;
-          if (dateB < now) return -1;
-
-          return 0;
-        });
-
-        setHostedEvents(events);
-      } catch (error) {
-        console.error("Failed to fetch events data:", error);
       }
-    }
-  };
+    };
 
-  const getMyItems = async () => {
-    if (publicUserInfo.id !== undefined) {
-      const myItemUrl = `${process.env.REACT_APP_API_HOST}/api/my_accomplist_items/account/${publicUserInfo.id}`;
-      const response = await fetchWithToken(myItemUrl);
-      const filteredItems = response.filter(
-        (item) => item.user_id === publicUserInfo.id
-      );
-      setMyItems(filteredItems);
-    }
-  };
+    const getMyItems = async () => {
+      if (publicUserInfo.id !== undefined) {
+        const myItemUrl = `${process.env.REACT_APP_API_HOST}/api/my_accomplist_items/account/${publicUserInfo.id}`;
+        const response = await fetchWithToken(myItemUrl);
+        const filteredItems = response.filter(
+          (item) => item.user_id === publicUserInfo.id
+        );
+        setMyItems(filteredItems);
+      }
+    };
 
-  fetchHostedEvents();
-  getMyItems();
-
-  },[publicUserInfo]);
-
+    fetchHostedEvents();
+    getMyItems();
+  }, [publicUserInfo]);
 
   function joinName(first_name, last_name) {
     return `${first_name} ${last_name}`;
   }
-  const fullName = joinName(user.first_name, user.last_name);
+  const fullName = joinName(
+    publicUserInfo.first_name,
+    publicUserInfo.last_name
+  );
+
 
   function formatUserInfoDate(dateStr) {
     const months = [
@@ -142,7 +150,7 @@ export default function PublicProfilePage({user, items}) {
     const year = dateObj.getFullYear();
     return `${month} ${year}`;
   }
-  const formattedUserInfoDate = formatUserInfoDate(user.date_created);
+
 
   function formatEventCardsDate(dateStr) {
     const months = [
@@ -208,7 +216,7 @@ export default function PublicProfilePage({user, items}) {
               alignItems: "center",
             }}
           >
-            {user.photo && (
+            {publicUserInfo.photo && (
               <img
                 src={publicUserInfo.photo}
                 alt="User's Profile"
@@ -218,7 +226,7 @@ export default function PublicProfilePage({user, items}) {
           </div>
           <div style={{ marginLeft: "20px", marginTop: "21px" }}>
             <h1>
-              <strong className="whitey">{user.username}</strong>
+              <strong className="whitey">{publicUserInfo.username}</strong>
             </h1>
             <div>
               <strong>{fullName}</strong>

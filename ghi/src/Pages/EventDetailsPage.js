@@ -1,8 +1,15 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect, useCallback } from "react";
 import { useAuthContext } from "@galvanize-inc/jwtdown-for-react"
+import { Container, Button, Table } from "react-bootstrap";
 
 export default function EventDetailDisplay(event_id) {
+    const customBackgroundStyle = {
+        backgroundImage: `url(https://i.imgur.com/WFCPRp8.jpeg)`,
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: 'cover',
+        minHeight: '100vh',
+    };
 
     const { token } = useAuthContext();
     event_id = useParams();
@@ -46,44 +53,68 @@ export default function EventDetailDisplay(event_id) {
             navigate('/events')
         }
             }
+            console.log(eventDetailData)
 
 
-    return(
+return(
+    <>
+    <div style={customBackgroundStyle}>
+    <div style={{ paddingTop: '200px' }}>
+    <Container >
+        <div className="overflow-x-auto">
+        <div className='event-detail-header'>
+        <h1 className="event-whitey-shadow">Your main event!</h1>
+        </div>
         <div>
-            Your main event!
-            <div>
-            <h2>{eventDetailData.name}</h2><h5><button onClick={()=>{navigate(`/events`)}}>back to list</button></h5>
-            <table>
-                <thead>
-                    <tr>
-                        <th>
-                            ID
-                        </th>
-                        <th>
-                            Name
-                        </th>
-                        <th>
-                            Location
-                        </th>
-                        <th>
-                            Cost
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr key={eventDetailData.event_id} >
-                        <td>{eventDetailData.event_id}</td>
-                        <td>{eventDetailData.name}</td>
-                        <td>{eventDetailData.location}</td>
-                        <td>{eventDetailData.cost}</td>
-                        <td><button onClick={()=>deleteEvent(eventDetailData.event_id)}>Delete this event</button></td>
-                        <td><button onClick={()=>{navigate(`/events/edit/${eventDetailData.event_id}`)}}>Edit</button></td>
-                    </tr>
-                </tbody>
-            </table>
+        <div className='eventdetail-header2'>
+        <h2 className="event-whitey-shadow">{eventDetailData.name}</h2>
         </div>
-
-
+        <h5 style={{'marginBottom': 20}}><Button className="btn btn-sm custom-button" onClick={()=>{navigate(`/events`)}}>back to list</Button></h5>
+            <Table striped bordered hover variant="dark">
+            <thead className="bg-gray-50 dark:bg-gray-800">
+            <tr>
+                <th>
+                    ID
+                </th>
+                <th>
+                    Name
+                </th>
+                <th>Goal</th>
+                <th>Date</th>
+                <th>
+                    Location
+                </th>
+                <th>
+                    Cost
+                </th>
+                <th>Description</th>
+                <th>Organizer</th>
+                <th></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+                <tr key={eventDetailData.event_id} >
+                    <td>{eventDetailData.event_id}</td>
+                    <td>{eventDetailData.name}</td>
+                    <td>{eventDetailData.goal_id}</td>
+                    <td><div>{eventDetailData.time}</div>
+                        <div>{eventDetailData.date}</div>
+                    </td>
+                    <td>{eventDetailData.location}</td>
+                    <td>{eventDetailData.cost}</td>
+                    <td>{eventDetailData.description}</td>
+                    <td>{eventDetailData.organizer_username}</td>
+                    <td><Button className="btn btn-sm custom-button" onClick={()=>deleteEvent(eventDetailData.event_id)}>Delete</Button></td>
+                    <td><Button className="btn btn-sm custom-button" onClick={()=>{navigate(`/events/edit/${eventDetailData.event_id}`)}}>Edit</Button></td>
+                </tr>
+            </tbody>
+            </Table>
         </div>
-    )
-    }
+        </div>
+    </Container>
+    </div>
+    </div>
+    </>
+)
+};
