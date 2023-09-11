@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 const LoginForm = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState(null);
   const { login } = useToken();
   const navigate = useNavigate();
@@ -39,6 +40,9 @@ const LoginForm = () => {
       console.log("Login result:", result);
 
       if (localStorage.getItem('token')) {
+        if (!rememberMe) {
+            localStorage.removeItem('token');
+        }
         console.log("howdy")
         setError(null)
         e.target.reset();
@@ -90,7 +94,12 @@ const LoginForm = () => {
           </div>
           <div className="auth-options mt-1">
             <div className="remember-me">
-                <input type="checkbox" className="checkbox" />
+                <input
+                type="checkbox"
+                className="checkbox"
+                checked={rememberMe}
+                onChange={(e) => setRememberMe(e.target.checked)}
+                />
                 <span className="check-label">Remember Me</span>
             </div>
             <span className="forgot pinklink">
