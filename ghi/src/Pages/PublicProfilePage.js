@@ -1,14 +1,7 @@
 import { useEffect, useState } from "react";
 import useToken from "@galvanize-inc/jwtdown-for-react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import {
-  Card,
-  Container,
-  Row,
-  Col,
-  Button,
-  FormControl,
-} from "react-bootstrap";
+import { Card, Container, Row, Col, Button } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
 import Logen from "../Components/Logen";
 
@@ -59,12 +52,14 @@ export default function PublicProfilePage({ user, items }) {
     };
 
     fetchPublicUserData();
-  }, [token]);
+  }, [token, username]);
 
   useEffect(() => {
     const fetchHostedEvents = async () => {
       if (publicUserInfo.id !== undefined) {
-        setFormattedUserInfoDate(formatUserInfoDate(publicUserInfo.dateCreated));
+        setFormattedUserInfoDate(
+          formatUserInfoDate(publicUserInfo.dateCreated)
+        );
 
         try {
           const hostedEventsUrl = `${process.env.REACT_APP_API_HOST}/events/account/${publicUserInfo.id}`;
@@ -116,15 +111,12 @@ export default function PublicProfilePage({ user, items }) {
 
     fetchHostedEvents();
     getMyItems();
-  }, [publicUserInfo]);
+  }, [publicUserInfo, fetchWithToken, token]);
 
   function joinName(first_name, last_name) {
     return `${first_name} ${last_name}`;
   }
-  const fullName = joinName(
-    publicUserInfo.firstName,
-    publicUserInfo.lastName
-  );
+  const fullName = joinName(publicUserInfo.firstName, publicUserInfo.lastName);
 
   function formatUserInfoDate(dateStr) {
     const months = [

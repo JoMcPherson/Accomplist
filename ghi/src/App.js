@@ -21,6 +21,7 @@ import UpdateProfile from "./Pages/UpdateProfile.js";
 import useToken, { useAuthContext } from "@galvanize-inc/jwtdown-for-react";
 import "./index.css";
 import PublicProfilePage from "./Pages/PublicProfilePage.js";
+import AccomplistSearch from "./Pages/Search.js";
 import Chatpage from "./Pages/ChatPage.js";
 import Chat from "./Components/Chat.js";
 
@@ -108,6 +109,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="chatchat" element={<Chat user={user} token={token}/>} />
+            <Route path="search" element={<AccomplistSearch />} />
             <Route path="login" element={<LoginForm />} />
             <Route path="chatpage" element={<Chatpage user={user} token={token} />} />
             <Route path="accomplist_items" element={<AcomplistItemCards />} />
@@ -184,3 +186,8 @@ function App() {
 }
 
 export default App;
+
+
+            // <Route path="/accomplist_items/:slug"
+            // element={<AccomplistDetail user={user}
+            // my_accomplist_items={my_accomplist_items} />} />

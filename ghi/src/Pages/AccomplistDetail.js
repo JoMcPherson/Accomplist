@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useAuthContext } from '@galvanize-inc/jwtdown-for-react';
 import { Card, Image, Modal, Form, Button, Row, Col } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
 import Logen from '../Components/Logen';
 import icon from '../assets/icon.png';
 
@@ -160,7 +159,7 @@ export default function AccomplistDetail({ user, my_accomplist_items }) {
     if (user.photo === "") {
       user.photo =  icon
     }
-    handleUpdate('comments', user.id.toString().concat(';&* ', user.username,';&* ', user.photo, ';&* ', thingToDo,';&*', timestamp ,';&*','ENDUSER'));
+    handleUpdate('comments', user.id.toString().concat(';&*', user.username,';&*', user.photo, ';&*', thingToDo,';&*', timestamp ,';&*','ENDUSER'));
   };
 
   // modal code possibly redundant because of bootstrap but it works and I don't want to faafo
@@ -267,7 +266,7 @@ export default function AccomplistDetail({ user, my_accomplist_items }) {
                     <Card className="suggestion-card mb-3" key={index}>
                       <Card.Body className="custom-card-body d-flex">
                         <div className="profile-pic-container">
-                          <Link to={`/user/${userId}`}>
+                          <Link to={`/profile/${userName}`}>
                             <Image src={userPhoto} />
                           </Link>
                         </div>
@@ -276,7 +275,7 @@ export default function AccomplistDetail({ user, my_accomplist_items }) {
                                   <strong className="comment-author">{userName}</strong>
                                   <small className="comment-timestamp">{formatDate(userTimestamp)}</small>
                               </div>
-                              <p>{userComment}</p>
+                              <p>{userComment}<span className='whitey'>{userId}</span></p>
                           </div>
                       </Card.Body>
                     </Card>
@@ -291,3 +290,41 @@ export default function AccomplistDetail({ user, my_accomplist_items }) {
 
   return <Logen />;
 }
+
+
+//     async componentDidMount() {
+//       const url = `${process.env.REACT_APP_API_HOST}/api/accomplist_items`;
+
+//       try {
+//           const response = await fetch(url);
+//           if (response.ok) {
+//               const data = await response.json();
+
+//               const loadedItemsWithCounts = await Promise.all(data.map(async (item) => {
+//                   const wantedCount = await this.fetchItemCount(item.id, false);
+//                   const completedCount = await this.fetchItemCount(item.id, true);
+//                   const slug = createSlug(item.title);  // <-- Generating slug here
+//                   return {
+//                       ...item,
+//                       wantedCount,
+//                       completedCount,
+//                       slug  // <-- Storing slug in the state here
+//                   };
+//               }));
+
+//               const shuffledItems = shuffleArray(loadedItemsWithCounts);
+//               const itemColumns = this.distributeItemsToColumns(shuffledItems);
+
+//               this.setState({ itemColumns, originalItems: loadedItemsWithCounts, shuffledItems });
+//           }
+//       } catch (e) {
+//           console.error(e);
+//       }
+//   }
+
+
+//                 <Link to={`/accomplist_items/${accomplist_item.slug}`}>
+//                   <img src={accomplist_item.photo} className="card-img-top" alt={accomplist_item.title}></img>
+//                 </Link>
+
+// import { createSlug } from '../utils/slugify';

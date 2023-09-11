@@ -74,91 +74,91 @@ const SignUp = () => {
         <form className="Auth-form" onSubmit={(e) => handleRegistration(e)}>
           <div className="Auth-form-content">
             <h1 className="Auth-form-title">Create an account:</h1>
-              <div className="form-group mt-3">
+              <div className="form-group mt-2">
                 <label className="label">Username:</label>
                 <input
                   name="username"
                   type="text"
-                  className="form-control mt-1"
+                  className="form-control"
                   placeholder="username"
                   onChange={(e) => {
                     setUsername(e.target.value);
                   }}
                 />
               </div>
-              <div className="form-group mt-3">
+              <div className="form-group mt-2">
                 <label className="label">Password:</label>
                 <input
                   name="password"
                   type="password"
-                  className="form-control mt-1"
+                  className="form-control"
                   placeholder="password"
                   onChange={(e) => {
                     setPassword(e.target.value);
                   }}
                 />
               </div>
-            <div className="form-group mt-3">
+            <div className="form-group mt-2">
               <label className="label">First Name:</label>
               <input
                 name="first"
                 type="text"
-                className="form-control mt-1"
+                className="form-control"
                 placeholder="First Name"
                 onChange={(e) => {
                   setFirst(e.target.value);
                 }}
               />
             </div>
-            <div className="form-group mt-3">
+            <div className="form-group mt-2">
               <label className="label">Last Name:</label>
               <input
                 name="last"
                 type="text"
-                className="form-control mt-1"
+                className="form-control"
                 placeholder="Last Name"
                 onChange={(e) => {
                   setLast(e.target.value);
                 }}
               />
             </div>
-            <div className="form-group mt-3">
+            <div className="form-group mt-2">
               <label className="label">Email:</label>
               <input
                 name="email"
                 type="text"
-                className="form-control mt-1"
+                className="form-control"
                 placeholder="Email"
                 onChange={(e) => {
                   setEmail(e.target.value);
                 }}
               />
             </div>
-            <div className="form-group mt-3">
+            <div className="form-group mt-2">
               <label className="label">Photo:</label>
               <input
                 name="photo"
                 type="text"
-                className="form-control mt-1"
+                className="form-control"
                 placeholder="Photo URL"
                 onChange={(e) => {
                   setPhoto(e.target.value);
                 }}
               />
             </div>
-            <div className="form-group mt-3">
+            <div className="form-group mt-2">
               <label className="label">Bio:</label>
               <input
                 name="bio"
                 type="text"
-                className="form-control mt-1"
+                className="form-control"
                 placeholder="Tell us about yourself!"
                 onChange={(e) => {
                   setBio(e.target.value);
                 }}
               />
             </div>
-            <div className="d-grid gap-2 mt-4">
+            <div className="d-grid gap-2 mt-5">
               <input className="btn btn-outline-dark" type="submit" value="Signup" />
             </div>
           </div>

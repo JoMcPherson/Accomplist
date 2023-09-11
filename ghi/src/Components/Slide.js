@@ -33,37 +33,38 @@ class Slide extends React.Component {
   }
 
   render() {
-    const { src, button, headline, index } = this.props.slide
-    const current = this.props.current
-    let classNames = 'slide'
+      const { src, button, headline, subtext, index } = this.props.slide; // Add subtext here
+      const current = this.props.current;
+      let classNames = 'slide';
 
-    if (current === index) classNames += ' slide--current'
-    else if (current - 1 === index) classNames += ' slide--previous'
-    else if (current + 1 === index) classNames += ' slide--next'
+      if (current === index) classNames += ' slide--current';
+      else if (current - 1 === index) classNames += ' slide--previous';
+      else if (current + 1 === index) classNames += ' slide--next';
 
-    return (
-      <li
-        ref={this.slide}
-        className={classNames}
-        onClick={this.handleSlideClick}
-        onMouseMove={this.handleMouseMove}
-        onMouseLeave={this.handleMouseLeave}
-      >
-        <div className="slide__image-wrapper">
-          <img
-            className="slide__image"
-            alt={headline}
-            src={src}
-            onLoad={this.imageLoaded}
-          />
-        </div>
+      return (
+          <li
+              ref={this.slide}
+              className={classNames}
+              onClick={this.handleSlideClick}
+              onMouseMove={this.handleMouseMove}
+              onMouseLeave={this.handleMouseLeave}
+          >
+              <div className="slide__image-wrapper">
+                  <img
+                      className="slide__image"
+                      alt={headline}
+                      src={src}
+                      onLoad={this.imageLoaded}
+                  />
+              </div>
 
-        <article className="slide__content">
-          <h2 className="slide__headline">{headline}</h2>
-          <button className="slide__action btn">{button}</button>
-        </article>
-      </li>
-    )
+              <article className="slide__content">
+                  <h2 className="slide__headline">{headline}</h2>
+                  <p className="slide__subtext">{subtext}</p> {/* Add subtext display here */}
+                  <button className="slide__action btn">{button}</button>
+              </article>
+          </li>
+      );
   }
 }
 
