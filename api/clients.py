@@ -23,7 +23,7 @@ async def disconnect():
 
 async def main():
     await sio_client.connect(
-        url=os.environ["LOCAL_HOST"], socketio_path="sockets"
+        url=os.environ["LOCAL_HOST"], socketio_path="ws/sockets"
     )
     await sio_client.disconnect()
 

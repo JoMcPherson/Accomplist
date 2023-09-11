@@ -1,14 +1,20 @@
 import socketio
 
-sio_server = socketio.AsyncServer(async_mode="asgi", cors_allowed_origins=[])
+sio_server = socketio.AsyncServer(
+    async_mode="asgi",
+    cors_allowed_origins=[],
+    logger=True,
+)
 
-sio_app = socketio.ASGIApp(socketio_server=sio_server, socketio_path="sockets")
+sio_app = socketio.ASGIApp(
+    socketio_server=sio_server
+)
 
 
 @sio_server.event
 async def connect(sid, environ, auth):
     print(f"{sid}: connected")
-    await sio_server.save_session(sid, {"username": "Guest", "photo": ""})
+    await sio_server.save_session(sid, {"username": "DeeGuest", "photo": ""})
     session = await sio_server.get_session(sid)
     await sio_server.emit('join', {
         'sid': sid,
@@ -41,7 +47,7 @@ async def namepass(sid, username):
     )
     await sio_server.emit(
         "namepass",
-        {"username": username.get("name"), "photo": username.get("photo")},
+        {"username": username.get("username"), "photo": username.get("photo")},
     )
 
 

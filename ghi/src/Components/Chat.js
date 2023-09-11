@@ -2,8 +2,8 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { io } from 'socket.io-client';
 import Message from "./Message";
 
-const socket = io(`${process.env.REACT_APP_API_HOST}`, {
-    path: '/sockets',
+export const socket = io(`${process.env.REACT_APP_API_HOST}`, {
+    path: '/ws/socket.io/',
     autoConnect: true
     }
     );
@@ -55,10 +55,10 @@ export default function Chat({user}){
 
         useEffect(() => {
 
-        const socket = io(`${process.env.REACT_APP_API_HOST}`, {
-        path: '/sockets'
-        }
-        );
+        // const socket = io(`${process.env.REACT_APP_API_HOST}`, {
+        // path: '/ws/socket.io'
+        // }
+        // );
 
 
         socket.on('connect', () => {
