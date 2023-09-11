@@ -22,6 +22,7 @@ import useToken, { useAuthContext } from "@galvanize-inc/jwtdown-for-react";
 import "./index.css";
 import PublicProfilePage from "./Pages/PublicProfilePage.js";
 import Chatpage from "./Pages/ChatPage.js";
+import Chat from "./Components/Chat.js";
 
 function App() {
   const [error] = useState(null);
@@ -103,11 +104,12 @@ function App() {
         <NavBar />
         <Outlet />
         <div className="app-container">
-          <div className="content-wrapper">
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="login" element={<LoginForm />} />
-              <Route path="chatpage" element={<Chatpage user={user} token={token} />} />
+        <div className="content-wrapper">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="chatchat" element={<Chat user={user} token={token}/>} />
+            <Route path="login" element={<LoginForm />} />
+            <Route path="chatpage" element={<Chatpage user={user} token={token} />} />
             <Route path="accomplist_items" element={<AcomplistItemCards />} />
               <Route path="signup" element={<Register />} />
               <Route
