@@ -35,15 +35,15 @@ const LoginForm = () => {
     e.preventDefault();
 
     try {
-      const result = await login(username, password); // Try logging in
+      const result = await login(username, password);
       console.log("Login result:", result);
 
-      // Check for token in localStorage as an indicator of successful login
       if (localStorage.getItem('token')) {
+        console.log("howdy")
+        setError(null)
         e.target.reset();
-        navigate("/accomplist_items");  // Navigate only if login is successful
+        navigate("/accomplist_items");
       } else {
-        // Handle unsuccessful login (e.g., wrong credentials)
         setError("Invalid credentials. Please try again.");
       }
     } catch (err) {
@@ -64,16 +64,13 @@ const LoginForm = () => {
     <form className="Auth-form" onSubmit={(e) => handleSubmit(e)}>
       <div className="Auth-form-content">
           <h1 className="Auth-form-title">Login</h1>
-          <h6 className="text-center mt-2">
-            Need to <Link to="/signup"> Create An Account</ Link> ?
-          </h6>
           <div className="form-group mt-3">
             <label className="label">Username:</label>
             <input
               name="username"
               type="text"
               placeholder="username"
-              className="form-control mt-1"
+              className="form-control"
               required
               autoComplete="username"
               onChange={(e) => setUsername(e.target.value)}
@@ -85,19 +82,28 @@ const LoginForm = () => {
               name="password"
               type="password"
               placeholder="password"
-              className="form-control mt-1"
+              className="form-control"
               required
               autoComplete="current-password"
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
+          <div className="auth-options mt-1">
+            <div className="remember-me">
+                <input type="checkbox" className="checkbox" />
+                <span className="check-label">Remember Me</span>
+            </div>
+            <span className="forgot pinklink">
+              Forgot <Link to="/whoops">Password</Link>?
+            </span>
+          </div>
           <div className="d-grid gap-2 mt-4">
             {error && <p style={{ color: 'red' }}>{error}</p>}
             <input className="btn btn-outline-dark" type="submit" value="Login" />
           </div>
-          <p className="text-center mt-2">
-            Forgot <Link to="/whoops">Password</Link> ?
-          </p>
+          <h6 className="text-center mt-4 pinklink">
+          Don't have an account? <Link to="/signup">Sign up here.</ Link>
+          </h6>
       </div>
       </form>
     </div>
