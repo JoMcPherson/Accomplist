@@ -183,7 +183,7 @@ class eventsRepo:
                     )
                     old_data = event.dict()
 
-                    return UpdatedEventOut(id=event_id, **old_data)
+                    return UpdatedEventOut(event_id=event_id, **old_data)
         except Exception as e:
             print(e)
 

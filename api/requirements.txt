@@ -6,3 +6,9 @@ psycopg-binary>=3.1.2
 psycopg-pool>=3.1.7
 jwtdown-fastapi==0.5.0
 httpx
+python-socketio>=5.8.0
+websockets>=11.0.3
+python-socketio[client]
+python-socketio[asyncio_client]
+aiohttp>=3.8.5
+socketio

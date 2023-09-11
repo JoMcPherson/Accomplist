@@ -77,7 +77,7 @@
   font-size: 20px;
   font-family: -apple-system,system-ui,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
   font-weight:500;
-  background: linear-gradient(to bottom right, #eb94a4, #ff5a9c);
+  background: linear-gradient(to bottom right, #eb94da, #5a70ff);
   border: 0;
   border-radius: 12px;
   color: #fff;
@@ -104,25 +104,27 @@
   content: 'PARTY';
 
   position: absolute;
+  color: rgba(182, 39, 190, 0.986);
+  font-weight: 700;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(45deg, transparent 3%, #00E6F6 3%, #00E6F6 5%, #f36888 5%);
-  text-shadow: -1px -1px 0px #F8F005, 3px 3px 0px #1500f6;
+  background: linear-gradient(45deg, transparent 3%, #00e6f677 3%, #00e6f660 5%, #808ff341 5%);
+  text-shadow: -1px -1px 0px #dfd7de, 3px 3px 0px #da9ecc;
   clip-path: var(--slice-0);
 }
 
 .button49:not([disabled]):focus {
-  box-shadow: 0 0 .5rem rgba(0, 0, 0, 0.5), -.125rem -.125rem 1rem rgba(239, 71, 101, 0.5), .125rem .125rem 1rem rgba(255, 154, 90, 0.5);
+  box-shadow: 0 0 .5rem rgba(0, 0, 0, 0.5), -.125rem -.125rem 1rem rgba(239, 71, 217, 0.5), .125rem .125rem 1rem rgba(255, 154, 90, 0.5);
 }
 
 .button49:not([disabled]):hover {
-  box-shadow: 0 0 .5rem rgba(0, 0, 0, 0.5), -.125rem -.125rem 1rem rgba(239, 71, 101, 0.5), .125rem .125rem 1rem rgba(255, 154, 90, 0.5);
+  box-shadow: 0 0 .5rem rgba(0, 0, 0, 0.5), -.125rem -.125rem 1rem rgba(239, 71, 233, 0.5), .125rem .125rem 1rem rgba(255, 154, 90, 0.5);
 }
 
 .button49:hover:after {
-  animation: 1s glitch;
+  animation: 1.3s glitch;
   animation-timing-function: steps(4, end);
   }
 

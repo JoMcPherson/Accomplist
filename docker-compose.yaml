@@ -7,6 +7,7 @@ services:
   fastapi:
     environment:
       CORS_HOST: http://localhost:3000
+      LOCAL_HOST: http://localhost:8000
       DATABASE_URL: postgresql://admin:password@database/accomplist
       SIGNING_KEY: ddcfb42d563bed0ec4f9e2290ddf2d80848472affd4b2dbc063aba5ceadd3745
       WAIT_HOSTS: database:5432
