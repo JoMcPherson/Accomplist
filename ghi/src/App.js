@@ -20,6 +20,7 @@ import Register from "./Pages/Register.js";
 import UpdateProfile from "./Pages/UpdateProfile.js";
 import useToken, { useAuthContext } from "@galvanize-inc/jwtdown-for-react";
 import "./index.css";
+import PublicProfilePage from "./Pages/PublicProfilePage.js";
 import Chatpage from "./Pages/ChatPage.js";
 import Chat from "./Components/Chat.js";
 
@@ -100,8 +101,8 @@ function App() {
   return (
     <div>
       <BrowserRouter basename={basename}>
-      <NavBar />
-      <Outlet />
+        <NavBar />
+        <Outlet />
         <div className="app-container">
         <div className="content-wrapper">
           <Routes>
@@ -110,61 +111,70 @@ function App() {
             <Route path="login" element={<LoginForm />} />
             <Route path="chatpage" element={<Chatpage user={user} token={token} />} />
             <Route path="accomplist_items" element={<AcomplistItemCards />} />
-            <Route path="signup" element={<Register />} />
-            <Route
-              path="updateprofile"
-              element={<UpdateProfile user={user} />}
-            />
-            <Route
-              path="events/new"
-              element={<EventCreateForm user={user} items={items} />}
-            />
-            <Route path="events" element={<EventsList />} />
-            <Route path="events/edit/:event_id" element={<EventEditor user={user} items={items}/>} />
-            <Route path="events/:event_id" element={<EventDetailDisplay />} />
-            <Route
-              path="events/account/:account_id"
-              element={<AccountProfilePage />}
-            />
-            <Route
-              path="accomplist_items/:id"
-              element={
-                <AccomplistDetail
-                  user={user}
-                  my_accomplist_items={my_accomplist_items}
-                />
-              }
-            />
-            <Route
-              path="accomplist_items/new"
-              element={<AccomplistItemCreate user={user} />}
-            />
-            <Route
-              path="my_accomplist_items/new"
-              element={
-                <MyAccomplistItemCreate
-                  user={user}
-                  items={items}
-                  getMyItems={getMyItems}
-                  my_accomplist_items={my_accomplist_items}
-                />
-              }
-            />
-            <Route
-              path="profile"
-              element={
-                <AccountProfilePage
-                  user={user}
-                  my_accomplist_items={my_accomplist_items}
-                  items={items}
-                  getMyItems={getMyItems}
-                />
-              }
-            />
-            <Route path="/whoops" element={<ForgotPassword />} />
-            <Route path="*" element={<Lost />} />
-          </Routes>
-        </div>
+              <Route path="signup" element={<Register />} />
+              <Route
+                path="updateprofile"
+                element={<UpdateProfile user={user} />}
+              />
+              <Route
+                path="events/new"
+                element={<EventCreateForm user={user} items={items} />}
+              />
+              <Route path="events" element={<EventsList />} />
+              <Route path="events/edit/:event_id" element={<EventEditor user={user} items={items}/>} />
+              <Route path="events/:event_id" element={<EventDetailDisplay />} />
+              <Route
+                path="events/account/:account_id"
+                element={<AccountProfilePage />}
+              />
+              <Route
+                path="accomplist_items/:id"
+                element={
+                  <AccomplistDetail
+                    user={user}
+                    my_accomplist_items={my_accomplist_items}
+                  />
+                }
+              />
+              <Route
+                path="accomplist_items/new"
+                element={<AccomplistItemCreate user={user} />}
+              />
+              <Route
+                path="my_accomplist_items/new"
+                element={
+                  <MyAccomplistItemCreate
+                    user={user}
+                    items={items}
+                    getMyItems={getMyItems}
+                    my_accomplist_items={my_accomplist_items}
+                  />
+                }
+              />
+              <Route
+                path="profile"
+                element={
+                  <AccountProfilePage
+                    user={user}
+                    my_accomplist_items={my_accomplist_items}
+                    items={items}
+                    getMyItems={getMyItems}
+                  />
+                }
+              />
+              <Route
+                path="profile/:username"
+                element={
+                  <PublicProfilePage
+                    user={user}
+                    items={items}
+                  />
+                }
+              />
+              <Route path="/whoops" element={<ForgotPassword />} />
+              <Route path="*" element={<Lost />} />
+            </Routes>
+          </div>
         </div>
         <Footer />
         <ErrorNotification error={error} />

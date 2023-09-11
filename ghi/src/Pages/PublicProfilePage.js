@@ -1,34 +1,25 @@
 import { useEffect, useState } from "react";
 import useToken from "@galvanize-inc/jwtdown-for-react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import {
-  Card,
-  Container,
-  Row,
-  Col,
-  Button,
-  FormControl,
-} from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Card, Container, Row, Col, Button } from "react-bootstrap";
+import { Link, useParams } from "react-router-dom";
 import Logen from "../Components/Logen";
 
-export default function AccountProfilePage({
-  user,
-  getMyItems,
-  my_accomplist_items,
-  items,
-}) {
-  const { token } = useToken();
-  const [userInfo, setUserInfo] = useState([]);
+export default function PublicProfilePage({ user, items }) {
+  const { token, fetchWithToken } = useToken();
+  const [publicUserInfo, setPublicUserInfo] = useState([]);
   const [hostedEvents, setHostedEvents] = useState([]);
   const [showAllHostedEvents, setShowAllHostedEvents] = useState(false);
+  const [myItems, setMyItems] = useState([]);
+  const [formattedUserInfoDate, setFormattedUserInfoDate] = useState("");
+  const { username } = useParams();
 
   useEffect(() => {
-    const fetchUserData = async () => {
-      if (token && user.id !== undefined) {
+    const fetchPublicUserData = async () => {
+      if (token) {
         try {
-          const profileUrl = `${process.env.REACT_APP_API_HOST}/api/accounts/${user.id}`;
-          const response = await fetch(profileUrl, {
+          const publicProfileUrl = `${process.env.REACT_APP_API_HOST}/api/accounts/user/${username}`;
+          const response = await fetch(publicProfileUrl, {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
@@ -42,11 +33,17 @@ export default function AccountProfilePage({
             );
           }
 
-          const userData = await response.json();
+          const publicUserData = await response.json();
 
-          setUserInfo({
-            bio: userData.bio || "",
-            photo: userData.photo || "",
+          setPublicUserInfo({
+            bio: publicUserData.bio || "",
+            photo: publicUserData.photo || "",
+            dateCreated: publicUserData.date_created || "",
+            firstName: publicUserData.first_name || "",
+            lastName: publicUserData.last_name || "",
+            email: publicUserData.email || "",
+            username: publicUserData.username || "",
+            id: publicUserData.id || "",
           });
         } catch (error) {
           console.error("Failed to fetch user data:", error);
@@ -54,10 +51,18 @@ export default function AccountProfilePage({
       }
     };
 
+    fetchPublicUserData();
+  }, [token, username]);
+
+  useEffect(() => {
     const fetchHostedEvents = async () => {
-      if (token && user.id !== undefined) {
+      if (publicUserInfo.id !== undefined) {
+        setFormattedUserInfoDate(
+          formatUserInfoDate(publicUserInfo.dateCreated)
+        );
+
         try {
-          const hostedEventsUrl = `${process.env.REACT_APP_API_HOST}/events/account/${user.id}`;
+          const hostedEventsUrl = `${process.env.REACT_APP_API_HOST}/events/account/${publicUserInfo.id}`;
           const response = await fetch(hostedEventsUrl, {
             method: "GET",
             headers: {
@@ -93,46 +98,25 @@ export default function AccountProfilePage({
       }
     };
 
-    fetchUserData();
-    fetchHostedEvents();
-  }, [token, user.id]);
-
-  const handleCompleteChange = async (
-    event,
-    myItemID,
-    itemID,
-    myItemUserID
-  ) => {
-    event.preventDefault();
-    if (token) {
-      try {
-        const updateMyAccomplistUrl = `${process.env.REACT_APP_API_HOST}/api/my_accomplist_items/${myItemID}`;
-        const data = {
-          item_id: itemID,
-          user_id: myItemUserID,
-          completed: event.target.value,
-        };
-        const response = await fetch(updateMyAccomplistUrl, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(data),
-        });
-        if (response.ok) {
-          getMyItems();
-        }
-      } catch (error) {
-        console.error("Call Error:", error);
+    const getMyItems = async () => {
+      if (publicUserInfo.id !== undefined) {
+        const myItemUrl = `${process.env.REACT_APP_API_HOST}/api/my_accomplist_items/account/${publicUserInfo.id}`;
+        const response = await fetchWithToken(myItemUrl);
+        const filteredItems = response.filter(
+          (item) => item.user_id === publicUserInfo.id
+        );
+        setMyItems(filteredItems);
       }
-    }
-  };
+    };
+
+    fetchHostedEvents();
+    getMyItems();
+  }, [publicUserInfo, fetchWithToken, token]);
 
   function joinName(first_name, last_name) {
     return `${first_name} ${last_name}`;
   }
-  const fullName = joinName(user.first_name, user.last_name);
+  const fullName = joinName(publicUserInfo.firstName, publicUserInfo.lastName);
 
   function formatUserInfoDate(dateStr) {
     const months = [
@@ -154,7 +138,6 @@ export default function AccountProfilePage({
     const year = dateObj.getFullYear();
     return `${month} ${year}`;
   }
-  const formattedUserInfoDate = formatUserInfoDate(user.date_created);
 
   function formatEventCardsDate(dateStr) {
     const months = [
@@ -189,8 +172,8 @@ export default function AccountProfilePage({
   const [showCompleted, setShowCompleted] = useState(false);
   const [showIncomplete, setShowIncomplete] = useState(false);
 
-  const incompleteItems = my_accomplist_items.filter((item) => !item.completed);
-  const completedItems = my_accomplist_items.filter((item) => item.completed);
+  const incompleteItems = myItems.filter((item) => !item.completed);
+  const completedItems = myItems.filter((item) => item.completed);
 
   const displayedIncompleteItems = showIncomplete
     ? incompleteItems
@@ -220,20 +203,17 @@ export default function AccountProfilePage({
               alignItems: "center",
             }}
           >
-            {user.photo && (
+            {publicUserInfo.photo && (
               <img
-                src={userInfo.photo}
+                src={publicUserInfo.photo}
                 alt="User's Profile"
                 className="user-profile-image"
               />
             )}
-            <Link to="/updateprofile" className="btn btn-outline-dark mt-3">
-              Update Profile
-            </Link>
           </div>
           <div style={{ marginLeft: "20px", marginTop: "21px" }}>
             <h1>
-              <strong className="whitey">{user.username}</strong>
+              <strong className="whitey">{publicUserInfo.username}</strong>
             </h1>
             <div>
               <strong>{fullName}</strong>
@@ -243,7 +223,7 @@ export default function AccountProfilePage({
               {formattedUserInfoDate}
             </div>
             <strong>Bio:</strong>
-            <div>{userInfo.bio}</div>
+            <div>{publicUserInfo.bio}</div>
           </div>
         </div>
         {completedItems.length > 0 && (
@@ -291,25 +271,9 @@ export default function AccountProfilePage({
                         <Card.Text className="truncate-description">
                           {accomplist_item?.details}
                         </Card.Text>
-                        <FormControl
-                          as="select"
-                          defaultValue={my_item.completed ? true : false}
-                          onChange={(event) =>
-                            handleCompleteChange(
-                              event,
-                              my_item.id,
-                              my_item.item_id,
-                              my_item.user_id
-                            )
-                          }
-                          style={{
-                            textAlign: "center",
-                            textAlignLast: "center",
-                          }}
-                        >
-                          <option value={true}>Done!</option>
-                          <option value={false}>Will Do!</option>
-                        </FormControl>
+                        <div className="card-footer bg-transparent border-secondary text-center">
+                          {my_item.completed ? "Done!" : "Will Do!"}
+                        </div>
                       </Card.Body>
                     </Card>
                   </Col>
@@ -363,26 +327,9 @@ export default function AccountProfilePage({
                         <Card.Text className="truncate-description">
                           {accomplist_item?.details}
                         </Card.Text>
-                        <FormControl
-                          as="select"
-                          defaultValue={my_item.completed ? true : false}
-                          onChange={(event) =>
-                            handleCompleteChange(
-                              event,
-                              my_item.id,
-                              my_item.item_id,
-                              my_item.user_id
-                            )
-                          }
-                          style={{
-                            textAlign: "center",
-                            textAlignLast: "center",
-                            appearance: "auto",
-                          }}
-                        >
-                          <option value={true}>Done!</option>
-                          <option value={false}>Will Do!</option>
-                        </FormControl>
+                        <div className="card-footer bg-transparent border-secondary text-center">
+                          {my_item.completed ? "Done!" : "Will Do!"}
+                        </div>
                       </Card.Body>
                     </Card>
                   </Col>
