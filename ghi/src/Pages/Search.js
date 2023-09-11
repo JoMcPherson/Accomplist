@@ -44,24 +44,24 @@ const Search = () => {
                     <p>Hope you found what you're looking for.</p>
                 </div>
             </div>
-            <Container fluid className='px-4 my-4'>
-                <h2>Accomplist Items:</h2>
-                <Row xs={1} md={2} lg={3} xl={4} className="g-4 mt-1">
-                {items.map(item => (
-                    <Col key={item.id}>
-                    <Card>
-                        <Link to={`/accomplist_items/${item.id}`}>
-                            <Card.Img variant="top" src={item.photo} />
-                        </Link>
-                        <Card.Body>
-                            <Card.Title>{item.title}</Card.Title>
-                            <Card.Subtitle>{item.details}</Card.Subtitle>
-                        </Card.Body>
-                    </Card>
-                    </Col>
-                ))}
-                </Row>
-            </Container>
+                <Container fluid className='px-4 my-4'>
+                    <h2>Accomplist Items:</h2>
+                    <Row xs={1} md={2} lg={3} xl={4} className="g-4 mt-1">
+                        {items.map(item => (
+                            <Col key={item.id} className="text-center">
+                                <div className="item-card">
+                                    <Link to={`/accomplist_items/${item.id}`}>
+                                        <img src={item.photo} className="card-img-top" alt={item.title}></img>
+                                    </Link>
+                                    <div className="profile-content">
+                                        <h2 className="profile-name">{item.title}</h2>
+                                    </div>
+                                    <div className="profile-description">{item.details}</div><br/>
+                                </div>
+                            </Col>
+                        ))}
+                    </Row>
+                </Container>
             <Container fluid className='px-4 my-4'>
                 <h2>Accounts:</h2>
             </Container>
