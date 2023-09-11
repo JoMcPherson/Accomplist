@@ -40,7 +40,6 @@ export default function PublicProfilePage({user, items}) {
           }
 
           const publicUserData = await response.json();
-          console.log(publicUserData);
 
           setPublicUserInfo({
             bio: publicUserData.bio || "",
@@ -52,72 +51,70 @@ export default function PublicProfilePage({user, items}) {
             username: publicUserData.username || "",
             id: publicUserData.id || "",
           });
+
         } catch (error) {
           console.error("Failed to fetch user data:", error);
         }
       }
     };
 
-    const fetchHostedEvents = async () => {
-      if (token && user.id !== undefined) {
-        try {
-          const hostedEventsUrl = `${process.env.REACT_APP_API_HOST}/events/account/${publicUserInfo.id}`;
-          const response = await fetch(hostedEventsUrl, {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          });
-          if (!response.ok) {
-            throw new Error(
-              `HTTP hosted events error! Status: ${response.status}`
-            );
-          }
-
-          let events = await response.json();
-
-          const now = new Date();
-          events.sort((a, b) => {
-            const dateA = new Date(a.date);
-            const dateB = new Date(b.date);
-
-            if (dateA < now && dateB < now) return dateA - dateB;
-            if (dateA > now && dateB > now) return dateA - dateB;
-            if (dateA < now) return 1;
-            if (dateB < now) return -1;
-
-            return 0;
-          });
-
-          setHostedEvents(events);
-        } catch (error) {
-          console.error("Failed to fetch events data:", error);
-        }
-      }
-    };
-
-    const getMyItems = async () => {
-      if (token && publicUserInfo) {
-        const myItemUrl = `${process.env.REACT_APP_API_HOST}/api/my_accomplist_items/account/${publicUserInfo.id}`;
-        const response = await fetchWithToken(myItemUrl);
-        console.log(response);
-        const filteredItems = response.filter(
-          (item) => item.user_id === publicUserInfo.id
-        );
-        setMyItems(filteredItems);
-      } else {
-        console.log("fetch my items failed");
-      }
-    };
-
     fetchPublicUserData();
-    getMyItems();
-    fetchHostedEvents();
   }, [token, user.id]);
 
 
+  useEffect(() => {
+  const fetchHostedEvents = async () => {
+    if (publicUserInfo.id !== undefined) {
+      try {
+        const hostedEventsUrl = `${process.env.REACT_APP_API_HOST}/events/account/${publicUserInfo.id}`;
+        const response = await fetch(hostedEventsUrl, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        if (!response.ok) {
+          throw new Error(`HTTP hosted events error! Status: ${response.status}`);
+        }
 
+        let events = await response.json();
+
+        const now = new Date();
+        events.sort((a, b) => {
+          const dateA = new Date(a.date);
+          const dateB = new Date(b.date);
+
+          if (dateA < now && dateB < now) return dateA - dateB;
+          if (dateA > now && dateB > now) return dateA - dateB;
+          if (dateA < now) return 1;
+          if (dateB < now) return -1;
+
+          return 0;
+        });
+
+        setHostedEvents(events);
+      } catch (error) {
+        console.error("Failed to fetch events data:", error);
+      }
+    }
+  };
+
+  const getMyItems = async () => {
+    if (publicUserInfo.id !== undefined) {
+      const myItemUrl = `${process.env.REACT_APP_API_HOST}/api/my_accomplist_items/account/${publicUserInfo.id}`;
+      const response = await fetchWithToken(myItemUrl);
+      const filteredItems = response.filter(
+        (item) => item.user_id === publicUserInfo.id
+      );
+      setMyItems(filteredItems);
+    }
+  };
+
+  fetchHostedEvents();
+  getMyItems();
+
+  },[publicUserInfo]);
 
 
   function joinName(first_name, last_name) {
