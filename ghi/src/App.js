@@ -120,9 +120,15 @@ function App() {
               path="events/account/:account_id"
               element={<AccountProfilePage />}
             />
-            <Route path="/accomplist_items/:slug"
-            element={<AccomplistDetail user={user}
-            my_accomplist_items={my_accomplist_items} />} />
+            <Route
+              path="accomplist_items/:id"
+              element={
+                <AccomplistDetail
+                  user={user}
+                  my_accomplist_items={my_accomplist_items}
+                />
+              }
+            />
             <Route
               path="accomplist_items/new"
               element={<AccomplistItemCreate user={user} />}
@@ -162,3 +168,8 @@ function App() {
 }
 
 export default App;
+
+
+            // <Route path="/accomplist_items/:slug"
+            // element={<AccomplistDetail user={user}
+            // my_accomplist_items={my_accomplist_items} />} />

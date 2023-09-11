@@ -290,3 +290,41 @@ export default function AccomplistDetail({ user, my_accomplist_items }) {
 
   return <Logen />;
 }
+
+
+//     async componentDidMount() {
+//       const url = `${process.env.REACT_APP_API_HOST}/api/accomplist_items`;
+
+//       try {
+//           const response = await fetch(url);
+//           if (response.ok) {
+//               const data = await response.json();
+
+//               const loadedItemsWithCounts = await Promise.all(data.map(async (item) => {
+//                   const wantedCount = await this.fetchItemCount(item.id, false);
+//                   const completedCount = await this.fetchItemCount(item.id, true);
+//                   const slug = createSlug(item.title);  // <-- Generating slug here
+//                   return {
+//                       ...item,
+//                       wantedCount,
+//                       completedCount,
+//                       slug  // <-- Storing slug in the state here
+//                   };
+//               }));
+
+//               const shuffledItems = shuffleArray(loadedItemsWithCounts);
+//               const itemColumns = this.distributeItemsToColumns(shuffledItems);
+
+//               this.setState({ itemColumns, originalItems: loadedItemsWithCounts, shuffledItems });
+//           }
+//       } catch (e) {
+//           console.error(e);
+//       }
+//   }
+
+
+//                 <Link to={`/accomplist_items/${accomplist_item.slug}`}>
+//                   <img src={accomplist_item.photo} className="card-img-top" alt={accomplist_item.title}></img>
+//                 </Link>
+
+// import { createSlug } from '../utils/slugify';
