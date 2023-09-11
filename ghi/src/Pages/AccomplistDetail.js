@@ -159,7 +159,7 @@ export default function AccomplistDetail({ user, my_accomplist_items }) {
     if (user.photo === "") {
       user.photo =  icon
     }
-    handleUpdate('comments', user.id.toString().concat(';&* ', user.username,';&* ', user.photo, ';&* ', thingToDo,';&*', timestamp ,';&*','ENDUSER'));
+    handleUpdate('comments', user.id.toString().concat(';&*', user.username,';&*', user.photo, ';&*', thingToDo,';&*', timestamp ,';&*','ENDUSER'));
   };
 
   // modal code possibly redundant because of bootstrap but it works and I don't want to faafo
@@ -266,7 +266,7 @@ export default function AccomplistDetail({ user, my_accomplist_items }) {
                     <Card className="suggestion-card mb-3" key={index}>
                       <Card.Body className="custom-card-body d-flex">
                         <div className="profile-pic-container">
-                          <Link to={`/user/${userId}`}>
+                          <Link to={`/profile/${userName}`}>
                             <Image src={userPhoto} />
                           </Link>
                         </div>
