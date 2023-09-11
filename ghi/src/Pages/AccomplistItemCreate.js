@@ -119,7 +119,7 @@ return (
                         <label htmlFor="resources" className="label">Resources:</label>
                         <input value={resources} onChange={e => {setResources(e.target.value)}} type="text" className="form-control" id="resources" placeholder="(optional) e.g. Links, Blogs, Videos, etc."/>
                 </div>
-                <div className="d-grid gap-2 mt-4">
+                <div className="d-grid gap-2 mt-5">
                     <input className="btn btn-outline-dark" type="submit" value="submit" />
                 </div>
             </div>

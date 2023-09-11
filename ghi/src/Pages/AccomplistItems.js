@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { createSlug } from '../utils/slugify';
 
 function shuffleArray(array) {
   const shuffledArray = [...array];
@@ -45,7 +46,7 @@ function AccomplistItem(props) {
           return (
             <div key={accomplist_item.id}>
               <div className="item-card text-center">
-                <Link to={`/accomplist_items/${accomplist_item.id}`}>
+                <Link to={`/accomplist_items/${accomplist_item.slug}`}>
                   <img src={accomplist_item.photo} className="card-img-top" alt={accomplist_item.title}></img>
                 </Link>
                 <div className="profile-content">
@@ -95,14 +96,16 @@ state = {
               const loadedItemsWithCounts = await Promise.all(data.map(async (item) => {
                   const wantedCount = await this.fetchItemCount(item.id, false);
                   const completedCount = await this.fetchItemCount(item.id, true);
+                  const slug = createSlug(item.title);  // <-- Generating slug here
                   return {
                       ...item,
                       wantedCount,
-                      completedCount
+                      completedCount,
+                      slug  // <-- Storing slug in the state here
                   };
               }));
 
-              const shuffledItems = shuffleArray(loadedItemsWithCounts); // Shuffle once after loading
+              const shuffledItems = shuffleArray(loadedItemsWithCounts);
               const itemColumns = this.distributeItemsToColumns(shuffledItems);
 
               this.setState({ itemColumns, originalItems: loadedItemsWithCounts, shuffledItems });

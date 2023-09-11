@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Row, Col, Card, Container } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+import { createSlug } from '../utils/slugify';
 
 const Search = () => {
     const [items, setItems] = useState([]);
@@ -12,7 +14,6 @@ const Search = () => {
             try {
                 let url = `${process.env.REACT_APP_API_HOST}/api/accomplist_items`;
 
-                // Only append title to the URL if searchTitle is not empty
                 if (searchTerm) {
                     url += `?title=${searchTerm}`;
                 }
@@ -50,7 +51,9 @@ const Search = () => {
                 {items.map(item => (
                     <Col key={item.id}>
                     <Card>
-                        <Card.Img variant="top" src={item.photo} />
+                        <Link to={`/accomplist_items/${createSlug(item.title)}`}>
+                            <Card.Img variant="top" src={item.photo} />
+                        </Link>
                         <Card.Body>
                             <Card.Title>{item.title}</Card.Title>
                             <Card.Subtitle>{item.details}</Card.Subtitle>
@@ -62,19 +65,6 @@ const Search = () => {
             </Container>
             <Container fluid className='px-4 my-4'>
                 <h2>Accounts:</h2>
-                {/* <Row xs={1} md={2} lg={3} xl={4} className="g-4">
-                {items.map(item => (
-                    <Col key={item.id}>
-                    <Card>
-                        <Card.Img variant="top" src={item.photo} />
-                        <Card.Body>
-                            <Card.Title>{item.title}</Card.Title>
-                            <Card.Subtitle>{item.details}</Card.Subtitle>
-                        </Card.Body>
-                    </Card>
-                    </Col>
-                ))}
-                </Row> */}
             </Container>
             <Container fluid className='px-4 my-4'>
             <h2>Events:</h2>
