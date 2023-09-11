@@ -14,8 +14,8 @@ async def connect(sid, environ, auth):
         "join",
         {
             "sid": sid,
-            "username": session["username"],
-            "photo": session["photo"],
+            "username": session.get("username"),
+            "photo": session.get("photo"),
         },
     )
 
@@ -28,8 +28,8 @@ async def chat(sid, message):
         {
             "sid": sid,
             "message": message,
-            "username": session["username"],
-            "photo": session["photo"],
+            "username": session.get("username"),
+            "photo": session.get("photo"),
         },
     )
 

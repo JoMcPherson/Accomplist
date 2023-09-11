@@ -7,7 +7,10 @@ sio_client = socketio.AsyncClient()
 
 
 @sio_client.event
-async def connect():
+async def connect(sid, environ, auth):
+    await sio_client.emit(
+        "join", {"sid": sid, "username": "blarg", "photo": "blorg"}
+    )
     print("I'm connected")
 
 

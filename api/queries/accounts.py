@@ -85,6 +85,36 @@ class AccountRepo:
                     except Exception as e:
                         raise Exception("Error:", e)
 
+    def get_user_by_username(self, username: str) -> AccountOut:
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(
+                    """
+                    SELECT id, username, first_name, last_name, email,
+                    date_created, bio, photo
+                    FROM user_accounts
+                    WHERE username = %s;
+                    """,
+                    [username],
+                )
+                ac = cur.fetchone()
+                if ac is None:
+                    raise AuthenticationException("Account not found")
+                else:
+                    try:
+                        return AccountOut(
+                            id=ac[0],
+                            username=ac[1],
+                            first_name=ac[2],
+                            last_name=ac[3],
+                            email=ac[4],
+                            date_created=ac[5].isoformat(),
+                            bio=ac[6],
+                            photo=ac[7],
+                        )
+                    except Exception as e:
+                        raise Exception("Error:", e)
+
     def get(self, username: str) -> AccountOutWithPassword | None:
         with pool.connection() as conn:
             with conn.cursor() as cur:

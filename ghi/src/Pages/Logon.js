@@ -9,15 +9,18 @@ const LoginForm = () => {
   const { login } = useToken();
   const navigate = useNavigate();
 
-// custom background
-  const mainBg = useMemo(() => ({
-    backgroundImage: 'url("https://images.pexels.com/photos/1536437/pexels-photo-1536437.jpeg")',
-    backgroundRepeat: 'no-repeat',
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    minHeight: '100vh',
+  // custom background
+  const mainBg = useMemo(
+    () => ({
+      backgroundImage:
+        'url("https://images.pexels.com/photos/1536437/pexels-photo-1536437.jpeg")',
+      backgroundRepeat: "no-repeat",
+      backgroundSize: "cover",
+      backgroundPosition: "center",
+      minHeight: "100vh",
     }),
-  []);
+    []
+  );
 
   useEffect(() => {
       Object.keys(mainBg).forEach((styleProp) => {
@@ -55,8 +58,8 @@ const LoginForm = () => {
 
   return (
     <div className="Auth-form-container">
-    <form className="Auth-form" onSubmit={(e) => handleSubmit(e)}>
-      <div className="Auth-form-content">
+      <form className="Auth-form" onSubmit={(e) => handleSubmit(e)}>
+        <div className="Auth-form-content">
           <h1 className="Auth-form-title">Login</h1>
           <div className="form-group mt-3">
             <label className="label">Username:</label>
@@ -97,7 +100,11 @@ const LoginForm = () => {
             </span>
           </div>
           <div className="d-grid gap-2 mt-4">
-            <input className="btn btn-outline-dark" type="submit" value="Login" />
+            <input
+              className="btn btn-outline-dark"
+              type="submit"
+              value="Login"
+            />
           </div>
           <h6 className="text-center mt-4 pinklink">
           Don't have an account? <Link to="/signup">Sign up here.</ Link>
