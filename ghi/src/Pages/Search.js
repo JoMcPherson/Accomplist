@@ -46,7 +46,7 @@ const Search = () => {
             </div>
                 <Container fluid className='px-4 my-4'>
                     <h2>Accomplist Items:</h2>
-                    <Row xs={1} md={2} lg={3} xl={4} className="g-4 mt-1">
+                    <Row xs={1} md={2} lg={3} className="g-4 mt-1">
                         {items.map(item => (
                             <Col key={item.id} className="text-center">
                                 <div className="item-card">
@@ -62,12 +62,9 @@ const Search = () => {
                         ))}
                     </Row>
                 </Container>
-            <Container fluid className='px-4 my-4'>
+            {/* <Container fluid className='px-4 my-4'>
                 <h2>Accounts:</h2>
-            </Container>
-            <Container fluid className='px-4 my-4'>
-            <h2>Events:</h2>
-            </Container>
+            </Container> */}
         </div>
     );
 }
