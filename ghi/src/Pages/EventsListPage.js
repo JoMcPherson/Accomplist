@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuthContext } from "@galvanize-inc/jwtdown-for-react"
-
 import { Button, Container, Table } from 'react-bootstrap';
+import Calendario from '../Components/Calendar';
 
 export default function EventsList() {
 
@@ -127,7 +127,9 @@ export default function EventsList() {
               </tbody>
             </Table>
             <div>
-                  {/* <Button className="btn btn-sm custom-button" onClick={handleNewEventCreationPlace}>Delete</Button> */}
+                  <Calendario />
+
+                  {/* <Button className="btn btn-sm custom-button" onClick={handleNewEventCreationPlace}>New</Button> */}
 
             </div>
 

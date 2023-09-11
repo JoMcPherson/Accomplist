@@ -10,5 +10,4 @@ python-socketio>=5.8.0
 websockets>=11.0.3
 python-socketio[client]
 python-socketio[asyncio_client]
-aiohttp>=3.8.5
 socketio
