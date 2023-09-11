@@ -116,7 +116,7 @@ return (
                         <input value={photo} onChange={e => {setPhoto(e.target.value)}} required type="text" className="form-control" id="photo" placeholder="Photo Url"/>
                 </div>
                 <div className="form-group mt-3">
-                        <label htmlFor="resources" className="label">Resources:</label>
+                        <label htmlFor="resources" className="label">Resource URL:</label>
                         <input value={resources} onChange={e => {setResources(e.target.value)}} type="text" className="form-control" id="resources" placeholder="(optional) e.g. Links, Blogs, Videos, etc."/>
                 </div>
                 <div className="d-grid gap-2 mt-5">
