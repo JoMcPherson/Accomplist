@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { Row, Col, Card, Container } from 'react-bootstrap';
+import { Row, Col, Container } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 const Search = () => {
