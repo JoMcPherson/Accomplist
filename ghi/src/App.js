@@ -15,6 +15,7 @@ import Home from "./Pages/Home.js";
 import LoginForm from "./Pages/Logon.js";
 import Lost from "./Components/Lost.js";
 import MyAccomplistItemCreate from "./Pages/MyAccomplistCreate.js";
+import MyEventCreate from "./Pages/MyEventCreate.js";
 import NavBar from "./Components/NavBar.js";
 import Register from "./Pages/Register.js";
 import UpdateProfile from "./Pages/UpdateProfile.js";
@@ -152,6 +153,14 @@ function App() {
                 }
               />
               <Route
+              path="my_events/new"
+              element={
+                <MyEventCreate
+                 user={user}
+                />
+              }
+            />
+            <Route
                 path="profile"
                 element={
                   <AccountProfilePage
