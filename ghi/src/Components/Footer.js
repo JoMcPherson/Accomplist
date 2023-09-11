@@ -1,7 +1,6 @@
 import React from 'react';
 import "./NavBar.css";
 import { SocialIcon } from 'react-social-icons';
-import { Link } from 'react-router-dom';
 import 'react-social-icons/instagram';
 import 'react-social-icons/reddit';
 import 'react-social-icons/gitlab';
@@ -14,7 +13,7 @@ return(
         <div className="container-fluid">
             <div className="row">
                 <div className="col-sm-7 text-right pinklink">
-                    &copy;{new Date().getFullYear()} Accomplist | <Link to ="/chatpage">Chat</Link> | Some rights reserved.
+                    &copy;{new Date().getFullYear()} Accomplist |  | Some rights reserved.
                 </div>
                 <div className="col-sm-5 text-left">
                     <SocialIcon
