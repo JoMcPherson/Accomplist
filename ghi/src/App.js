@@ -155,7 +155,7 @@ function App() {
                 }
               />
               <Route
-                path="profile/public/:username"
+                path="profile/:username"
                 element={
                   <PublicProfilePage
                     user={user}
