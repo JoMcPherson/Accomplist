@@ -50,7 +50,7 @@ const Search = () => {
                 {items.map(item => (
                     <Col key={item.id}>
                     <Card>
-                        <Link to={`/accomplist_item/${item.id}`}>
+                        <Link to={`/accomplist_items/${item.id}`}>
                             <Card.Img variant="top" src={item.photo} />
                         </Link>
                         <Card.Body>
