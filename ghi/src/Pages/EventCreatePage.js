@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useAuthContext } from "@galvanize-inc/jwtdown-for-react";
 import Logen from "../Components/Logen";
+import eventstyles from "./eventstyles.module.css";
+import { Container } from 'react-bootstrap';
 
 export default function EventCreateForm({user, items}) {
     const { token } = useAuthContext();
@@ -121,10 +123,12 @@ export default function EventCreateForm({user, items}) {
 
     if (token) {
     return(
+        <Container>
+            <div style={{ paddingTop: '200px' }}></div>
         <div className="Event-Create-form-container">
             <form onSubmit={handleSubmit} >
 
-                <h1 className="event-form-title">Create an Event:</h1>
+                <h1 className="event-whitey-shadow">Create an Event:</h1>
 
                 <div className='outerforminputcb1'>
                     <input value={name} onChange={handleNameChange} placeholder="Name" required type="text" name="name" id="name" className="forminputcb1" />
@@ -158,9 +162,14 @@ export default function EventCreateForm({user, items}) {
                     <input value={description} onChange={handleDescriptionChange} placeholder="Description" id="description" name="description" className="forminputcb1" />
                     <label htmlFor="description" className="event-label">Description:</label>
                 </div>
-                <button disabled={items.length === 0} type="submit" className="btn btn-primary">Submit</button>
+                <div style={{'paddingLeft': 160}}>
+                    {/* <button disabled={items.length === 0} type="submit" className="btn btn-primary">Submit</button> */}
+                    <button className={eventstyles.button49} onClick={handleSubmit}>Create Event</button>
+                </div>
             </form>
         </div>
+        <div style={{ paddingBottom: '200px' }}></div>
+        </Container>
     )
     }
     else {

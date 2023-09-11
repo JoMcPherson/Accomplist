@@ -18,22 +18,27 @@ import MyAccomplistItemCreate from "./Pages/MyAccomplistCreate.js";
 import NavBar from "./Components/NavBar.js";
 import Register from "./Pages/Register.js";
 import UpdateProfile from "./Pages/UpdateProfile.js";
-import useToken from "@galvanize-inc/jwtdown-for-react";
+import useToken, { useAuthContext } from "@galvanize-inc/jwtdown-for-react";
 import "./index.css";
 import AccomplistSearch from "./Pages/Search.js";
+import Chatpage from "./Pages/ChatPage.js";
 
 function App() {
   const [error] = useState(null);
   const [user, setUser] = useState([]);
-  const { token, fetchWithToken } = useToken();
+  const {token} = useAuthContext();
   const domain = /https:\/\/[^/]+/;
   const basename = process.env.PUBLIC_URL.replace(domain, "");
+  const {fetchWithToken} = useToken();
+
+
 
   // function to get logged in user data from token
   async function getUserData() {
-    if (token) {
-      let userInformation = JSON.parse(atob(token.split(".")[1])).account;
+    if ({token}) {
+      let userInformation = await JSON.parse(atob(token.split(".")[1])).account;
       setUser(userInformation);
+
     } else {
       console.log("No token");
     }
@@ -103,6 +108,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="search" element={<AccomplistSearch />} />
             <Route path="login" element={<LoginForm />} />
+            <Route path="chatpage" element={<Chatpage user={user} token={token} />} />
             <Route path="accomplist_items" element={<AcomplistItemCards />} />
             <Route path="signup" element={<Register />} />
             <Route
@@ -114,7 +120,7 @@ function App() {
               element={<EventCreateForm user={user} items={items} />}
             />
             <Route path="events" element={<EventsList />} />
-            <Route path="events/edit/:event_id" element={<EventEditor />} />
+            <Route path="events/edit/:event_id" element={<EventEditor user={user} items={items}/>} />
             <Route path="events/:event_id" element={<EventDetailDisplay />} />
             <Route
               path="events/account/:account_id"

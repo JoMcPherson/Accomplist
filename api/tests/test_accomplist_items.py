@@ -36,7 +36,7 @@ def test_create_item():
         "date_added": "2023-08-29",
     }
 
-    response = client.post("/api/accomplist_items/", json=json)
+    response = client.post("/api/accomplist_items", json=json)
     app.dependency_overrides = {}
 
     print(response.json(), "response")
