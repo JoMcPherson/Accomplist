@@ -2,8 +2,9 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { io } from 'socket.io-client';
 import Message from "./Message";
 
-const socket = io(process.env.REACT_APP_API_HOST, {
-    path: '/sockets'
+const socket = io(`${process.env.REACT_APP_API_HOST}`, {
+    path: '/sockets',
+    autoConnect: true
     }
     );
 
@@ -19,15 +20,54 @@ export default function Chat({user}){
             },[]
             );
 
-    const chatSocketFunction = useCallback(function useEffectLogic() {
-         socket.on('connect', () => {
+    // const chatSocketFunction = useCallback(function useEffectLogic() {
+    //      socket.on('connect', () => {
+    //         setIsConnected(socket.connected);
+    //     });
+
+    //     socket.on('disconnect', () => {
+    //         setIsConnected(socket.connected);
+    //     });
+
+
+    //     socket.on('join', (data) => {
+    //         setMessagesList((prevMessages) => [...prevMessages, {...data, type: 'join'}])
+    //         // socket.emit('namepass', {'username': user.username, 'photo': user.photo});
+    //     });
+
+    //     socket.on('chat', (data) => {
+    //         setMessagesList((prevMessages) => [...prevMessages, {...data, type: 'chat'}]);
+    //     });
+
+    //     socket.on('namepass', (data) => {
+    //         setMessagesList((prevMessages) => [...prevMessages, {...data, type: 'namepass'}]);
+    //     });
+    // }, []);
+
+
+        useEffect(() => {
+            effectivePassing({user})
+        }, [user, user.id, effectivePassing])
+
+        // useEffect(() => {
+        //     chatSocketFunction()
+        // }, [chatSocketFunction])
+
+        useEffect(() => {
+
+        const socket = io(`${process.env.REACT_APP_API_HOST}`, {
+        path: '/sockets'
+        }
+        );
+
+
+        socket.on('connect', () => {
             setIsConnected(socket.connected);
         });
 
         socket.on('disconnect', () => {
             setIsConnected(socket.connected);
         });
-
 
         socket.on('join', (data) => {
             setMessagesList((prevMessages) => [...prevMessages, {...data, type: 'join'}])
@@ -41,16 +81,7 @@ export default function Chat({user}){
         socket.on('namepass', (data) => {
             setMessagesList((prevMessages) => [...prevMessages, {...data, type: 'namepass'}]);
         });
-    }, []);
-
-
-        useEffect(() => {
-            effectivePassing({user})
-        }, [user, user.id, effectivePassing])
-
-        useEffect(() => {
-            chatSocketFunction()
-        }, [chatSocketFunction])
+        }, [])
 
 
 return (

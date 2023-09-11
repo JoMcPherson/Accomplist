@@ -20,8 +20,8 @@ async def connect(sid, environ, auth):
     session = await sio_server.get_session(sid)
     await sio_server.emit('join', {
         'sid': sid,
-        'username': session['username'],
-        'photo': session['photo']
+        'username': session.get('username'),
+        'photo': session.get('photo')
     })
 
 
@@ -31,8 +31,8 @@ async def chat(sid, message):
     await sio_server.emit('chat', {
         'sid': sid,
         'message': message,
-        'username': session['username'],
-        'photo': session['photo']
+        'username': session.get('username'),
+        'photo': session.get('photo')
     })
 
 
