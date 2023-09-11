@@ -81,7 +81,9 @@ def get_user_by_id(
     return account
 
 
-@router.get("/api/accounts/user/{username}", response_model=Optional[AccountOut])
+@router.get(
+    "/api/accounts/user/{username}", response_model=Optional[AccountOut]
+)
 def get_user_by_username(
     username: str,
     response: Response,

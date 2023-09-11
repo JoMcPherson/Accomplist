@@ -18,7 +18,7 @@ export default function PublicProfilePage({ user, items }) {
   const [hostedEvents, setHostedEvents] = useState([]);
   const [showAllHostedEvents, setShowAllHostedEvents] = useState(false);
   const [myItems, setMyItems] = useState([]);
-  const [formattedUserInfoDate, setFormattedUserInfoDate] = useState();
+  const [formattedUserInfoDate, setFormattedUserInfoDate] = useState("");
   const { username } = useParams();
 
   useEffect(() => {
@@ -52,7 +52,6 @@ export default function PublicProfilePage({ user, items }) {
             username: publicUserData.username || "",
             id: publicUserData.id || "",
           });
-
         } catch (error) {
           console.error("Failed to fetch user data:", error);
         }
@@ -62,12 +61,10 @@ export default function PublicProfilePage({ user, items }) {
     fetchPublicUserData();
   }, [token]);
 
-
   useEffect(() => {
     const fetchHostedEvents = async () => {
       if (publicUserInfo.id !== undefined) {
-
-        setFormattedUserInfoDate(formatUserInfoDate(publicUserInfo.date_created));
+        setFormattedUserInfoDate(formatUserInfoDate(publicUserInfo.dateCreated));
 
         try {
           const hostedEventsUrl = `${process.env.REACT_APP_API_HOST}/events/account/${publicUserInfo.id}`;
@@ -125,10 +122,9 @@ export default function PublicProfilePage({ user, items }) {
     return `${first_name} ${last_name}`;
   }
   const fullName = joinName(
-    publicUserInfo.first_name,
-    publicUserInfo.last_name
+    publicUserInfo.firstName,
+    publicUserInfo.lastName
   );
-
 
   function formatUserInfoDate(dateStr) {
     const months = [
@@ -150,7 +146,6 @@ export default function PublicProfilePage({ user, items }) {
     const year = dateObj.getFullYear();
     return `${month} ${year}`;
   }
-
 
   function formatEventCardsDate(dateStr) {
     const months = [
