@@ -12,16 +12,12 @@ import {
 import { Link, useParams } from "react-router-dom";
 import Logen from "../Components/Logen";
 
-export default function PublicProfilePage({
-  user,
-  getMyItems,
-  my_accomplist_items,
-  items,
-}) {
-  const { token } = useToken();
+export default function PublicProfilePage({user, items}) {
+  const { token, fetchWithToken } = useToken();
   const [publicUserInfo, setPublicUserInfo] = useState([]);
   const [hostedEvents, setHostedEvents] = useState([]);
   const [showAllHostedEvents, setShowAllHostedEvents] = useState(false);
+  const [myItems, setMyItems] = useState([]);
   const { username } = useParams();
 
   useEffect(() => {
@@ -49,6 +45,12 @@ export default function PublicProfilePage({
           setPublicUserInfo({
             bio: publicUserData.bio || "",
             photo: publicUserData.photo || "",
+            dateCreated: publicUserData.date_created || "",
+            firstName: publicUserData.first_name || "",
+            lastName: publicUserData.last_name || "",
+            email: publicUserData.email || "",
+            username: publicUserData.username || "",
+            id: publicUserData.id || "",
           });
         } catch (error) {
           console.error("Failed to fetch user data:", error);
@@ -59,7 +61,7 @@ export default function PublicProfilePage({
     const fetchHostedEvents = async () => {
       if (token && user.id !== undefined) {
         try {
-          const hostedEventsUrl = `${process.env.REACT_APP_API_HOST}/events/account/${user.id}`;
+          const hostedEventsUrl = `${process.env.REACT_APP_API_HOST}/events/account/${publicUserInfo.id}`;
           const response = await fetch(hostedEventsUrl, {
             method: "GET",
             headers: {
@@ -95,41 +97,28 @@ export default function PublicProfilePage({
       }
     };
 
+    const getMyItems = async () => {
+      if (token && publicUserInfo) {
+        const myItemUrl = `${process.env.REACT_APP_API_HOST}/api/my_accomplist_items/account/${publicUserInfo.id}`;
+        const response = await fetchWithToken(myItemUrl);
+        console.log(response);
+        const filteredItems = response.filter(
+          (item) => item.user_id === publicUserInfo.id
+        );
+        setMyItems(filteredItems);
+      } else {
+        console.log("fetch my items failed");
+      }
+    };
+
     fetchPublicUserData();
+    getMyItems();
     fetchHostedEvents();
   }, [token, user.id]);
 
-  const handleCompleteChange = async (
-    event,
-    myItemID,
-    itemID,
-    myItemUserID
-  ) => {
-    event.preventDefault();
-    if (token) {
-      try {
-        const updateMyAccomplistUrl = `${process.env.REACT_APP_API_HOST}/api/my_accomplist_items/${myItemID}`;
-        const data = {
-          item_id: itemID,
-          user_id: myItemUserID,
-          completed: event.target.value,
-        };
-        const response = await fetch(updateMyAccomplistUrl, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(data),
-        });
-        if (response.ok) {
-          getMyItems();
-        }
-      } catch (error) {
-        console.error("Call Error:", error);
-      }
-    }
-  };
+
+
+
 
   function joinName(first_name, last_name) {
     return `${first_name} ${last_name}`;
@@ -191,8 +180,8 @@ export default function PublicProfilePage({
   const [showCompleted, setShowCompleted] = useState(false);
   const [showIncomplete, setShowIncomplete] = useState(false);
 
-  const incompleteItems = my_accomplist_items.filter((item) => !item.completed);
-  const completedItems = my_accomplist_items.filter((item) => item.completed);
+  const incompleteItems = myItems.filter((item) => !item.completed);
+  const completedItems = myItems.filter((item) => item.completed);
 
   const displayedIncompleteItems = showIncomplete
     ? incompleteItems
