@@ -52,7 +52,8 @@ export default function PublicProfilePage({ user, items }) {
     };
 
     fetchPublicUserData();
-  }, [token, username]);
+    // eslint-disable-next-line
+  }, [token]);
 
   useEffect(() => {
     const fetchHostedEvents = async () => {
@@ -111,7 +112,8 @@ export default function PublicProfilePage({ user, items }) {
 
     fetchHostedEvents();
     getMyItems();
-  }, [publicUserInfo, fetchWithToken, token]);
+    // eslint-disable-next-line
+  }, [publicUserInfo]);
 
   function joinName(first_name, last_name) {
     return `${first_name} ${last_name}`;

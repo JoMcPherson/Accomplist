@@ -6,7 +6,7 @@ const LoginForm = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
-  const { login } = useToken();
+  const { login, token } = useToken();
   const navigate = useNavigate();
 
   // custom background
@@ -23,38 +23,43 @@ const LoginForm = () => {
   );
 
   useEffect(() => {
+    Object.keys(mainBg).forEach((styleProp) => {
+      document.body.style[styleProp] = mainBg[styleProp];
+    });
+
+    if (localStorage.getItem("rememberMe") === "true") {
+      const rememberedUsername = localStorage.getItem("username");
+      setUsername(rememberedUsername || "");
+      setRememberMe(true);
+    }
+
+    return () => {
       Object.keys(mainBg).forEach((styleProp) => {
-        document.body.style[styleProp] = mainBg[styleProp];
+        document.body.style[styleProp] = "";
       });
-
-      if (localStorage.getItem('rememberMe') === 'true') {
-          const rememberedUsername = localStorage.getItem('username');
-          setUsername(rememberedUsername || '');
-          setRememberMe(true);
-      }
-
-      return () => {
-        Object.keys(mainBg).forEach((styleProp) => {
-          document.body.style[styleProp] = '';
-        });
-      };
+    };
   }, [mainBg]);
 
   const handleSubmit = (e) => {
-      e.preventDefault();
+    e.preventDefault();
 
-      if (rememberMe) {
-          localStorage.setItem('rememberMe', 'true');
-          localStorage.setItem('username', username);
-      } else {
-          localStorage.removeItem('rememberMe');
-          localStorage.removeItem('username');
-      }
+    if (rememberMe) {
+      localStorage.setItem("rememberMe", "true");
+      localStorage.setItem("username", username);
+    } else {
+      localStorage.removeItem("rememberMe");
+      localStorage.removeItem("username");
+    }
 
-      login(username, password);
-      e.target.reset();
-      navigate("/accomplist_items");
+    login(username, password);
+    e.target.reset();
   };
+  // Redirect if login successful
+  useEffect(() => {
+    if (token) {
+      navigate("/accomplist_items");
+    }
+  }, [token, navigate]);
 
   return (
     <div className="Auth-form-container">
@@ -87,13 +92,13 @@ const LoginForm = () => {
           </div>
           <div className="auth-options mt-1">
             <div className="remember-me">
-                <input
+              <input
                 type="checkbox"
                 className="checkbox"
                 checked={rememberMe}
                 onChange={(e) => setRememberMe(e.target.checked)}
-                />
-                <span className="check-label">Remember Me</span>
+              />
+              <span className="check-label">Remember Me</span>
             </div>
             <span className="forgot pinklink">
               Forgot <Link to="/whoops">Password</Link>?
@@ -107,9 +112,9 @@ const LoginForm = () => {
             />
           </div>
           <h6 className="text-center mt-4 pinklink">
-          Don't have an account? <Link to="/signup">Sign up here.</ Link>
+            Don't have an account? <Link to="/signup">Sign up here.</Link>
           </h6>
-      </div>
+        </div>
       </form>
     </div>
   );
