@@ -53,7 +53,7 @@ export default function EventDetailDisplay(event_id) {
             navigate('/events')
         }
             }
-            console.log(eventDetailData)
+
 
 
 return(

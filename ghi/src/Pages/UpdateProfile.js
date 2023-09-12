@@ -85,8 +85,6 @@ export default function UpdateProfile({ user }) {
     if (token) {
       try {
         const updateProfileUrl = `${process.env.REACT_APP_API_HOST}/api/accounts/${userId}`;
-        console.log(updateProfileUrl);
-        console.log('API Call Successful');
 
         const response = await fetch(updateProfileUrl, {
           method: 'PATCH',
@@ -105,7 +103,6 @@ export default function UpdateProfile({ user }) {
         }
 
         const updatedUserData = await response.json();
-        console.log('Updated User Data:', updatedUserData);
         navigate('/profile');
 
         setFormData((prevData) => ({
@@ -113,9 +110,7 @@ export default function UpdateProfile({ user }) {
           bio: updatedUserData.bio,
           photo: updatedUserData.photo
         }));
-        console.log('Updated formData:', formData);
 
-        console.log('Updated account:', updatedUserData);
       } catch (error) {
         console.error('API Call Error:', error);
       }

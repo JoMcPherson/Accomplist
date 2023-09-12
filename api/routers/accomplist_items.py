@@ -92,26 +92,3 @@ def get_my_accomplist_items_completed(
     if accomplist_item_count is None:
         response.status_code = 404
     return accomplist_item_count
-
-
-# @router.get(
-#     "/api/accomplist_items",
-#     response_model=Union[List[AccomplistItemOut], Error],
-# )
-# def list_or_search_accomplist_items(
-#     title: Optional[str] = None,
-#     page: Optional[int] = 1,
-#     items_per_page: Optional[int] = 10,
-#     repo: AccomplistItemRepository = Depends(),
-# ) -> Union[List[AccomplistItemOut], Error, dict]:
-
-#     try:
-#         if title:
-#             items = repo.search_by_title(title, page, items_per_page)
-#             if not items:
-#                 return {"message": "No items found"}
-#             return items
-#         else:
-#             return repo.get_all()
-#     except Exception as e:
-#         return {"message": str(e)}

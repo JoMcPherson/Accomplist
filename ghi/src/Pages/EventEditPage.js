@@ -88,7 +88,6 @@ export default function EventEditor({id, items, user}){
             };
         const response = await fetch(eventsPutUrl, fetchConfig);
         if (response.ok) {
-        console.log("response ok:")
         // window.location.href = `${process.env.PUBLIC_URL}/events`
         }}
 

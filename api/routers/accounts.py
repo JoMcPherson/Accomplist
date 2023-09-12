@@ -124,16 +124,6 @@ def update_account(
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@router.get("/tokeneer/{username}", response_model=AccountOut)
-def get_acc_by_username(
-    username: str,
-    repo: AccountRepo = Depends(),
-    account: dict = Depends(authenticator.get_current_account_data),
-) -> AccountOut:
-    the_acc = repo.get(username)
-    return the_acc
-
-
 @router.patch("/api/accounts/{account_id}", response_model=AccountOut)
 def patch_account_bio(
     account_id: int,

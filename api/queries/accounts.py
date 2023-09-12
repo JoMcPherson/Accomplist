@@ -17,11 +17,6 @@ class Account(BaseModel):
 
 
 class UpdateAccount(BaseModel):
-    # username: Optional[str] = None
-    # first_name: Optional[str] = None
-    # last_name: Optional[str] = None
-    # email: Optional[str] = None
-    # date_created: Optional[str] = None
     photo: Optional[str] = None
     bio: Optional[str] = None
 
