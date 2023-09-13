@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { useAuthContext } from '@galvanize-inc/jwtdown-for-react';
+import useToken from "@galvanize-inc/jwtdown-for-react";
+import { useAuthContext} from '@galvanize-inc/jwtdown-for-react';
 import { Card, Image, Modal, Form, Button, Row, Col } from 'react-bootstrap';
 import Logen from '../Components/Logen';
 import icon from '../assets/icon.png';
@@ -17,6 +18,7 @@ function formatDate(timestamp) {
 
 export default function AccomplistDetail({ user, my_accomplist_items }) {
   const { token } = useAuthContext();
+  const {fetchWithToken} = useToken();
   const { id } = useParams();
   const [showModal, setShowModal] = useState(false);
   const [selectedImage, setSelectedImage] = useState('');
@@ -26,8 +28,30 @@ export default function AccomplistDetail({ user, my_accomplist_items }) {
   const [thingToDo, setThingToDo] = useState('');
   const [usersCompletedCount, setUsersCompletedCount] = useState(0);
   const [usersNotCompletedCount, setUsersNotCompletedCount] = useState(0);
+  const [events, setEvents] = useState([]);
   const [height, setHeight] = useState(400);
   const timestamp = new Date().toISOString();
+
+    // Call Events Function Upon Token
+  useEffect(() => {
+    if (token && user.id) {
+      async function fetchData() {
+        if (token) {
+          try {
+            const eventUrl = `${process.env.REACT_APP_API_HOST}/events`;
+            const eventData = await fetchWithToken(eventUrl);
+            setEvents(eventData);
+          } catch (error) {
+            console.error("Error fetching data:", error);
+          }
+        } else {
+          console.log("fetch events failed");
+        }
+      }
+
+      fetchData();
+    } // eslint-disable-next-line
+  }, [token, user.id]);
 
   // for the parallax scroll
   useEffect(() => {
@@ -175,7 +199,12 @@ export default function AccomplistDetail({ user, my_accomplist_items }) {
     setThingToDo('');
   };
 
-  if (token) {
+  if (token && events) {
+    console.log(events,"events")
+     const today = new Date();
+    const upcomingEvents = events.filter(event => new Date(event.date) > today && event.goal_id === itemDetailData.id)
+    console.log(upcomingEvents, "upcoming")
+    console.log(itemDetailData, "itemdetail")
     return (
       <div>
         <div className="hero-image-description" style={{ height: `${height}px` }}>
@@ -189,7 +218,15 @@ export default function AccomplistDetail({ user, my_accomplist_items }) {
             <h3 className="mt-3">Accomplished:</h3>
             <p>{usersNotCompletedCount} {usersNotCompletedCount === 1 ? 'has' : 'have'} on their Accomplist list. | {usersCompletedCount} {usersCompletedCount === 1 ? 'has' : 'have'} completed this item!</p>
             <h3>Upcoming events: </h3>
-            <p>There are no events.</p>
+            <div>
+              <ul>
+                {upcomingEvents.map((event, index) => (
+                    <li key={index}>
+                      <a href={`${process.env.PUBLIC_URL}/events/${event.event_id}`} target="_blank" rel="noreferrer">{event.name}</a>
+                    </li>
+                  ))}
+              </ul>
+            </div>
             <h3 className="mt-3">Photos:</h3>
             <Row className="mx-auto">
               {itemDetailData.photo &&
