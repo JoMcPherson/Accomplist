@@ -222,7 +222,7 @@ class eventsRepo:
                 old_data = event.dict()
                 return EventOut(event_id=id, **old_data)
 
-    def get_all(self) -> Union[Error, List[EventOut]]:
+    def get_all_events(self) -> Union[Error, List[EventOut]]:
         try:
             # connect to db
             with pool.connection() as conn:
@@ -305,3 +305,33 @@ class eventsRepo:
         except Exception as e:
             print(e)
             return {"message": "Could not get events hosted"}
+
+    def search_events(self, query: str) -> List[EventOut]:
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(
+                    """
+                    SELECT event_id, name, date, time, cost,
+                    location, description, organizer_id,
+                    organizer_username, goal_id
+                    FROM events
+                    WHERE LOWER(name) LIKE LOWER(%s);
+                    """,
+                    (f"%{query}%",),  # SQL parameters
+                )
+                events = []
+                for ev in cur.fetchall():
+                    event = EventOut(
+                        event_id=ev[0],
+                        name=ev[1],
+                        date=ev[2],
+                        time=ev[3],
+                        cost=ev[4],
+                        location=ev[5],
+                        description=ev[6],
+                        organizer_id=ev[7],
+                        organizer_username=ev[8],
+                        goal_id=ev[9],
+                    )
+                    events.append(event)
+                return events

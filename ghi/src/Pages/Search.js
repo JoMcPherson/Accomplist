@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { Row, Col, Container } from 'react-bootstrap';
+import { Row, Col, Container, Card, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSquareCheck } from '@fortawesome/free-solid-svg-icons';
-import { faList } from '@fortawesome/free-solid-svg-icons';
-import { faCalendar } from '@fortawesome/free-solid-svg-icons';
-import { faCalendarCheck } from '@fortawesome/free-solid-svg-icons';
+import { faSquareCheck, faList, faCalendar, faCalendarCheck } from '@fortawesome/free-solid-svg-icons';
 
 function getRandomColor() {
     const letters = '0123456789ABCDEF';
@@ -26,6 +23,7 @@ function formatMonthAndYear(isoDate) {
 const Search = () => {
     const [items, setItems] = useState([]);
     const [accounts, setAccounts] = useState([]);
+    const [events, setEvents] = useState([]);
     const [searchParams] = useSearchParams();
     const searchTerm = searchParams.get('query');
 
@@ -45,6 +43,19 @@ const Search = () => {
                 }
                 const accountsResponse = await fetch(accountsUrl);
                 const accountsData = await accountsResponse.json();
+
+                let eventsUrl = `${process.env.REACT_APP_API_HOST}/events`;
+                if (searchTerm) {
+                    eventsUrl += `?query=${searchTerm}`;
+                }
+                const eventsResponse = await fetch(eventsUrl);
+                const eventsData = await eventsResponse.json();
+
+                if (eventsData.message) {
+                    console.error(eventsData.message);
+                } else {
+                    setEvents(eventsData);
+                }
 
                 if (itemsData.message) {
                     console.error(itemsData.message);
@@ -78,7 +89,7 @@ const Search = () => {
             </div>
             <Container fluid className='px-4 my-4'>
                 <h2>Accomplist Items:</h2>
-                <Row xs={1} md={2} lg={3} xl={4} xxl={5} className="g-4 mt-1">
+                <Row xs={1} md={2} lg={3} xxl={5} className="g-4 mt-1">
                     {items.map(item => (
                         <Col key={item.id} className="text-center">
                             <div className="item-card">
@@ -97,13 +108,13 @@ const Search = () => {
             </Container>
             <Container fluid className='px-4 my-4'>
                 <h2>Profiles:</h2>
-                <Row xs={1} md={2} lg={3} xl={5} className="g-4 mt-1">
+                <Row xs={1} md={2} lg={3} xxl={4} className="g-4 mt-1">
                     {accounts.map(account => (
                       <Col key={account.id}>
-                             <div className="profile-card" style={{ backgroundColor: getRandomColor() }}>
+                            <div className="profile-card" style={{ backgroundColor: getRandomColor() }}>
                                 <div className="img-container">
                                 <Link to={`/profile/${account.username}`}>
-                                    <img src={account.photo} alt="account" />
+                                    <img src={account.photo} alt={account.username} />
                                 </Link>
                                     <div className="username">{account.username}</div>
                                     <div className="subtext">{account.first_name} {account.last_name}</div>
@@ -113,10 +124,10 @@ const Search = () => {
                                     <p>Member since: {formatMonthAndYear(account.date_created)}</p>
                                 </div>
                                 <ul className="follow-list">
-                                    <li>0 <FontAwesomeIcon icon={faSquareCheck} /></li>
-                                    <li>0 <FontAwesomeIcon icon={faList} /></li>
-                                    <li>0 <FontAwesomeIcon icon={faCalendar} /></li>
-                                    <li>0 <FontAwesomeIcon icon={faCalendarCheck} /></li>
+                                    <li title="Completed Items">0 <FontAwesomeIcon icon={faSquareCheck} /></li>
+                                    <li title="Wanted Items">0 <FontAwesomeIcon icon={faList} /></li>
+                                    <li title="Past Events">0 <FontAwesomeIcon icon={faCalendarCheck} /></li>
+                                    <li title="Upcoming Events">0 <FontAwesomeIcon icon={faCalendar} /></li>
                                 </ul>
                             </div>
                         </Col>
@@ -127,11 +138,38 @@ const Search = () => {
             <Container fluid className='px-4 my-4'>
                 <h2>Events:</h2>
                 <Row xs={1} md={2} lg={3} xl={5} className="g-4 mt-1">
-                    {accounts.map(account => (
-                    <Col key={account.id}>
-                    </Col>
+                    {events.map(event => (
+                        <Col key={event.id}>
+                        <Card className="card-margin">
+                            <Card.Header className="no-border">
+                                <Card.Title>{event.name}</Card.Title>
+                            </Card.Header>
+                            <Card.Body className="pt-0">
+                                <div className="event">
+                                    <div className="event-title-wrapper">
+                                        <div className="event-date-primary">
+                                            <span className="event-date-day">##</span>
+                                            <span className="event-date-month">mmm</span>
+                                        </div>
+                                        <div className="event-meeting-info">
+                                            <span className="event-pro-title">unsure</span>
+                                            <span className="event-meeting-time">{event.time}</span>
+                                        </div>
+                                    </div>
+                                    <ol className="event-meeting-points">
+                                        <li className="event-meeting-item"><span>unsure</span></li>
+                                        <li className="event-meeting-item"><span>unsure</span></li>
+                                        <li className="event-meeting-item"><span>unsure</span></li>
+                                    </ol>
+                                    <div className="event-meeting-action">
+                                        <Button variant="outline-primary" size="sm">View All</Button>
+                                    </div>
+                                </div>
+                            </Card.Body>
+                        </Card>
+                        </Col>
                     ))}
-                    {accounts.length === 0 && <Col><h3>No Events found.</h3></Col>}
+                    {events.length === 0 && <Col><h3>No Events found.</h3></Col>}
                 </Row>
             </Container>
         </div>

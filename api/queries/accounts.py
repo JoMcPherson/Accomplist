@@ -318,7 +318,7 @@ class AccountRepo:
                     WHERE LOWER(username) LIKE LOWER(%s)
                     OR LOWER(first_name) LIKE LOWER(%s);
                     """,
-                    (f"%{query}%", f"%{query}%")  # SQL parameters
+                    (f"%{query}%", f"%{query}%"),  # SQL parameters
                 )
                 accounts = []
                 for ac in cur.fetchall():

@@ -13,29 +13,32 @@ export default function EventsList() {
     //     navigate('/events/new');
     // };
 
-    useEffect(() => {
-        async function getAllEvents() {
-            if (token){
+  useEffect(() => {
+    async function getAllEvents() {
         const eventsUrl = `${process.env.REACT_APP_API_HOST}/events`
         const fetchConfig = {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        Authorization:  `Bearer ${token}`,
-                    },
-                }
-        const theFetchedList = await fetch(eventsUrl, fetchConfig)
-        if (theFetchedList.ok) {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        }
+
+        try {
+            const theFetchedList = await fetch(eventsUrl, fetchConfig)
+
+            if (!theFetchedList.ok) {
+                throw new Error(`HTTP error! Status: ${theFetchedList.status}`);
+            }
+
             const theJsonifiedList = await theFetchedList.json();
             setEventList(theJsonifiedList)
+        } catch (error) {
+            console.error('Fetch error: ', error);
         }
-        }};
-    async function demo() {
-            getAllEvents()
     }
 
-
-    demo()}, [token]);
+      getAllEvents();
+  }, []);
 
     return(
             <div>
@@ -51,6 +54,12 @@ export default function EventsList() {
           </h1>
         <div className="flex h-screen w-screen flex-col justify-start overflow-x-auto">
       <div >
+                    <div>
+                  <Calendeesi events={eventListData} />
+
+                  {/* <Button className="btn btn-sm custom-button" onClick={handleNewEventCreationPlace}>New</Button> */}
+
+            </div>
         <div>
 
         </div>
@@ -125,12 +134,7 @@ export default function EventsList() {
                 )}
               </tbody>
             </Table>
-            <div>
-                  <Calendeesi events={eventListData} />
 
-                  {/* <Button className="btn btn-sm custom-button" onClick={handleNewEventCreationPlace}>New</Button> */}
-
-            </div>
 
           </div>
           {/* <button className={eventstyles.button49} onClick={handleNewEventCreationPlace}>Create Event</button> */}
