@@ -222,7 +222,7 @@ class eventsRepo:
                 old_data = event.dict()
                 return EventOut(event_id=id, **old_data)
 
-    def get_all(self) -> Union[Error, List[EventOut]]:
+    def get_all_events(self) -> Union[Error, List[EventOut]]:
         try:
             # connect to db
             with pool.connection() as conn:

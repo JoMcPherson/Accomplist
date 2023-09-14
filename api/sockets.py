@@ -6,9 +6,7 @@ sio_server = socketio.AsyncServer(
     logger=True,
 )
 
-sio_app = socketio.ASGIApp(
-    socketio_server=sio_server
-)
+sio_app = socketio.ASGIApp(socketio_server=sio_server)
 
 
 @sio_server.event
