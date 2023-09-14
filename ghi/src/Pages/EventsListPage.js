@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuthContext } from "@galvanize-inc/jwtdown-for-react"
 import { Button, Container, Table } from 'react-bootstrap';
-import Calendario from '../Components/Calendar';
 import Calendeesi from '../Components/BigCalendar';
 
 export default function EventsList() {
