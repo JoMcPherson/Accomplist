@@ -15,6 +15,7 @@ import Home from "./Pages/Home.js";
 import LoginForm from "./Pages/Logon.js";
 import Lost from "./Components/Lost.js";
 import MyAccomplistItemCreate from "./Pages/MyAccomplistCreate.js";
+import MyEventCreate from "./Pages/MyEventCreate.js";
 import NavBar from "./Components/NavBar.js";
 import Register from "./Pages/Register.js";
 import UpdateProfile from "./Pages/UpdateProfile.js";
@@ -110,8 +111,7 @@ function App() {
         <div className="content-wrapper">
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="chatchat" element={<Chat user={user} token={token}/>} />
-            <Route path="chatpage" element={<Chatpage user={user} token={token} />} />
+
             <Route path="search" element={<AccomplistSearch />} />
             <Route path="login" element={<LoginForm />} />
             <Route path="calendeesi" element={<Calendeesi />} />
@@ -157,6 +157,14 @@ function App() {
                 }
               />
               <Route
+              path="my_events/new"
+              element={
+                <MyEventCreate
+                 user={user}
+                />
+              }
+            />
+            <Route
                 path="profile"
                 element={
                   <AccountProfilePage
@@ -189,8 +197,3 @@ function App() {
 }
 
 export default App;
-
-
-            // <Route path="/accomplist_items/:slug"
-            // element={<AccomplistDetail user={user}
-            // my_accomplist_items={my_accomplist_items} />} />

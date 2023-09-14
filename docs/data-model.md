@@ -64,4 +64,16 @@ The `event` entity contains the data about for events that users can organize.
 | completed        | bool    | no     | no       | no
 
 
-The `my_accomplist_item` entity contains the data about for public accomplist items.
+The `my_accomplist_item` entity contains the data for public accomplist items that users are saving to their lists
+
+---
+### my_events
+
+| name             | type    | unique | optional | foreign key |
+| ---------------- | ------  | ------ | -------- | ----------- |
+| event_id          | int     | no     | no       | yes
+| attendee_id          | int     | no     | no       | yes
+
+
+
+The `my_event` entity contains the data about for public events users are attending

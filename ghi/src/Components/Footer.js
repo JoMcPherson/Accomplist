@@ -13,7 +13,7 @@ return(
         <div className="container-fluid">
             <div className="row">
                 <div className="col-sm-7 text-right pinklink">
-                    &copy;{new Date().getFullYear()} Accomplist |  | Some rights reserved.
+                    &copy;{new Date().getFullYear()} Accomplist | Some rights reserved.
                 </div>
                 <div className="col-sm-5 text-left">
                     <SocialIcon

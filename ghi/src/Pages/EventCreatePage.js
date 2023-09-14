@@ -98,7 +98,6 @@ export default function EventCreateForm({user, items}) {
         organizer_username: organizerUsername,
         goal_id: goalID,
         }
-        console.log('data:', data)
         const eventsUrl = `${process.env.REACT_APP_API_HOST}/events`;
         const fetchConfig = {
             method: 'POST',

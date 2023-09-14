@@ -6,7 +6,7 @@ const slideData = [
     index: 0,
     headline: 'Welcome to Accomplist!',
     subtext: 'A website desgined to help you with crossing items off your bucket list!',
-    src: 'https://i.imgur.com/ODqj7vt.png'
+    src: 'https://i.imgur.com/Fkofnkx.jpg'
   },
   {
     index: 1,

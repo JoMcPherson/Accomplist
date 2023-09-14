@@ -51,7 +51,6 @@ export default function AccomplistItemCreate({user}) {
     async function handleSubmit(event) {
     event.preventDefault();
 
-    console.log('handleSubmit called');
 
   let updatedResources = resources;
 

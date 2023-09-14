@@ -17,7 +17,6 @@ export default function EventsList() {
     useEffect(() => {
         async function getAllEvents() {
             if (token){
-              console.log('token!', token)
         const eventsUrl = `${process.env.REACT_APP_API_HOST}/events`
         const fetchConfig = {
                     method: 'GET',
@@ -81,7 +80,7 @@ export default function EventsList() {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
-                {eventListData.map(event => {console.log(event)
+                {eventListData.map(event => {
                     return (
                       <tr key={event.event_id}>
                         <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">

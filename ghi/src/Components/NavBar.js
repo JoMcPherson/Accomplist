@@ -64,23 +64,34 @@ const CustomNavbar = () => {
         <Navbar.Toggle aria-controls="exampleNavComponents" />
         <Navbar.Collapse className="justify-content-end">
           <Nav className="ml-auto">
-            <NavDropdown
-              title="Accomplist Items"
-              id="basic-nav-dropdown"
-              className="custom-dropdown">
-              <NavDropdown.Item as={Link} to="/accomplist_items/new">
-                Create an Accomplist Item
-              </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="/accomplist_items">
-                View all Accomplist Items
-              </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="/my_accomplist_items/new">
-                Add to my Accomplist Items
-              </NavDropdown.Item>
-            </NavDropdown>
-            <NavItem className="px-2">
-              <NavLink as={Link} to="/events">Events</NavLink>
-            </NavItem>
+           <NavDropdown
+  title="Accomplist Items"
+  id="basic-nav-dropdown"
+  className="custom-dropdown"
+>
+  <NavDropdown.Item as={Link} to="/accomplist_items/new">
+    Create an Accomplist Item
+  </NavDropdown.Item>
+  <NavDropdown.Item as={Link} to="/accomplist_items">
+    View all Accomplist Items
+  </NavDropdown.Item>
+  <NavDropdown.Item as={Link} to="/my_accomplist_items/new">
+    Add to my Accomplist Items
+  </NavDropdown.Item>
+</NavDropdown>
+<NavDropdown
+  title="Events"
+  id="basic-nav-dropdown"
+  className="custom-dropdown"
+>
+  <NavDropdown.Item as={Link} to="/events">
+    Events
+  </NavDropdown.Item>
+  <NavDropdown.Item as={Link} to="/my_events/new">
+    Add to My Events
+  </NavDropdown.Item>
+</NavDropdown>
+
             {token ? (
               <NavItem className="px-2">
                 <Nav.Link as={Link} to="/profile">My Profile</Nav.Link>
