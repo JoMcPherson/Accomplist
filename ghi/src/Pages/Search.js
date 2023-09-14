@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { Row, Col, Container } from 'react-bootstrap';
+import { Row, Col, Container, Card, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSquareCheck, faList, faCalendar, faCalendarCheck } from '@fortawesome/free-solid-svg-icons';
@@ -23,6 +23,7 @@ function formatMonthAndYear(isoDate) {
 const Search = () => {
     const [items, setItems] = useState([]);
     const [accounts, setAccounts] = useState([]);
+    const [events, setEvents] = useState([]);
     const [searchParams] = useSearchParams();
     const searchTerm = searchParams.get('query');
 
@@ -42,6 +43,19 @@ const Search = () => {
                 }
                 const accountsResponse = await fetch(accountsUrl);
                 const accountsData = await accountsResponse.json();
+
+                let eventsUrl = `${process.env.REACT_APP_API_HOST}/events`;
+                if (searchTerm) {
+                    eventsUrl += `?query=${searchTerm}`;
+                }
+                const eventsResponse = await fetch(eventsUrl);
+                const eventsData = await eventsResponse.json();
+
+                if (eventsData.message) {
+                    console.error(eventsData.message);
+                } else {
+                    setEvents(eventsData);
+                }
 
                 if (itemsData.message) {
                     console.error(itemsData.message);
@@ -97,7 +111,7 @@ const Search = () => {
                 <Row xs={1} md={2} lg={3} xxl={4} className="g-4 mt-1">
                     {accounts.map(account => (
                       <Col key={account.id}>
-                             <div className="profile-card" style={{ backgroundColor: getRandomColor() }}>
+                            <div className="profile-card" style={{ backgroundColor: getRandomColor() }}>
                                 <div className="img-container">
                                 <Link to={`/profile/${account.username}`}>
                                     <img src={account.photo} alt={account.username} />
@@ -121,16 +135,43 @@ const Search = () => {
                     {accounts.length === 0 && <Col><h3>No accounts found.</h3></Col>}
                 </Row>
             </Container>
-            {/* <Container fluid className='px-4 my-4'>
+            <Container fluid className='px-4 my-4'>
                 <h2>Events:</h2>
                 <Row xs={1} md={2} lg={3} xl={5} className="g-4 mt-1">
-                    {accounts.map(account => (
-                    <Col key={account.id}>
-                    </Col>
+                    {events.map(event => (
+                        <Col key={event.id}>
+                        <Card className="card-margin">
+                            <Card.Header className="no-border">
+                                <Card.Title>{event.name}</Card.Title>
+                            </Card.Header>
+                            <Card.Body className="pt-0">
+                                <div className="event">
+                                    <div className="event-title-wrapper">
+                                        <div className="event-date-primary">
+                                            <span className="event-date-day">##</span>
+                                            <span className="event-date-month">mmm</span>
+                                        </div>
+                                        <div className="event-meeting-info">
+                                            <span className="event-pro-title">unsure</span>
+                                            <span className="event-meeting-time">{event.time}</span>
+                                        </div>
+                                    </div>
+                                    <ol className="event-meeting-points">
+                                        <li className="event-meeting-item"><span>unsure</span></li>
+                                        <li className="event-meeting-item"><span>unsure</span></li>
+                                        <li className="event-meeting-item"><span>unsure</span></li>
+                                    </ol>
+                                    <div className="event-meeting-action">
+                                        <Button variant="outline-primary" size="sm">View All</Button>
+                                    </div>
+                                </div>
+                            </Card.Body>
+                        </Card>
+                        </Col>
                     ))}
-                    {accounts.length === 0 && <Col><h3>No Events found.</h3></Col>}
+                    {events.length === 0 && <Col><h3>No Events found.</h3></Col>}
                 </Row>
-            </Container> */}
+            </Container>
         </div>
     );
 }

@@ -30,11 +30,14 @@ def create_event(
 
 
 @router.get("/events", response_model=Union[Error, List[EventOut]])
-def get_all(
+def get_or_search_events(
+    query: Optional[str] = None,
     repo: eventsRepo = Depends(),
-    account: dict = Depends(authenticator.get_current_account_data),
+    # account: dict = Depends(authenticator.get_current_account_data),
 ):
-    return repo.get_all()
+    if query:
+        return repo.search_events(query)
+    return repo.get_all_events()
 
 
 @router.put("/events/{event_id}", response_model=Union[Error, UpdatedEventOut])
