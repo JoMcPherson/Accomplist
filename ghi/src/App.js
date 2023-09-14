@@ -23,8 +23,6 @@ import useToken, { useAuthContext } from "@galvanize-inc/jwtdown-for-react";
 import "./index.css";
 import PublicProfilePage from "./Pages/PublicProfilePage.js";
 import AccomplistSearch from "./Pages/Search.js";
-import Chatpage from "./Pages/ChatPage.js";
-import Chat from "./Components/Chat.js";
 import Calendeesi from "./Components/BigCalendar.js";
 
 
