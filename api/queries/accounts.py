@@ -306,3 +306,31 @@ class AccountRepo:
                     bio=updated_account[6],
                     photo=updated_account[7],
                 )
+
+    def search_accounts(self, query: str) -> List[AccountOut]:
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(
+                    """
+                    SELECT id, username, first_name, last_name, email,
+                    date_created, bio, photo
+                    FROM user_accounts
+                    WHERE LOWER(username) LIKE LOWER(%s)
+                    OR LOWER(first_name) LIKE LOWER(%s);
+                    """,
+                    (f"%{query}%", f"%{query}%")  # SQL parameters
+                )
+                accounts = []
+                for ac in cur.fetchall():
+                    account = AccountOut(
+                        id=ac[0],
+                        username=ac[1],
+                        first_name=ac[2],
+                        last_name=ac[3],
+                        email=ac[4],
+                        date_created=ac[5].isoformat(),
+                        bio=ac[6],
+                        photo=ac[7],
+                    )
+                    accounts.append(account)
+                return accounts

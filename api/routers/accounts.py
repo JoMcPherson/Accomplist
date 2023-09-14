@@ -97,12 +97,14 @@ def get_user_by_username(
 
 
 @router.get("/api/accounts", response_model=List[AccountOut])
-def get_all_accounts(
+def get_or_search_accounts(
+    query: Optional[str] = None,
     repo: AccountRepo = Depends(),
-    account: dict = Depends(authenticator.get_current_account_data),
+    # account: dict = Depends(authenticator.get_current_account_data),
 ):
-    accounts = repo.get_all_accounts()
-    return accounts
+    if query:
+        return repo.search_accounts(query)
+    return repo.get_all_accounts()
 
 
 @router.delete("/api/accounts/{account_id}", response_model=bool)
@@ -132,3 +134,12 @@ def patch_account_bio(
 ):
     account_repo = AccountRepo()
     return account_repo.patch_bio(account_id, update_data)
+
+# leaving just in case something bad happens
+# @router.get("/api/accounts", response_model=List[AccountOut])
+# def get_all_accounts(
+#     repo: AccountRepo = Depends(),
+#     account: dict = Depends(authenticator.get_current_account_data),
+# ):
+#     accounts = repo.get_all_accounts()
+#     return accounts
