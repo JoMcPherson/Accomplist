@@ -135,6 +135,7 @@ def patch_account_bio(
     account_repo = AccountRepo()
     return account_repo.patch_bio(account_id, update_data)
 
+
 # leaving just in case something bad happens
 # @router.get("/api/accounts", response_model=List[AccountOut])
 # def get_all_accounts(

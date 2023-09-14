@@ -311,12 +311,13 @@ class eventsRepo:
             with conn.cursor() as cur:
                 cur.execute(
                     """
-                    SELECT event_id, name, date, time, cost, location, description,
-                            organizer_id, organizer_username, goal_id
+                    SELECT event_id, name, date, time, cost,
+                    location, description, organizer_id,
+                    organizer_username, goal_id
                     FROM events
                     WHERE LOWER(name) LIKE LOWER(%s);
                     """,
-                    (f"%{query}%",)  # SQL parameters
+                    (f"%{query}%",),  # SQL parameters
                 )
                 events = []
                 for ev in cur.fetchall():
