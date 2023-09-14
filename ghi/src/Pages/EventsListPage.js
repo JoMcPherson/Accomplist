@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useAuthContext } from "@galvanize-inc/jwtdown-for-react"
 import { Button, Container, Table } from 'react-bootstrap';
 import Calendario from '../Components/Calendar';
+import Calendeesi from '../Components/BigCalendar';
 
 export default function EventsList() {
 
@@ -56,8 +57,8 @@ export default function EventsList() {
 
         </div>
         <div className="mx-auto max-w-lg">
-          <div style={{"backgroundColor": 'black', 'paddingTop': 1, 'paddingLeft': .5, 'paddingRight': .5}}>
-            <Table striped bordered hover size="sm" variant="dark">
+          <div style={{"backgroundColor": 'darkGrey', 'paddingTop': 1, 'paddingLeft': .5, 'paddingRight': .5}}>
+            <Table striped bordered hover size="sm" >
               <thead className="bg-gray-50 dark:bg-gray-800">
                 <tr>
                   <th className="py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -127,7 +128,7 @@ export default function EventsList() {
               </tbody>
             </Table>
             <div>
-                  <Calendario />
+                  <Calendeesi events={eventListData} />
 
                   {/* <Button className="btn btn-sm custom-button" onClick={handleNewEventCreationPlace}>New</Button> */}
 
