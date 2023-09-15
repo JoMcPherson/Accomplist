@@ -8,6 +8,7 @@ sio_server = socketio.AsyncServer(
 
 sio_app = socketio.ASGIApp(
     socketio_server=sio_server
+
 )
 
 
