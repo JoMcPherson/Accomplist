@@ -23,8 +23,7 @@ import useToken, { useAuthContext } from "@galvanize-inc/jwtdown-for-react";
 import "./index.css";
 import PublicProfilePage from "./Pages/PublicProfilePage.js";
 import AccomplistSearch from "./Pages/Search.js";
-import Calendeesi from "./Components/BigCalendar.js";
-import Chatpage from "./Pages/ChatPage.js";
+// import Chatpage from "./Pages/ChatPage.js";
 
 
 function App() {
@@ -110,10 +109,10 @@ function App() {
         <div className="content-wrapper">
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="chatpage" element={<Chatpage user={user} token={token} />} />
+            {/* <Route path="chatpage" element={<Chatpage user={user} token={token} />} /> */}
             <Route path="search" element={<AccomplistSearch />} />
             <Route path="login" element={<LoginForm />} />
-            <Route path="calendeesi" element={<Calendeesi />} />
+
             <Route path="accomplist_items" element={<AcomplistItemCards />} />
               <Route path="signup" element={<Register />} />
               <Route

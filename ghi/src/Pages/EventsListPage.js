@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuthContext } from "@galvanize-inc/jwtdown-for-react"
 import { Button, Container, Table } from 'react-bootstrap';
-import Calendeesi from '../Components/BigCalendar';
+
 
 export default function EventsList() {
 
@@ -55,7 +55,7 @@ export default function EventsList() {
         <div className="flex h-screen w-screen flex-col justify-start overflow-x-auto">
       <div >
                     <div>
-                  <Calendeesi events={eventListData} />
+
 
                   {/* <Button className="btn btn-sm custom-button" onClick={handleNewEventCreationPlace}>New</Button> */}
 
