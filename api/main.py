@@ -9,7 +9,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import os
 from queries.authenticator import AccomplistAuthenticator
-import sockets
+# import sockets
 
 authenticator = AccomplistAuthenticator(os.environ["SIGNING_KEY"])
 app = FastAPI()
@@ -19,7 +19,7 @@ app.include_router(accomplist_items.router)
 app.include_router(my_accomplist_items.router)
 app.include_router(events.router)
 app.include_router(my_events.router)
-app.mount("/ws", app=sockets.sio_app)
+# app.mount("/ws", app=sockets.sio_app)
 
 
 app.add_middleware(
