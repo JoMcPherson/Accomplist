@@ -52,6 +52,19 @@ a {
   border-bottom: 1px solid hotpink;
 }
 
+.navbar.compressed .navbar-nav .dropdown-menu {
+  background-color: #000000;
+  border: 1px solid hotpink;
+}
+
+.navbar.compressed .navbar-nav .dropdown-menu a {
+  color: #fff;
+}
+
+.navbar.compressed .navbar-nav .dropdown-menu a:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
 .navbar .navbar-nav .nav-item {
   padding-right: 12px;
 }

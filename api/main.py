@@ -9,6 +9,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import os
 from queries.authenticator import AccomplistAuthenticator
+
 # import sockets
 
 authenticator = AccomplistAuthenticator(os.environ["SIGNING_KEY"])
