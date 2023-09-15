@@ -47,11 +47,13 @@
 # async def namepass(sid, username):
 #     await sio_server.save_session(
 #         sid,
-#         {"username": username.get("username"), "photo": username.get("photo")},
+#         {"username": username.get("username"),
+#  "photo": username.get("photo")},
 #     )
 #     await sio_server.emit(
 #         "namepass",
-#         {"username": username.get("username"), "photo": username.get("photo")},
+#         {"username": username.get("username"),
+# "photo": username.get("photo")},
 #     )
 
 
