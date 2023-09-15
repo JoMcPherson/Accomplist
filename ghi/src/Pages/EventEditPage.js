@@ -88,7 +88,7 @@ export default function EventEditor({id, items, user}){
             };
         const response = await fetch(eventsPutUrl, fetchConfig);
         if (response.ok) {
-        // window.location.href = `${process.env.PUBLIC_URL}/events`
+        window.location.href = `${process.env.PUBLIC_URL}/events`
         }}
 
     const getDatEventDetailData1 = useCallback(async function getDatEventDetailData() {
